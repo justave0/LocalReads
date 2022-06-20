@@ -28,7 +28,7 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/etLoginUsername"
         app:layout_constraintStart_toStartOf="@+id/etLoginUsername"

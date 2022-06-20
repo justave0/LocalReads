@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/chat"
+        android:onClick="onChatAction"
+        app:showAsAction="ifRoom"
+        android:title="Chat">
+    </item>
+
+    <item
+        android:id="@+id/createBook"
+        android:icon="@drawable/selector_create_button"
+        android:onClick="onCreateAction"
+        app:showAsAction="ifRoom"
+        android:title="CreateBook">
+    </item>
+</menu>

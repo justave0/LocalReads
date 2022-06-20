@@ -41,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
         btSignUp.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                String userTag = null;
                 // Set core properties
                 user.setUsername(etSignUpUsername.getText().toString());
                 user.setPassword(etSignUpPassword.getText().toString());
@@ -48,13 +49,14 @@ public class SignUpActivity extends AppCompatActivity {
                 //Check RadioGroup
                 switch(rgToggle.getCheckedRadioButtonId()) {
                     case R.id.rbReader:
-                        // Pirates are the best
+                        userTag = "reader";
                         break;
                     case R.id.rbAuthor:
-                        // Ninjas rule
+                        userTag = "author";
                         break;
                 }
                 // Set custom properties
+                user.put("tag", userTag);
                 // Invoke signUpInBackground
                 user.signUpInBackground(new SignUpCallback() {
                     @Override
