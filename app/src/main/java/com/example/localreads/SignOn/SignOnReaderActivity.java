@@ -2,6 +2,7 @@ package com.example.localreads.SignOn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.localreads.MainActivity;
 import com.example.localreads.R;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -28,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SignOnReaderActivity extends AppCompatActivity {
@@ -35,7 +38,7 @@ public class SignOnReaderActivity extends AppCompatActivity {
     String TAG = "SignOnReaderActivity";
     String APP_TAG = "LocalReads";
     TextView tvReaderFavoriteGenres;
-    List<String> favoriteGenres;
+    List<String> favoriteGenres = new ArrayList<>();
     CheckBox cbRAction;
     CheckBox cbRClassics;
     CheckBox cbRComics;
@@ -45,6 +48,7 @@ public class SignOnReaderActivity extends AppCompatActivity {
     CheckBox cbRHorror;
     CheckBox cbRFiction;
     CheckBox cbRRomance;
+    CheckBox cbRSuspense;
     CheckBox cbRSciFi;
     CheckBox cbRShortStories;
     CheckBox cbRWomen;
@@ -85,6 +89,7 @@ public class SignOnReaderActivity extends AppCompatActivity {
         cbRPoetry = findViewById(R.id.cbRPoetry);
         cbRSelfHelp = findViewById(R.id.cbRSelfHelp);
         cbRTrueCrime = findViewById(R.id.cbRTrueCrime);
+        cbRSuspense = findViewById(R.id.cbRSuspense);
         btReaderSignOn = findViewById(R.id.btReaderSignOn);
         // set Favorite Genres of Reader
         btReaderSignOn.setOnClickListener(new View.OnClickListener() {
@@ -94,35 +99,74 @@ public class SignOnReaderActivity extends AppCompatActivity {
                 createReader();
             }
         });
-
     }
 
     private void setFavoriteGenres() {
         //switch doesn't work :(
-        if (cbRAction.isSelected()){
-            favoriteGenres.add(0, "Action and Adventure");
+        if (cbRAction.isChecked()){
+            favoriteGenres.add("Action and Adventure");
         }
-        if (cbRBiographies.isSelected()){
-            favoriteGenres.add(0, "Biographies");
+        if (cbRBiographies.isChecked()){
+            favoriteGenres.add("Biographies");
         }
-        if (cbRClassics.isSelected()){
-            favoriteGenres.add(0,"Classics");
+        if (cbRClassics.isChecked()){
+            favoriteGenres.add("Classics");
         }
-        if (cbRComics.isSelected()){
-            favoriteGenres.add(0,"Comics");
+        if (cbRComics.isChecked()){
+            favoriteGenres.add("Comics");
         }
-        if (cbRCookbooks.isSelected()){
-            favoriteGenres.add(0,"Cookbooks");
+        if (cbRCookbooks.isChecked()){
+            favoriteGenres.add("Cookbooks");
         }
-        if (cbRDetective.isSelected()){
-            favoriteGenres.add(0,"Detective");
+        if (cbRDetective.isChecked()){
+            favoriteGenres.add("Detective");
         }
-        if (cbREssays.isSelected()){
-            favoriteGenres.add(0,"Essays");
+        if (cbREssays.isChecked()){
+            favoriteGenres.add("Essays");
         }
-        if (cbRFantasy.isSelected()){
-            favoriteGenres.add(0,"Fantasy");
+        if (cbRFantasy.isChecked()){
+            favoriteGenres.add("Fantasy");
         }
+        if (cbRFiction.isChecked()){
+            favoriteGenres.add("Fiction");
+        }
+        if (cbRHistoricalFiction.isChecked()){
+            favoriteGenres.add("Historical Fiction");
+        }
+        if (cbRHorror.isChecked()){
+            favoriteGenres.add("Horror");
+        }
+        if (cbRRomance.isChecked()){
+            favoriteGenres.add("Romance");
+        }
+        if (cbRSciFi.isChecked()){
+            favoriteGenres.add("SciFi");
+        }
+        if (cbRShortStories.isChecked()){
+            favoriteGenres.add("Short Stories");
+        }
+        if (cbRWomen.isChecked()){
+            favoriteGenres.add("Women");
+        }
+        if (cbRHistory.isChecked()){
+            favoriteGenres.add("History");
+        }
+        if (cbRMemoir.isChecked()){
+            favoriteGenres.add("Memoir");
+        }
+        if (cbRPoetry.isChecked()){
+            favoriteGenres.add("Poetry");
+        }
+        if (cbRSelfHelp.isChecked()){
+            favoriteGenres.add("Self Help");
+        }
+        if (cbRTrueCrime.isChecked()){
+            favoriteGenres.add("True Crime");
+        }
+        if (cbRSuspense.isChecked()){
+            favoriteGenres.add("Suspense");
+        }
+
 
 
     }
@@ -130,10 +174,6 @@ public class SignOnReaderActivity extends AppCompatActivity {
     public void createReader(){
         ParseObject entity = new ParseObject("Reader");
         entity.put("username", ParseUser.getCurrentUser().getUsername());
-
-        ParseFile pfp = setDefaultPFP();
-
-        entity.put("profilePic", pfp);
         //Will fix location later
         entity.put("location", new ParseGeoPoint(40.0, -30.0));
         entity.put("favoriteGenres", favoriteGenres);
@@ -143,7 +183,8 @@ public class SignOnReaderActivity extends AppCompatActivity {
         // Notice that the SaveCallback is totally optional!
         entity.saveInBackground(e -> {
             if (e==null){
-                //Save was done
+                Intent intent = new Intent(SignOnReaderActivity.this, MainActivity.class);
+                startActivity(intent);
             }else{
                 //Something went wrong
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -152,21 +193,6 @@ public class SignOnReaderActivity extends AppCompatActivity {
 
     }
 
-    private ParseFile setDefaultPFP()  {
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.instagram_user_outline_24);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        icon.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-        byte[] bitmapBytes = bos.toByteArray();
-
-        ParseFile image = new ParseFile("defaultPFP", bitmapBytes);
-        try {
-            image.save();
-            return image;
-        } catch (com.parse.ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 }
