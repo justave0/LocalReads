@@ -1,4 +1,4 @@
-package com.example.localreads;
+package com.example.localreads.SignOn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.localreads.R;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -23,6 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button btSignUp;
     RadioGroup rgToggle;
     String TAG = "SignUpActivity";
+    String userTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,6 @@ public class SignUpActivity extends AppCompatActivity {
         btSignUp.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String userTag = null;
                 // Set core properties
                 user.setUsername(etSignUpUsername.getText().toString());
                 user.setPassword(etSignUpPassword.getText().toString());
@@ -62,7 +63,13 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void done(com.parse.ParseException e) {
                         if (e == null) {
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            Intent intent;
+                            if (userTag.equals("reader")){
+                                intent = new Intent(SignUpActivity.this, SignOnReaderActivity.class);
+                            }
+                            else{
+                                intent = new Intent(SignUpActivity.this, SignOnAuthorActivity.class);
+                            }
                             startActivity(intent);
                         } else {
                             Log.e(TAG, e.toString());

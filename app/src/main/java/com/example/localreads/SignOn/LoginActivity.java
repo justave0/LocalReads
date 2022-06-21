@@ -1,4 +1,4 @@
-package com.example.localreads;
+package com.example.localreads.SignOn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.localreads.MainActivity;
+import com.example.localreads.R;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
