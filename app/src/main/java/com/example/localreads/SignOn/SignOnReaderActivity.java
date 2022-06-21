@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,12 +23,17 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
 public class SignOnReaderActivity extends AppCompatActivity {
 
     String TAG = "SignOnReaderActivity";
+    String APP_TAG = "LocalReads";
     TextView tvReaderFavoriteGenres;
     List<String> favoriteGenres;
     CheckBox cbRAction;
@@ -50,6 +57,7 @@ public class SignOnReaderActivity extends AppCompatActivity {
     CheckBox cbRSelfHelp;
     CheckBox cbRTrueCrime;
     Button btReaderSignOn;
+    File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,30 +98,30 @@ public class SignOnReaderActivity extends AppCompatActivity {
     }
 
     private void setFavoriteGenres() {
-        //switch doesnt work :(
+        //switch doesn't work :(
         if (cbRAction.isSelected()){
-            favoriteGenres.add("Action and Adventure");
+            favoriteGenres.add(0, "Action and Adventure");
         }
         if (cbRBiographies.isSelected()){
-            favoriteGenres.add("Biographies");
+            favoriteGenres.add(0, "Biographies");
         }
         if (cbRClassics.isSelected()){
-            favoriteGenres.add("Classics");
+            favoriteGenres.add(0,"Classics");
         }
         if (cbRComics.isSelected()){
-            favoriteGenres.add("Comics");
+            favoriteGenres.add(0,"Comics");
         }
         if (cbRCookbooks.isSelected()){
-            favoriteGenres.add("Cookbooks");
+            favoriteGenres.add(0,"Cookbooks");
         }
         if (cbRDetective.isSelected()){
-            favoriteGenres.add("Detective");
+            favoriteGenres.add(0,"Detective");
         }
         if (cbREssays.isSelected()){
-            favoriteGenres.add("Essays");
+            favoriteGenres.add(0,"Essays");
         }
         if (cbRFantasy.isSelected()){
-            favoriteGenres.add("Fantasy");
+            favoriteGenres.add(0,"Fantasy");
         }
 
 
@@ -121,20 +129,11 @@ public class SignOnReaderActivity extends AppCompatActivity {
 
     public void createReader(){
         ParseObject entity = new ParseObject("Reader");
+        entity.put("username", ParseUser.getCurrentUser().getUsername());
 
-        entity.put("username", "A string");
-        Bitmap icon = BitmapFactory.decodeResource(SignOnReaderActivity.this.getResources(),
-                R.drawable.instagram_user_outline_24);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        byte[] bitmapBytes = stream.toByteArray();
+        ParseFile pfp = setDefaultPFP();
 
-        ParseFile image = new ParseFile("profilePic", bitmapBytes);
-        try {
-            image.save();
-        } catch (com.parse.ParseException e) {
-            Log.e(TAG, e.toString());
-        }
-        entity.put("profilePic", image);
+        entity.put("profilePic", pfp);
         //Will fix location later
         entity.put("location", new ParseGeoPoint(40.0, -30.0));
         entity.put("favoriteGenres", favoriteGenres);
@@ -151,6 +150,22 @@ public class SignOnReaderActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private ParseFile setDefaultPFP()  {
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.instagram_user_outline_24);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        icon.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapBytes = bos.toByteArray();
+
+        ParseFile image = new ParseFile("defaultPFP", bitmapBytes);
+        try {
+            image.save();
+            return image;
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
