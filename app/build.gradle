@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -25,8 +26,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
-
+ext {
+    googlePlayVersion = "17.0.0"
+}
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -37,5 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.25.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1' // for logging API calls to LogCat
-
+    implementation "com.google.android.gms:play-services-maps:$googlePlayVersion"
+    implementation "com.google.android.gms:play-services-location:$googlePlayVersion"
 }
