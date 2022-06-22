@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">LocalReads</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="google_maps_api_key">AIzaSyDlN4bViQnLHuzvx9AuCX2A8BjU_YajX-c</string>
 </resources>
