@@ -3,12 +3,7 @@ package com.example.localreads.SignOn;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,19 +12,11 @@ import android.widget.Toast;
 
 import com.example.localreads.MainActivity;
 import com.example.localreads.R;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,28 +55,28 @@ public class SignOnReaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on_reader);
 
-        tvReaderFavoriteGenres = findViewById(R.id.tvReaderFavoriteGenres);
-        cbRAction = findViewById(R.id.cbRAction);
-        cbRBiographies = findViewById(R.id.cbRBiographies);
-        cbRClassics = findViewById(R.id.cbRClassics);
-        cbRComics = findViewById(R.id.cbRComics);
-        cbRCookbooks = findViewById(R.id.cbRCookbooks);
-        cbRDetective = findViewById(R.id.cbRDetective);
-        cbREssays = findViewById(R.id.cbREssays);
-        cbRFantasy = findViewById(R.id.cbRFantasy);
-        cbRFiction = findViewById(R.id.cbRFiction);
-        cbRHistoricalFiction = findViewById(R.id.cbRHistoricalFiction);
-        cbRHorror = findViewById(R.id.cbRHorror);
-        cbRRomance = findViewById(R.id.cbRRomance);
-        cbRSciFi = findViewById(R.id.cbRSciFi);
-        cbRShortStories = findViewById(R.id.cbRShortStories);
-        cbRWomen = findViewById(R.id.cbRWomen);
-        cbRHistory = findViewById(R.id.cbRHistory);
-        cbRMemoir = findViewById(R.id.cbRMemoir);
-        cbRPoetry = findViewById(R.id.cbRPoetry);
-        cbRSelfHelp = findViewById(R.id.cbRSelfHelp);
-        cbRTrueCrime = findViewById(R.id.cbRTrueCrime);
-        cbRSuspense = findViewById(R.id.cbRSuspense);
+        tvReaderFavoriteGenres = findViewById(R.id.tvAuthorFavoriteGenres);
+        cbRAction = findViewById(R.id.cbAAction);
+        cbRBiographies = findViewById(R.id.cbABiographies);
+        cbRClassics = findViewById(R.id.cbAClassics);
+        cbRComics = findViewById(R.id.cbAComics);
+        cbRCookbooks = findViewById(R.id.cbACookbooks);
+        cbRDetective = findViewById(R.id.cbADetective);
+        cbREssays = findViewById(R.id.cbAEssays);
+        cbRFantasy = findViewById(R.id.cbAFantasy);
+        cbRFiction = findViewById(R.id.cbAFiction);
+        cbRHistoricalFiction = findViewById(R.id.cbAHistoricalFiction);
+        cbRHorror = findViewById(R.id.cbAHorror);
+        cbRRomance = findViewById(R.id.cbARomance);
+        cbRSciFi = findViewById(R.id.cbASciFi);
+        cbRShortStories = findViewById(R.id.cbAShortStories);
+        cbRWomen = findViewById(R.id.cbAWomen);
+        cbRHistory = findViewById(R.id.cbAHistory);
+        cbRMemoir = findViewById(R.id.cbAMemoir);
+        cbRPoetry = findViewById(R.id.cbAPoetry);
+        cbRSelfHelp = findViewById(R.id.cbASelfHelp);
+        cbRTrueCrime = findViewById(R.id.cbATrueCrime);
+        cbRSuspense = findViewById(R.id.cbASuspense);
         btReaderSignOn = findViewById(R.id.btReaderSignOn);
         // set Favorite Genres of Reader
         btReaderSignOn.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +162,6 @@ public class SignOnReaderActivity extends AppCompatActivity {
         ParseObject entity = new ParseObject("Reader");
         entity.put("username", ParseUser.getCurrentUser().getUsername());
         //Will fix location later
-        entity.put("location", new ParseGeoPoint(40.0, -30.0));
         entity.put("favoriteGenres", favoriteGenres);
         entity.put("user", ParseUser.getCurrentUser());
 

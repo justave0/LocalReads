@@ -68,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 intent = new Intent(SignUpActivity.this, SignOnReaderActivity.class);
                             }
                             else{
-                                intent = new Intent(SignUpActivity.this, SignOnAuthorActivity.class);
+                                intent = new Intent(SignUpActivity.this, SignOnAuthorActivity1.class);
                             }
                             startActivity(intent);
                         } else {

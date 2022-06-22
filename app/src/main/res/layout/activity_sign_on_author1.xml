@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btGoNextAuthorSignOn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignOn.SignOnReaderActivity">
@@ -10,12 +11,12 @@
         android:id="@+id/tvAuthorFavoriteGenres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Please Select Your Favorite Genres"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAuthorSignOnStep1" />
 
     <CheckBox
         android:id="@+id/cbAAction"
@@ -233,15 +234,27 @@
         app:layout_constraintStart_toEndOf="@+id/cbASelfHelp"
         app:layout_constraintTop_toBottomOf="@+id/cbAMemoir" />
 
-    <Button
-        android:id="@+id/btReaderSignOn"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabGoNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Get Started!"
-        app:layout_constraintEnd_toEndOf="@+id/cbATrueCrime"
-        app:layout_constraintStart_toStartOf="@+id/cbAPoetry"
-        app:layout_constraintTop_toBottomOf="@+id/cbASelfHelp" />
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_play"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/tvAuthorSignOnStep1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Step 1 of 2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">LocalReads</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="geocode_url">https://maps.googleapis.com/maps/api/geocode/json?</string>
+    <string name="text_local_feed">Local Feed</string>
+    <string name="text_local_author">Local Authors</string>
+    <string name="text_profile">Profile</string>
 </resources>

@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -33,6 +35,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Headers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -47,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private final static String KEY_LOCATION = "location";
     private LocationRequest mLocationRequest;
     Location mCurrentLocation;
+    String address;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
             mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
         MainActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
-
     }
-
 
     // Helper function to get if the current user is a reader or author
     private void getUserTag() {
@@ -145,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            onLocationChanged(location);
+                            updateLocation(location);
                         }
                     }
                 })
@@ -159,12 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onLocationChanged(Location location) {
+    public void updateLocation(Location location) {
         // GPS may be turned off
         if (location == null) {
             return;
         }
         mCurrentLocation = location;
+        saveLocation();
         // Display the current location
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
@@ -173,22 +181,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveLocation() {
-        if (readerId != null) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Reader");
-            // Retrieve the object by id
-            query.getInBackground(readerId, (object, e) -> {
-                if (e == null) {
-                    //Object was successfully retrieved
-                    // Update the fields we want to
-                    object.put("location", new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-                    //All other fields will remain the same
-                    object.saveInBackground();
-                } else {
-                    // something went wrong
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        // Retrieve the object by id
+        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), (object, e) -> {
+            if (e == null) {
+                //Object was successfully retrieved
+                // Update the fields we want to
+                object.put("location", new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                //All other fields will remain the same
+                object.saveInBackground();
+                getReverseGeocode();
+            } else {
+                // something went wrong
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getReverseGeocode() {
+        String reverseGeocode = getString(R.string.geocode_url) + "latlng=" + mCurrentLocation.getLatitude()
+                +","+ mCurrentLocation.getLongitude() +"&result_type=locality&key=" + getString(R.string.google_maps_api_key);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(reverseGeocode, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG,  "onSuccess");
+                JSONObject jsonObject = json.jsonObject;
+                try{
+                    JSONObject results = (JSONObject) jsonObject.getJSONArray("results").get(0);
+                    address = results.getString("formatted_address");
+                    Log.i(TAG, address);
+
                 }
-            });
-        }
+                catch (JSONException e){
+                    Log.e(TAG, "Hit JSON exception", e);
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+            }
+        });
     }
 
 }
