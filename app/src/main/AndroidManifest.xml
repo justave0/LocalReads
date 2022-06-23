@@ -32,6 +32,11 @@
         android:theme="@style/Theme.LocalReads"
         tools:targetApi="31">
         <activity
+            android:name=".CreateBook.CreateActivity"
+            android:exported="false"
+            android:label="@string/title_activity_create"
+            android:theme="@style/Theme.LocalReads" />
+        <activity
             android:name=".SignOn.SignOnAuthorActivity1"
             android:exported="false" />
         <activity

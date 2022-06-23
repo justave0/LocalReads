@@ -4,11 +4,9 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,15 +17,11 @@ import android.widget.Toast;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -35,7 +29,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,17 +43,19 @@ public class MainActivity extends AppCompatActivity {
     public String readerId;
     public String authorId;
     private final String TAG = "MainActivity";
-    Menu topMenu;
     private final static String KEY_LOCATION = "location";
     private LocationRequest mLocationRequest;
     Location mCurrentLocation;
     String address;
+    Menu topMenu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MaterialToolbar temp = findViewById(R.id.topAppBar);
+        topMenu = temp.getMenu();
         getUserTag();
         // Check is current location is null
         if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
@@ -81,10 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null) {
                     userTag = user.getString("tag");
                     if (userTag.equals("reader")) {
-                        getMenuInflater().inflate(R.menu.reader_top_menu, topMenu);
+                        topMenu.findItem(R.id.createBook).setVisible(false);
                         getReader();
                     } else {
-                        getMenuInflater().inflate(R.menu.author_top_menu, topMenu);
                         getAuthor();
                     }
                 } else {
@@ -120,13 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // copy getReader()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the reader menu first. This will get changed in get getUserTag() accordingly
-        topMenu = menu;
-        getMenuInflater().inflate(R.menu.blank_menu, menu);
-        return true;
-    }
 
     // Goes to chat activity
     public void onChatAction(MenuItem mi) {
@@ -134,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Goes to create activity
     public void onCreateAction(MenuItem mi) {
+
     }
 
 

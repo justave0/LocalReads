@@ -16,6 +16,6 @@
         android:icon="@drawable/selector_create_button"
         android:onClick="onCreateAction"
         app:showAsAction="ifRoom"
-        android:title="CreateBook">
+        android:title="Create Book">
     </item>
 </menu>

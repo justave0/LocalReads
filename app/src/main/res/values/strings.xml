@@ -5,4 +5,8 @@
     <string name="text_local_feed">Local Feed</string>
     <string name="text_local_author">Local Authors</string>
     <string name="text_profile">Profile</string>
+    <string name="local_reads">Local Reads</string>
+    <string name="title_activity_create">CreateActivity</string>
+    <!-- Strings used for fragments for navigation -->
+
 </resources>
