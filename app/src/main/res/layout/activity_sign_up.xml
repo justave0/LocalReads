@@ -101,7 +101,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="Reader"
-            android:textColor="@color/white" />
+            android:textColor="@color/cardview_light_background" />
 
         <RadioButton
             android:id="@+id/rbAuthor"
@@ -115,7 +115,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="Author"
-            android:textColor="@color/white" />
+            android:textColor="@color/cardview_light_background" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
