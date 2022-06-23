@@ -6,47 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".SignOn.LoginActivity">
 
-    <EditText
-        android:id="@+id/etLoginUsername"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfLoginUsername"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="20dp"
-        android:ems="10"
         android:hint="Username"
-        android:inputType="textPersonName"
-        android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/etLoginPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfLoginPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="@+id/etLoginUsername"
-        app:layout_constraintStart_toStartOf="@+id/etLoginUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etLoginUsername" />
+        app:layout_constraintEnd_toEndOf="@+id/tfLoginUsername"
+        app:layout_constraintStart_toStartOf="@+id/tfLoginUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tfLoginUsername"
+        app:endIconMode="password_toggle">
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btLogin"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="70dp"
-        android:backgroundTint="#00BCD4"
-        android:text="Login"
-        app:layout_constraintEnd_toEndOf="@+id/etLoginPassword"
-        app:layout_constraintStart_toStartOf="@+id/etLoginPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etLoginPassword" />
+        android:layout_marginEnd="50dp"
+        android:text="LogIn"
+        app:layout_constraintEnd_toEndOf="@+id/tfLoginPassword"
+        app:layout_constraintStart_toStartOf="@+id/tfLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tfLoginPassword" />
 
     <Button
         android:id="@+id/btLoginCreateAccount"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
