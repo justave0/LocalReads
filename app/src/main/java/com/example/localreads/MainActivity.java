@@ -4,11 +4,14 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +19,11 @@ import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.localreads.CreateBook.CreateActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +37,8 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 import okhttp3.Headers;
 import permissions.dispatcher.NeedsPermission;
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     Location mCurrentLocation;
     String address;
     Menu topMenu;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
 
 
     @Override
@@ -112,6 +122,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAuthor(){
         // copy getReader()
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Author");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        // The query will search for a ParseObject, given its objectId.
+        // When the query finishes running, it will invoke the GetCallback
+        // with either the object, or the exception thrown
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null){
+                    authorId = object.getObjectId();
+                    Log.i(TAG, authorId);
+                    saveLocation();
+                }
+                else{
+                    Log.i(TAG, e.toString());
+                }
+
+            }
+        });
     }
 
 
@@ -121,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Goes to create activity
     public void onCreateAction(MenuItem mi) {
-
+        Intent intent = new Intent (MainActivity.this, CreateActivity.class);
+        startActivity(intent);
     }
 
 
@@ -134,9 +164,26 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
     void getMyLocation() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(20 * 10000);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        updateLocation(location);
+                    }
+                }
+            }
+        };
+
         FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
+        locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        locationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
@@ -165,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void saveLocation() {
@@ -181,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 getReverseGeocode();
             } else {
                 // something went wrong
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

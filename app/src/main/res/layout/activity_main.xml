@@ -31,9 +31,11 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/top_menu"
             app:title="@string/local_reads"
-            app:titleCentered="false" />
+            app:titleCentered="false"
+            android:transitionName="shared_element_container"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
