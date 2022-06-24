@@ -27,8 +27,8 @@ public class LocalReadsApplication extends Application {
         // set applicationId, and server server based on the values in the back4app settings.
         // any network interceptors must be added with the Configuration Builder given this syntax
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("Zg7CIBIpjRgWL0DCMHJHzut3RyNbJbuNnLNo2h0K") // should correspond to Application Id env variable
-                .clientKey("CCwIEC8NVqxtEl18ssUkWhLe8Esqz1cqB1gsmg2I")  // should correspond to Client key env variable
+                .applicationId(getString(R.string.parse_application_id)) // should correspond to Application Id env variable
+                .clientKey(getString(R.string.parse_client_key))  // should correspond to Client key env variable
                 .server("https://parseapi.back4app.com").build());
     }
 }
