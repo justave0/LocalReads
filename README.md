@@ -8,7 +8,7 @@
 
 ## Overview
 ### Description
-Pages is the app for book lovers to find local authors and storytellers. Pages allows local authors to share their recent books to people in their area and create coffee chats/book circles. The app also allows book lovers to directly contact local authors to answer their questions.
+LocalReads is the app for book lovers to find local authors and storytellers. LocalReads allows local authors to share their recent books to people in their area and create coffee chats/book circles. The app also allows book lovers to directly contact local authors to answer their questions.
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
@@ -87,7 +87,8 @@ Pages is the app for book lovers to find local authors and storytellers. Pages a
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="LocalReadsWireframe.jpeg" width=600>
+<img src="LocalReadsWireframeItems.jpeg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
