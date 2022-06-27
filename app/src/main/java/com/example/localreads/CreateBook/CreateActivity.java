@@ -3,15 +3,24 @@ package com.example.localreads.CreateBook;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.localreads.MainActivity;
+import com.example.localreads.Models.Book;
 import com.example.localreads.R;
 import com.google.android.material.transition.MaterialSharedAxis;
+import com.parse.Parse;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +34,8 @@ public class CreateActivity extends AppCompatActivity {
     String bookName;
     String bookDescription;
     List<String> bookGenres = new ArrayList<>();
+    String bookLink;
+    File bookPhoto;
 
 
     @Override
@@ -35,9 +46,9 @@ public class CreateActivity extends AppCompatActivity {
         btCreateGoNext = findViewById(R.id.btCreateGoNext);
         tvCreateStep = findViewById(R.id.tvCreateStep);
         startFragment1();
-
-
-
+        Fade enter = new Fade();
+        getWindow().setExitTransition(enter.addTarget(R.id.clCreate));
+        getWindow().setAllowEnterTransitionOverlap(true);
 
         btCreateGoNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +74,8 @@ public class CreateActivity extends AppCompatActivity {
         ft.commit();
         tvCreateStep.setText("Step 1 of 2");
         btCreateGoBack.setVisibility(View.INVISIBLE);
+        bookGenres.clear();
+        create_fragment_1.favoriteGenres.clear();
         currentFragment = 1;
     }
 
@@ -70,18 +83,47 @@ public class CreateActivity extends AppCompatActivity {
         if (currentFragment == 1 && checkFragment1(v)){
             bookName = create_fragment_1.etCreateBookTitle.getText().toString();
             bookDescription = create_fragment_1.etCreateBookDescription.getText().toString();
-            bookGenres = create_fragment_1.favoriteGenres;
+            bookGenres.addAll(create_fragment_1.favoriteGenres);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             // Replace the contents of the container with the new fragment
             ft.replace(R.id.flPlaceholderCreate, create_fragment_2);
             // or ft.add(R.id.your_placeholder, new FooFragment());
             // Complete the changes added above
             ft.commit();
-            create_fragment_1.favoriteGenres.clear();
             tvCreateStep.setText("Step 2 of 2");
             btCreateGoBack.setVisibility(View.VISIBLE);
             currentFragment = 2;
         }
+        else if(currentFragment == 2 && checkFragment2(v)){
+            bookLink = create_fragment_2.etCreateURL.getText().toString();
+            bookPhoto = create_fragment_2.photoFile;
+            postBook();
+        }
+    }
+
+    private void postBook() {
+        Book book = new Book();
+        book.setDescription(bookDescription);
+        book.setImage(new ParseFile(create_fragment_2.photoFile));
+        book.setLink(bookLink);
+        book.setName(bookName);
+        book.setReads(0);
+        book.setUser(ParseUser.getCurrentUser());
+        book.setGenres(bookGenres);
+
+
+
+        // Saves the new object.
+        // Notice that the SaveCallback is totally optional!
+        book.saveInBackground(e -> {
+            if (e==null){
+                Intent intent = new Intent (CreateActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else{
+                //Something went wrong
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean checkFragment1(View v) {
@@ -114,6 +156,17 @@ public class CreateActivity extends AppCompatActivity {
         return true;
     }
 
+    private boolean checkFragment2(View v){
+        if (create_fragment_2.etCreateURL.getText().toString().length() == 0){
+            Toast.makeText(CreateActivity.this, "No Book URL Provided", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (create_fragment_2.photoFile == null){
+            Toast.makeText(CreateActivity.this, "No Photo Provided", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
     private void startFragment1() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment

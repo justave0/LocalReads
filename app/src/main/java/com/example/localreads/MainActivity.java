@@ -4,7 +4,9 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,7 +17,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -28,6 +29,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -37,8 +39,6 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Locale;
 
 import okhttp3.Headers;
 import permissions.dispatcher.NeedsPermission;
@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     Menu topMenu;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+    RecyclerView rvBooks;
+    LocalFeedFragment fragment_local_feed;
 
 
     @Override
@@ -67,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar temp = findViewById(R.id.topAppBar);
         topMenu = temp.getMenu();
         getUserTag();
+        fragment_local_feed = new LocalFeedFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flTemp, fragment_local_feed, LocalFeedFragment.class.getSimpleName());
+        ft.commit();
+
         // Check is current location is null
         if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
             // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
@@ -74,6 +83,44 @@ public class MainActivity extends AppCompatActivity {
             mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
         MainActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
+
+        //Fragment Manager
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
+                String tag;
+                switch (item.getItemId()) {
+                    case R.id.action_local_feed:
+                        fragment = fragment_local_feed;
+                        tag = LocalFeedFragment.class.getSimpleName();
+                        break;
+
+                    case R.id.action_local_author:
+//                        fragment = feed_fragment;
+//                        tag = FeedFragment.class.getSimpleName();
+                        break;
+
+                    case R.id.action_profile:
+//                        fragment = profile_fragment;
+//                        tag = ProfileFragment.class.getSimpleName();
+                        break;
+
+                    default:
+                        fragment = new Fragment();
+                        tag = "rubbish";
+                }
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                //ft.replace(R.id.flTemp, fragment, tag);
+                ft.replace(R.id.flTemp,fragment_local_feed, LocalFeedFragment.class.getSimpleName());
+                ft.commit();
+
+                return true;
+            }
+        });
+        bottomNavigationView.setSelectedItemId(R.id.action_local_feed);
+
     }
 
     // Helper function to get if the current user is a reader or author
@@ -183,21 +230,21 @@ public class MainActivity extends AppCompatActivity {
 
         FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
         locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-        locationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            updateLocation(location);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
-                        e.printStackTrace();
-                    }
-                });
+//        locationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        if (location != null) {
+//                            updateLocation(location);
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
+//                        e.printStackTrace();
+//                    }
+//                });
 
     }
 

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.357" />
+        <entry key="app/src/main/res/drawable/customborder.xml" value="0.2795" />
         <entry key="app/src/main/res/drawable/pink_out_line.xml" value="0.2255" />
         <entry key="app/src/main/res/drawable/selector_create_button.xml" value="0.28" />
         <entry key="app/src/main/res/drawable/selector_feed_icon.xml" value="0.357" />
@@ -15,15 +16,19 @@
         <entry key="app/src/main/res/layout/activity_create2.xml" value="0.3296875" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18541033434650456" />
         <entry key="app/src/main/res/layout/activity_login_test.xml" value="0.1838226318359374" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21882452481034875" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15168539325842698" />
+        <entry key="app/src/main/res/layout/activity_main_copy.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_on_author.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_on_author1.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_on_author2.xml" value="0.18617021276595744" />
         <entry key="app/src/main/res/layout/activity_sign_on_reader.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/book_fragment.xml" value="0.411231884057971" />
+        <entry key="app/src/main/res/layout/customborder.xml" value="0.26313405797101447" />
         <entry key="app/src/main/res/layout/fragment_create_1.xml" value="0.3166144200626959" />
         <entry key="app/src/main/res/layout/fragment_create_2.xml" value="0.2668711656441718" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.338768115942029" />
+        <entry key="app/src/main/res/layout/item_book.xml" value="0.375" />
         <entry key="app/src/main/res/menu/author_top_menu.xml" value="0.3875" />
         <entry key="app/src/main/res/menu/blank_menu.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.4036458333333333" />
@@ -32,6 +37,7 @@
         <entry key="app/src/main/res/menu/reader_top_menu.xml" value="0.20208333333333334" />
         <entry key="app/src/main/res/menu/reader_top_menu_test.xml" value="0.3177083333333333" />
         <entry key="app/src/main/res/menu/top_menu.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2795" />
       </map>
     </option>
   </component>
