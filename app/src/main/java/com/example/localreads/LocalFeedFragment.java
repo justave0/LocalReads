@@ -13,9 +13,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ public class LocalFeedFragment extends Fragment {
     FragmentActivity listener;
     private ArrayList<Book> mBooks = new ArrayList<>();
     Context context;
+    public Double searchRadius;
 
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
@@ -61,19 +66,44 @@ public class LocalFeedFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        searchRadius = Double.valueOf(30);
         RecyclerView rv = (RecyclerView) view.findViewById(R.id.rvBookFeed);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rv.setAdapter(adapter);
         rv.setLayoutManager(linearLayoutManager);
 
-        queryBooks();
+        queryAuthors();
     }
 
-    private void queryBooks() {
+    public void queryAuthors() {
+        ArrayList<String> authorID = new ArrayList<>();
+        ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
+        ParseUser bozo = ParseUser.getCurrentUser();
+        ParseGeoPoint dummy = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
+        authorQuery.setLimit(20);
+        authorQuery.findInBackground(new FindCallback<Author>() {
+            @Override
+            public void done(List<Author> objects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < objects.size(); i++) {
+                        authorID.add(objects.get(i).getUser().getObjectId());
+
+                    }
+                    queryBooks(authorID);
+                } else {
+                    Log.e("author query failed - ", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+
+        public void queryBooks(ArrayList <String> authorID){
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
         query.include(Book.KEY_USER);
         query.addDescendingOrder("createdAt");
+        query.whereContainedIn("user", authorID);
         query.setLimit(20);
         // Specify the object id
         query.findInBackground(new FindCallback<Book>() {
@@ -91,6 +121,7 @@ public class LocalFeedFragment extends Fragment {
         });
     }
 
+
     // This method is called when the fragment is no longer connected to the Activity
     // Any references saved in onAttach should be nulled out here to prevent memory leaks.
     @Override
@@ -105,5 +136,9 @@ public class LocalFeedFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    public double toKilometers(Double miles){
+        return miles * 1.609;
     }
 }

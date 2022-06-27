@@ -3,10 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:id="@+id/filterLocalBooks"
+        android:contentDescription="Filter Local Books"
+        android:icon="@drawable/selector_filter_menu"
+        android:title="@string/filter"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/chat"
         android:icon="@drawable/chat"
-        android:onClick="onChatAction"
         app:showAsAction="ifRoom"
         android:contentDescription="Chat with Users"
         android:title="Chat">
@@ -15,7 +22,6 @@
     <item
         android:id="@+id/createBook"
         android:icon="@drawable/selector_create_button"
-        android:onClick="onCreateAction"
         app:showAsAction="ifRoom"
         android:contentDescription="Create a Book"
         android:title="Create Book">

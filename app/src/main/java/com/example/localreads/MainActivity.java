@@ -17,6 +17,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -28,6 +30,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.GetCallback;
@@ -58,16 +61,22 @@ public class MainActivity extends AppCompatActivity {
     Menu topMenu;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    RecyclerView rvBooks;
     LocalFeedFragment fragment_local_feed;
+    MaterialToolbar tabMain;
+    CollapsingToolbarLayout ctlMain;
+    TextView tvMainTitle;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MaterialToolbar temp = findViewById(R.id.topAppBar);
-        topMenu = temp.getMenu();
+        tabMain = findViewById(R.id.tabMain);
+        topMenu = tabMain.getMenu();
+        ctlMain = findViewById(R.id.ctlMain);
+
+
         getUserTag();
         fragment_local_feed = new LocalFeedFragment();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flTemp, fragment_local_feed, LocalFeedFragment.class.getSimpleName());
         ft.commit();
+
 
         // Check is current location is null
         if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
@@ -196,9 +206,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Goes to create activity
-    public void onCreateAction(MenuItem mi) {
+    public void createAction(MenuItem mi) {
         Intent intent = new Intent (MainActivity.this, CreateActivity.class);
         startActivity(intent);
+    }
+
+    // tentative might not work
+    public void filterLocalBooksAction(MenuItem mi){
+        if (fragment_local_feed != null && fragment_local_feed.isVisible()) {
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filterLocalBooks:
+                // Red item was selected
+                filterLocalBooksAction(item);
+                return true;
+            case R.id.chat:
+                // Green item was selected
+                return true;
+            case R.id.createBook:
+                createAction(item);
+                return true;
+
+                default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -230,21 +266,6 @@ public class MainActivity extends AppCompatActivity {
 
         FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
         locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-//        locationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        if (location != null) {
-//                            updateLocation(location);
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
-//                        e.printStackTrace();
-//                    }
-//                });
 
     }
 
@@ -254,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         mCurrentLocation = location;
-        saveLocation();
+        //saveLocation();
         // Display the current location
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
@@ -269,13 +290,17 @@ public class MainActivity extends AppCompatActivity {
             if (e == null) {
                 //Object was successfully retrieved
                 // Update the fields we want to
-                object.put("location", new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 //All other fields will remain the same
-                object.saveInBackground();
+                try {
+                    object.save();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
                 getReverseGeocode();
             } else {
                 // something went wrong
-                //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -294,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject results = (JSONObject) jsonObject.getJSONArray("results").get(0);
                     address = results.getString("formatted_address");
                     Log.i(TAG, address);
-
+                    ctlMain.setTitle("Showing New Releases Near " + address + ":");
                 }
                 catch (JSONException e){
                     Log.e(TAG, "Hit JSON exception", e);

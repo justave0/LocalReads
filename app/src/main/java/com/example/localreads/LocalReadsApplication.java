@@ -2,6 +2,7 @@ package com.example.localreads;
 
 import android.app.Application;
 
+import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -18,7 +19,7 @@ public class LocalReadsApplication extends Application {
         // Use for troubleshooting -- remove this line for production
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
         ParseObject.registerSubclass(Book.class);
-
+        ParseObject.registerSubclass(Author.class);
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY
         // See https://square.github.io/okhttp/3.x/logging-interceptor/ to see the options.

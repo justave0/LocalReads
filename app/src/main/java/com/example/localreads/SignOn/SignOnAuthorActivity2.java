@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localreads.MainActivity;
+import com.example.localreads.Models.Author;
 import com.example.localreads.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
@@ -91,17 +92,19 @@ public class SignOnAuthorActivity2 extends AppCompatActivity {
     }
 
     private void createAuthor() {
-        ParseObject entity = new ParseObject("Author");
-        entity.put("username", ParseUser.getCurrentUser().getUsername());
-        //Will fix location later
-        entity.put("inputLocation", inputLocation);
-        entity.put("favoriteGenres", favoriteGenres);
-        entity.put("user", ParseUser.getCurrentUser());
-        entity.put("reads", 0);
+        Author author = new Author();
+        author.setInputLocation( inputLocation);
+        author.setBio(etSignOnBio.getText().toString());
+        author.setBooks(new ArrayList<>());
+        author.setLink("");
+        author.setReads(0);
+        author.setUser(ParseUser.getCurrentUser());
+        author.setFavoriteGenres(favoriteGenres);
+
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
-        entity.saveInBackground(e -> {
+        author.saveInBackground(e -> {
             if (e==null){
                 Intent intent = new Intent(SignOnAuthorActivity2.this, MainActivity.class);
                 startActivity(intent);

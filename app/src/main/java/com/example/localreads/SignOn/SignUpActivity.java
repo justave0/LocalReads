@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.localreads.R;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -47,6 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
                 user.setUsername(etSignUpUsername.getText().toString());
                 user.setPassword(etSignUpPassword.getText().toString());
                 user.setEmail(etSignUpEmail.getText().toString());
+                user.put("location", new ParseGeoPoint(0,0));
                 //Check RadioGroup
                 switch(rgToggle.getCheckedRadioButtonId()) {
                     case R.id.rbReader:

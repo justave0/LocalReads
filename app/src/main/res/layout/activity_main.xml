@@ -12,19 +12,32 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/ablTopMenu"
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/ctlMain"
+            style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="?attr/actionBarTheme"
-            app:menu="@menu/top_menu"
-            app:title="@string/local_reads"
-            app:titleCentered="false" />
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:theme="@style/Widget.App.Toolbar"
+            app:expandedTitleMargin="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:maxLines="10">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tabMain"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:menu="@menu/top_menu"
+                app:titleCentered="false" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
