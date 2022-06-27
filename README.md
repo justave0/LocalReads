@@ -87,7 +87,7 @@ LocalReads is the app for book lovers to find local authors and storytellers. Lo
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="LocalReadsWireframe.jpeg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
