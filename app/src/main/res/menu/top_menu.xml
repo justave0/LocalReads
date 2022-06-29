@@ -4,13 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item
-        android:id="@+id/filterLocalBooks"
-        android:contentDescription="Filter Local Books"
-        android:icon="@drawable/selector_filter_menu"
-        android:title="@string/filter"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/chat"
         android:icon="@drawable/chat"

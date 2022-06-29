@@ -10,6 +10,27 @@
     <string name="take_photo">Take Photo</string>
     <string name="choose_photo">Choose Photo From Library</string>
     <string name="filter">Filter</string>
+    <string name="action_and_adventure">Action and Adventure</string>
+    <string name="classics">Classics</string>
+    <string name="comic_books_and_graphic_novels">Comic Books and Graphic Novels</string>
+    <string name="detective_and_mystery">Detective and Mystery</string>
+    <string name="fantasy">Fantasy</string>
+    <string name="historical_fiction">Historical Fiction</string>
+    <string name="horror">Horror</string>
+    <string name="literary_fiction">Literary Fiction</string>
+    <string name="romance">Romance</string>
+    <string name="science_fiction">Science Fiction</string>
+    <string name="short_stories">Short Stories</string>
+    <string name="suspense_and_thrillers">Suspense and Thrillers</string>
+    <string name="women_s_fiction">Women\'s Fiction</string>
+    <string name="biographies_and_autobiographies">Biographies and Autobiographies</string>
+    <string name="cookbooks">Cookbooks</string>
+    <string name="essays">Essays</string>
+    <string name="history">History</string>
+    <string name="memoir">Memoir</string>
+    <string name="poetry">Poetry</string>
+    <string name="self_help">Self-Help</string>
+    <string name="true_crime">True Crime</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

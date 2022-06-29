@@ -18,6 +18,7 @@ import com.google.android.material.transition.MaterialSharedAxis;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -36,12 +37,17 @@ public class CreateActivity extends AppCompatActivity {
     List<String> bookGenres = new ArrayList<>();
     String bookLink;
     File bookPhoto;
+    String address;
+    String authorID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        Intent intent = getIntent();
+        address = intent.getStringExtra("address");
+        authorID = intent.getStringExtra("authorID");
         btCreateGoBack = findViewById(R.id.btCreateGoBack);
         btCreateGoNext = findViewById(R.id.btCreateGoNext);
         tvCreateStep = findViewById(R.id.tvCreateStep);
@@ -110,17 +116,37 @@ public class CreateActivity extends AppCompatActivity {
         book.setReads(0);
         book.setUser(ParseUser.getCurrentUser());
         book.setGenres(bookGenres);
-
-
+        book.setLocationString(address);
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
         book.saveInBackground(e -> {
             if (e==null){
-                Intent intent = new Intent (CreateActivity.this, MainActivity.class);
-                startActivity(intent);
+                updateAuthor(book);
             }else{
                 //Something went wrong
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateAuthor(Book book){
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Author");
+        query.getInBackground(authorID,(object, e) -> {
+            if (e == null) {
+                List<String> books = object.getList("books");
+                books.add(book.getObjectId());
+                // Update the fields we want to
+                object.put("books", books);
+
+                // All other fields will remain the same
+                object.saveInBackground();
+                Intent intent = new Intent (CreateActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                // something went wrong
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

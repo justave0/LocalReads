@@ -2,7 +2,11 @@ package com.example.localreads;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.transition.AutoTransition;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Book;
 import com.google.android.material.transition.MaterialSharedAxis;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +123,29 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                         hiddenViewLayout.setVisibility(View.VISIBLE);
                         btBookDropdown.setIcon(AppCompatResources.getDrawable(context, R.drawable.ic_chevron_down));
                     }
+                }
+            });
+            btBookSeeMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Activity for adapter
+                    AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+                    //Fragment Transaction (idk)
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    //Create a new fragment
+                    DetailBookFragment detailFragment = new DetailBookFragment();
+                    //Create a new bundle
+                    Bundle args = new Bundle();
+                    //Put arguments in the bundle
+                    args.putParcelable("book", Parcels.wrap(book));
+                    //send bundle to the fragment
+                    detailFragment.setArguments(args);
+                    //replace the fragment
+                    ft.replace(R.id.flTemp, detailFragment);
+                    //add to backstack
+                    ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
+                    //Commit!
+                    ft.commit();
                 }
             });
         }

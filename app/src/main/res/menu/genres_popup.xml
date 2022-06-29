@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action"
+        android:title="@string/action_and_adventure" />
+    <item android:id="@+id/classics"
+        android:title="@string/classics" />
+    <item android:id="@+id/comics"
+        android:title="@string/comic_books_and_graphic_novels" />
+    <item android:id="@+id/detective"
+        android:title="@string/detective_and_mystery" />
+    <item android:id="@+id/fantasy"
+        android:title="@string/fantasy" />
+    <item android:id="@+id/historicalFiction"
+        android:title="@string/historical_fiction" />
+    <item android:id="@+id/horror"
+        android:title="@string/horror" />
+    <item android:id="@+id/fiction"
+        android:title="@string/literary_fiction" />
+    <item android:id="@+id/romance"
+        android:title="@string/romance" />
+    <item android:id="@+id/sciFi"
+        android:title="@string/science_fiction" />
+    <item android:id="@+id/shortStories"
+        android:title="@string/short_stories" />
+    <item android:id="@+id/suspense"
+        android:title="@string/suspense_and_thrillers" />
+    <item android:id="@+id/women"
+        android:title="@string/women_s_fiction" />
+    <item android:id="@+id/biographies"
+        android:title="@string/biographies_and_autobiographies" />
+    <item android:id="@+id/cookbooks"
+        android:title="@string/cookbooks" />
+    <item android:id="@+id/essays"
+        android:title="@string/essays" />
+    <item android:id="@+id/history"
+        android:title="@string/history" />
+    <item android:id="@+id/memoir"
+        android:title="@string/memoir" />
+    <item android:id="@+id/poetry"
+        android:title="@string/poetry" />
+    <item android:id="@+id/selfHelp"
+        android:title="@string/self_help" />
+    <item android:id="@+id/trueCrime"
+        android:title="@string/true_crime" />
+</menu>

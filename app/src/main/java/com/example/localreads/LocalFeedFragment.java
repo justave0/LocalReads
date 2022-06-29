@@ -27,9 +27,10 @@ import java.util.List;
 public class LocalFeedFragment extends Fragment {
     BookAdapter adapter;
     FragmentActivity listener;
-    private ArrayList<Book> mBooks = new ArrayList<>();
+    public ArrayList<Book> books = new ArrayList<>();
     Context context;
     public Double searchRadius;
+    public List<String> selectedGenres;
 
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
@@ -104,6 +105,9 @@ public class LocalFeedFragment extends Fragment {
         query.include(Book.KEY_USER);
         query.addDescendingOrder("createdAt");
         query.whereContainedIn("user", authorID);
+        if (selectedGenres != null){
+            query.whereContainedIn("genres", selectedGenres);
+        }
         query.setLimit(20);
         // Specify the object id
         query.findInBackground(new FindCallback<Book>() {
@@ -111,8 +115,8 @@ public class LocalFeedFragment extends Fragment {
             public void done(List<Book> objects, com.parse.ParseException e) {
                 if (e == null) {
                     // Access the array of results here
-                    mBooks.addAll(objects);
-                    adapter.updateAdapter(mBooks);
+                    books.addAll(objects);
+                    adapter.updateAdapter(books);
                 } else {
                     Log.e("item", "Error: " + e.getMessage());
                 }

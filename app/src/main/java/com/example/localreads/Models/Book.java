@@ -6,6 +6,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //@Parcel
@@ -19,6 +20,8 @@ public class Book extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_GENRES = "genres";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_LOCATION_STRING = "locationString";
+    public static final String KEY_READ_BY = "readBy";
 
     public Book (){}
 
@@ -47,5 +50,36 @@ public class Book extends ParseObject {
     public void setImage(ParseFile image){put(KEY_IMAGE, image);}
     public ParseFile getImage(){return getParseFile(KEY_IMAGE);}
 
+    public void setLocationString(String address) {
+        put(KEY_LOCATION_STRING, address);
+    }
+    public String getLocationString(){return getString(KEY_LOCATION_STRING);}
 
+    public void setReadBy(List<String> users){
+        put(KEY_READ_BY, users);
+    }
+    public List<String> getReadBy(){
+        List<String> readBy = getList(KEY_READ_BY);
+        if(readBy == null){
+            readBy = new ArrayList<>();
+        }
+        return readBy;
+    }
+
+
+    public void addRead(){
+        int reads = getReads();
+        List<String> users = getReadBy();
+        setReads(reads + 1);
+        users.add(ParseUser.getCurrentUser().getObjectId());
+        setReadBy(users);
+    }
+
+    public void removeRead(){
+        int reads = getReads();
+        List<String> users = getReadBy();
+        setReads(reads - 1);
+        users.remove(ParseUser.getCurrentUser().getObjectId());
+        setReadBy(users);
+    }
 }

@@ -122,67 +122,67 @@ public class CreateFragment1 extends Fragment {
     public void setGenres() {
         //switch doesn't work :(
         if (cbCAction.isChecked()) {
-            favoriteGenres.add("Action and Adventure");
+            favoriteGenres.add(getString(R.string.action_and_adventure));
         }
         if (cbCBiographies.isChecked()) {
-            favoriteGenres.add("Biographies");
+            favoriteGenres.add(getString(R.string.biographies_and_autobiographies));
         }
         if (cbCClassics.isChecked()) {
-            favoriteGenres.add("Classics");
+            favoriteGenres.add(getString(R.string.classics));
         }
         if (cbCComics.isChecked()) {
-            favoriteGenres.add("Comics");
+            favoriteGenres.add(getString(R.string.comic_books_and_graphic_novels));
         }
         if (cbCCookbooks.isChecked()) {
-            favoriteGenres.add("Cookbooks");
+            favoriteGenres.add(getString(R.string.cookbooks));
         }
         if (cbCDetective.isChecked()) {
-            favoriteGenres.add("Detective");
+            favoriteGenres.add(getString(R.string.detective_and_mystery));
         }
         if (cbCEssays.isChecked()) {
-            favoriteGenres.add("Essays");
+            favoriteGenres.add(getString(R.string.essays));
         }
         if (cbCFantasy.isChecked()) {
-            favoriteGenres.add("Fantasy");
+            favoriteGenres.add(getString(R.string.fantasy));
         }
         if (cbCFiction.isChecked()) {
-            favoriteGenres.add("Fiction");
+            favoriteGenres.add(getString(R.string.literary_fiction));
         }
         if (cbCHistoricalFiction.isChecked()) {
-            favoriteGenres.add("Historical Fiction");
+            favoriteGenres.add(getString(R.string.historical_fiction));
         }
         if (cbCHorror.isChecked()) {
-            favoriteGenres.add("Horror");
+            favoriteGenres.add(getString(R.string.horror));
         }
         if (cbCRomance.isChecked()) {
-            favoriteGenres.add("Romance");
+            favoriteGenres.add(getString(R.string.romance));
         }
         if (cbCSciFi.isChecked()) {
-            favoriteGenres.add("SciFi");
+            favoriteGenres.add(getString(R.string.science_fiction));
         }
         if (cbCShortStories.isChecked()) {
-            favoriteGenres.add("Short Stories");
+            favoriteGenres.add(getString(R.string.short_stories));
         }
         if (cbCWomen.isChecked()) {
-            favoriteGenres.add("Women");
+            favoriteGenres.add(getString(R.string.women_s_fiction));
         }
         if (cbCHistory.isChecked()) {
-            favoriteGenres.add("History");
+            favoriteGenres.add(getString(R.string.history));
         }
         if (cbCMemoir.isChecked()) {
-            favoriteGenres.add("Memoir");
+            favoriteGenres.add(getString(R.string.memoir));
         }
         if (cbCPoetry.isChecked()) {
-            favoriteGenres.add("Poetry");
+            favoriteGenres.add(getString(R.string.poetry));
         }
         if (cbCSelfHelp.isChecked()) {
-            favoriteGenres.add("Self Help");
+            favoriteGenres.add(getString(R.string.self_help));
         }
         if (cbCTrueCrime.isChecked()) {
-            favoriteGenres.add("True Crime");
+            favoriteGenres.add(getString(R.string.true_crime));
         }
         if (cbCSuspense.isChecked()) {
-            favoriteGenres.add("Suspense");
+            favoriteGenres.add(getString(R.string.suspense_and_thrillers));
         }
     }
 }
