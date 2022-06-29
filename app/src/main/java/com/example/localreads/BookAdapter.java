@@ -74,9 +74,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         TextView tvBookAuthor;
         MaterialButton btBookDropdown;
         TextView tvBookDescription;
+        TextView tvBookGenre;
         Button btBookSeeMore;
         LinearLayout hiddenViewLayout;
         CardView cvBook;
+        TextView tvBookLocation;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,16 +86,20 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             tvBookAuthor = itemView.findViewById(R.id.tvBookAuthor);
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
             tvBookDescription = itemView.findViewById(R.id.tvBookDescription);
+            tvBookGenre = itemView.findViewById(R.id.tvBookGenre);
             btBookDropdown = itemView.findViewById(R.id.btBookDropdown);
             btBookSeeMore = itemView.findViewById(R.id.btBookSeeMore);
             hiddenViewLayout = itemView.findViewById(R.id.hiddenViewLayout);
             cvBook = itemView.findViewById(R.id.cvBook);
+            tvBookLocation = itemView.findViewById(R.id.tvBookLocation);
         }
 
         public void bind(Book book) {
             tvBookTitle.setText(book.getName());
             tvBookAuthor.setText(book.getUser().getUsername());
             tvBookDescription.setText(book.getDescription());
+            tvBookLocation.setText("Located in: "+ book.getLocationString());
+            tvBookGenre.setText(book.getGenres().toString());
             Glide.with(context).load(book.getImage().getUrl()).into(ivBookImage);
             btBookDropdown.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -70,6 +70,15 @@
                         android:text="Author"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?android:attr/textColorSecondary" />
+
+                    <TextView
+                        android:id="@+id/tvBookGenre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Genre"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?android:attr/textColorSecondary"/>
                 </LinearLayout>
 
                 <Button
@@ -105,7 +114,18 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@drawable/customborder"></FrameLayout>
+                    android:background="@drawable/customborder">
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvBookLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Location: "
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
                     android:id="@+id/tvBookDescription"

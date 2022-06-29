@@ -131,8 +131,6 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void updateAuthor(Book book){
-
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Author");
         query.getInBackground(authorID,(object, e) -> {
             if (e == null) {
