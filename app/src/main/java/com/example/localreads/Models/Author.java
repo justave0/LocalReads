@@ -22,16 +22,16 @@ public class Author extends ParseObject {
 
     public Author () {}
 
-    public void setBooks (List<Book> books){
+    public void setBooks (List<String> books){
         put(KEY_BOOKS, books);
     }
     public void addBooks (Book book){
-        List<Book> userBooks = getBooks();
+        List<String> userBooks = getBooks();
         if (userBooks != null){
-            userBooks.add(book);
+            userBooks.add(book.getObjectId());
         }
     }
-    public List<Book> getBooks (){
+    public List<String> getBooks (){
         return getList(KEY_BOOKS);
     }
 
@@ -64,12 +64,12 @@ public class Author extends ParseObject {
         return getParseGeoPoint(KEY_INPUT_LOCATION);
     }
 
-    public void setUser (ParseUser user){
-        put(KEY_USER, user);
-    }
-    public ParseUser getUser (){
+    public void setUser(ParseUser user){put(KEY_USER, user);}
+
+    public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
+
 
     public void setFavoriteGenres (List<String> favoriteGenres){
         put(KEY_FAVORITE_GENRES, favoriteGenres);

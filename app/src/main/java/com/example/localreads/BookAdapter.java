@@ -1,9 +1,7 @@
 package com.example.localreads;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.transition.AutoTransition;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.annotation.NonNull;
@@ -68,6 +65,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         return mBooks.size();
     }
 
+    public void clear() {
+        mBooks.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivBookImage;
         TextView tvBookTitle;
@@ -82,7 +84,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivBookImage = itemView.findViewById(R.id.ivBookImage);
+            ivBookImage = itemView.findViewById(R.id.ivCondensedBookImage);
             tvBookAuthor = itemView.findViewById(R.id.tvBookAuthor);
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
             tvBookDescription = itemView.findViewById(R.id.tvBookDescription);
@@ -147,7 +149,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     //send bundle to the fragment
                     detailFragment.setArguments(args);
                     //replace the fragment
-                    ft.replace(R.id.flTemp, detailFragment);
+                    ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
                     //add to backstack
                     ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
                     //Commit!
@@ -158,7 +160,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     public void updateAdapter(ArrayList<Book> mDataList) {
-        this.mBooks = mDataList;
+        this.mBooks.addAll(mDataList);
         notifyDataSetChanged();
 
     }

@@ -402,14 +402,18 @@ public class MainActivity extends AppCompatActivity {
             if (e == null) {
                 //Object was successfully retrieved
                 // Update the fields we want to
-                object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                if(mCurrentLocation != null) {
+                    object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                }
                 //All other fields will remain the same
                 try {
                     object.save();
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-                getReverseGeocode();
+                if (mCurrentLocation != null) {
+                    getReverseGeocode();
+                }
             } else {
                 // something went wrong
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

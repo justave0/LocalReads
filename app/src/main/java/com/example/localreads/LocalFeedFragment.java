@@ -79,8 +79,6 @@ public class LocalFeedFragment extends Fragment {
     public void queryAuthors() {
         ArrayList<String> authorID = new ArrayList<>();
         ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
-        ParseUser bozo = ParseUser.getCurrentUser();
-        ParseGeoPoint dummy = ParseUser.getCurrentUser().getParseGeoPoint("location");
         authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
         authorQuery.setLimit(20);
         authorQuery.findInBackground(new FindCallback<Author>() {
@@ -132,6 +130,16 @@ public class LocalFeedFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         this.listener = null;
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        if(adapter != null) {
+            adapter.clear();
+        }
     }
 
     // This method is called after the parent Activity's onCreate() method has completed.
