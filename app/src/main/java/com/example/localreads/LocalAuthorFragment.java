@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -14,34 +15,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localreads.Models.Author;
-import com.example.localreads.Models.Book;
+import com.google.android.material.appbar.AppBarLayout;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalFeedFragment extends Fragment {
-    BookAdapter adapter;
+public class LocalAuthorFragment extends Fragment {
+    AuthorAdapter adapter;
     FragmentActivity listener;
-    public ArrayList<Book> books = new ArrayList<>();
     Context context;
     public Double searchRadius;
-    public List<String> selectedGenres;
+    AppBarLayout ablTopMenu;
+    TextView tvTitleText;
 
-    // This event fires 1st, before creation of fragment or any views
-    // The onAttach method is called when the Fragment instance is associated with an Activity.
-    // This does not mean the Activity is fully initialized.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof Activity){
             this.listener = (FragmentActivity) context;
         }
-        this.context = context;
     }
 
     // This event fires 2nd, before views are created for the fragment
@@ -50,15 +47,19 @@ public class LocalFeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Book> books = new ArrayList<Book>();
-        adapter = new BookAdapter(books, getActivity());
+        ArrayList<Author> authors = new ArrayList<Author>();
+        adapter = new AuthorAdapter(getActivity(), authors);
+        ablTopMenu = getActivity().findViewById(R.id.ablTopMenu);
+        tvTitleText = getActivity().findViewById(R.id.tvTitleText);
+        tvTitleText.setText("Showing Popular Authors Near: " + ((MainActivity) getActivity()).address);
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_book, parent, false);
+        //return inflater.inflate(R.layout.fragment_author_feed, parent, false);
+        return inflater.inflate(R.layout.fragment_author_feed, parent, false);
     }
 
     // This event is triggered soon after onCreateView().
@@ -68,7 +69,7 @@ public class LocalFeedFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchRadius = Double.valueOf(30);
-        RecyclerView rv = (RecyclerView) view.findViewById(R.id.rvBookFeed);
+        RecyclerView rv = (RecyclerView) view.findViewById(R.id.rvAuthorFeed);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rv.setAdapter(adapter);
         rv.setLayoutManager(linearLayoutManager);
@@ -77,53 +78,25 @@ public class LocalFeedFragment extends Fragment {
     }
 
     public void queryAuthors() {
-        ArrayList<String> authorID = new ArrayList<>();
+        ArrayList<Author> authors = new ArrayList<>();
         ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
         authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
         authorQuery.setLimit(20);
+        authorQuery.include(Author.KEY_USER);
+        authorQuery.orderByDescending(Author.KEY_READS);
         authorQuery.findInBackground(new FindCallback<Author>() {
             @Override
             public void done(List<Author> objects, ParseException e) {
                 if (e == null) {
-                    for (int i = 0; i < objects.size(); i++) {
-                        authorID.add(objects.get(i).getUser().getObjectId());
-
-                    }
-                    queryBooks(authorID);
+                    adapter.clear();
+                    authors.addAll(objects);
+                    adapter.updateAdapter(authors);
                 } else {
                     Log.e("author query failed - ", "Error: " + e.getMessage());
                 }
             }
         });
     }
-
-
-        public void queryBooks(ArrayList <String> authorID){
-        ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
-        query.include(Book.KEY_USER);
-        query.addDescendingOrder("createdAt");
-        query.whereContainedIn("user", authorID);
-        if (selectedGenres != null){
-            query.whereContainedIn("genres", selectedGenres);
-        }
-        query.setLimit(20);
-        // Specify the object id
-        query.findInBackground(new FindCallback<Book>() {
-            @Override
-            public void done(List<Book> objects, com.parse.ParseException e) {
-                if (e == null) {
-                    // Access the array of results here
-                    adapter.clear();
-                    books.addAll(objects);
-                    adapter.updateAdapter(books);
-                } else {
-                    Log.e("item", "Error: " + e.getMessage());
-                }
-            }
-
-        });
-    }
-
 
     // This method is called when the fragment is no longer connected to the Activity
     // Any references saved in onAttach should be nulled out here to prevent memory leaks.
@@ -133,25 +106,11 @@ public class LocalFeedFragment extends Fragment {
         this.listener = null;
     }
 
-    @Override
-    public void onResume() {
-
-        super.onResume();
-        if(adapter != null) {
-            adapter.clear();
-            books.clear();
-        }
-    }
-
     // This method is called after the parent Activity's onCreate() method has completed.
     // Accessing the view hierarchy of the parent activity must be done in the onActivityCreated.
     // At this point, it is safe to search for activity View objects by their ID, for example.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    public double toKilometers(Double miles){
-        return miles * 1.609;
     }
 }

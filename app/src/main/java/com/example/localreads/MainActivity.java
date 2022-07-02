@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationCallback locationCallback;
     LocalFeedFragment fragment_local_feed;
     DetailBookFragment fragment_detail_book;
+    LocalAuthorFragment fragment_local_author;
     MaterialToolbar tabMain;
     CollapsingToolbarLayout ctlMain;
     TextView tvTitleText;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         getUserTag();
         fragment_local_feed = new LocalFeedFragment();
         fragment_detail_book = new DetailBookFragment();
+        fragment_local_author = new LocalAuthorFragment();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -127,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                String tag;
+                Fragment fragment = null;
+                String tag = null;
                 switch (item.getItemId()) {
                     case R.id.action_local_feed:
                         fragment = fragment_local_feed;
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.action_local_author:
-//                        fragment = fragment_detail_book;
-//                        tag = DetailBookFragment.class.getSimpleName();
+                        fragment = fragment_local_author;
+                        tag = LocalAuthorFragment.class.getSimpleName();
                         break;
 
                     case R.id.action_profile:
@@ -151,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                //ft.replace(R.id.flTemp, fragment, tag);
-                ft.replace(R.id.flTemp,fragment_local_feed, LocalFeedFragment.class.getSimpleName());
+                ft.replace(R.id.flTemp, fragment, tag);
+                //ft.replace(R.id.flTemp,fragment_local_feed, LocalFeedFragment.class.getSimpleName());
                 ft.commit();
 
                 return true;
@@ -241,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         });
-
         popupMenu.show();
     }
 

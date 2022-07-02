@@ -26,11 +26,14 @@
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="app/src/main/res/layout/book_fragment.xml" value="0.411231884057971" />
         <entry key="app/src/main/res/layout/customborder.xml" value="0.26313405797101447" />
+        <entry key="app/src/main/res/layout/fragment_author_feed.xml" value="0.5104166666666666" />
+        <entry key="app/src/main/res/layout/fragment_book.xml" value="0.3555253623188406" />
         <entry key="app/src/main/res/layout/fragment_create_1.xml" value="0.3166144200626959" />
         <entry key="app/src/main/res/layout/fragment_create_2.xml" value="0.2668711656441718" />
         <entry key="app/src/main/res/layout/fragment_detail_book.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_local_book.xml" value="0.39375" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.338768115942029" />
+        <entry key="app/src/main/res/layout/item_author.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_book.xml" value="0.3967136150234742" />
         <entry key="app/src/main/res/layout/item_condensed_book.xml" value="0.25" />
         <entry key="app/src/main/res/layout/test.xml" value="0.34270833333333334" />

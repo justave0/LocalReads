@@ -78,5 +78,15 @@ public class Author extends ParseObject {
         return getList(KEY_FAVORITE_GENRES);
     }
 
+    public void addRead(){
+        int reads = getReads();
+        setReads(reads + 1);
+    }
+
+    public void removeRead(){
+        int reads = getReads();
+        setReads(reads - 1);
+    }
+
 
 }

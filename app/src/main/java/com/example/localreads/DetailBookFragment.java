@@ -47,6 +47,7 @@ public class DetailBookFragment extends Fragment {
     AppBarLayout ablTopMenu;
     RecyclerView rvDetailMoreBooks;
     private String TAG = "DetailBookFragment";
+    Author mAuthor;
     public ArrayList<Book> authorBooks = new ArrayList<>();
 
 
@@ -144,6 +145,7 @@ public class DetailBookFragment extends Fragment {
             @Override
             public void done(List<Author> objects, ParseException e) {
                 if (e == null){
+                    mAuthor = objects.get(0);
                     List<String> authorBooksID = objects.get(0).getBooks();
                     ParseQuery<Book> queryBook = ParseQuery.getQuery("Book");
                     queryBook.whereContainedIn("objectId", authorBooksID);
@@ -182,11 +184,29 @@ public class DetailBookFragment extends Fragment {
                 Log.e(TAG, "Error: "+ e.toString());
             }
         });
+        mAuthor.addRead();
+        mAuthor.saveInBackground(e -> {
+            if (e==null){
+                Log.i(TAG, "read updated");
+            }else{
+                //Something went wrong
+                Log.e(TAG, "Error: "+ e.toString());
+            }
+        });
     }
 
     private void removeRead() {
         mBook.removeRead();
         mBook.saveInBackground(e -> {
+            if (e==null){
+                Log.i(TAG, "read updated");
+            }else{
+                //Something went wrong
+                Log.e(TAG, "Error: "+ e.toString());
+            }
+        });
+        mAuthor.removeRead();
+        mAuthor.saveInBackground(e -> {
             if (e==null){
                 Log.i(TAG, "read updated");
             }else{
