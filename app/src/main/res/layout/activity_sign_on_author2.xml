@@ -69,41 +69,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextInput" />
 
-    <EditText
-        android:id="@+id/etAuthorSignOnCity"
-        android:layout_width="wrap_content"
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="City"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/tvAuthorSignOnLocation"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAuthorSignOnLocation" />
-
-    <EditText
-        android:id="@+id/etAuthorSignOnState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="State"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/etAuthorSignOnCity"
-        app:layout_constraintTop_toBottomOf="@+id/etAuthorSignOnCity" />
-
-    <EditText
-        android:id="@+id/etAuthorSignOnCountry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Country"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/etAuthorSignOnState"
-        app:layout_constraintTop_toBottomOf="@+id/etAuthorSignOnState" />
 
     <Button
         android:id="@+id/btAuthorSignOn"
