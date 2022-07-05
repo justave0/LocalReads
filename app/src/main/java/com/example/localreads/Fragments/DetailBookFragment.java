@@ -1,4 +1,4 @@
-package com.example.localreads;
+package com.example.localreads.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.localreads.Models.Author;
+import com.example.localreads.MoreBooksAdapter;
+import com.example.localreads.R;
+import com.example.localreads.StartSnapHelper;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 
@@ -17,13 +20,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.localreads.Models.Book;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -70,10 +70,10 @@ public class DetailBookFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBook = Parcels.unwrap(getArguments().getParcelable("book"));
-        ablTopMenu = getActivity().findViewById(R.id.ablTopMenu);
+        ablTopMenu = getActivity().findViewById(R.id.ablMain);
         ablTopMenu.setExpanded(false);
         ArrayList<Book> authorBooks = new ArrayList<Book>();
-
+        adapter = new MoreBooksAdapter(authorBooks, getActivity());
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -98,7 +98,7 @@ public class DetailBookFragment extends Fragment {
         tvDetailReads = activity.findViewById(R.id.tvDetailReads);
         authorBooks.clear();
         rvDetailMoreBooks = activity.findViewById(R.id.rvDetailMoreBooks);
-        adapter = new MoreBooksAdapter(authorBooks, getActivity());
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         rvDetailMoreBooks.setLayoutManager(linearLayoutManager);
         rvDetailMoreBooks.setAdapter(adapter);

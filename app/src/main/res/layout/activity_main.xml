@@ -6,13 +6,13 @@
 
 
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/clMain"
+    android:id="@+id/clDetailAuthor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="?attr/actionBarSize">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/ablTopMenu"
+        android:id="@+id/ablMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -30,14 +30,14 @@
             app:maxLines="10">
 
             <LinearLayout
-                android:id="@+id/llText"
+                android:id="@+id/llMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:orientation="vertical">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/tabMain"
+                    android:id="@+id/mtbMain"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
@@ -56,19 +56,23 @@
                 <HorizontalScrollView
                     android:id="@+id/hsvFilters"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_gravity="bottom">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/cgTopMenu"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginHorizontal="10dp"
                             android:layout_weight="1"
+                            android:visibility="visible"
                             app:singleLine="true">
 
                             <com.google.android.material.chip.Chip

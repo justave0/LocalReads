@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.localreads.Fragments.DetailBookFragment;
+import com.example.localreads.Fragments.LocalFeedFragment;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.annotation.NonNull;

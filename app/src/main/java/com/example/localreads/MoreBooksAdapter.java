@@ -11,12 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.localreads.Fragments.DetailBookFragment;
 import com.example.localreads.Models.Book;
 
 import org.parceler.Parcels;
@@ -93,9 +92,12 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
                 @Override
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
-                    FragmentTransaction fts = activity.getSupportFragmentManager().beginTransaction();
-                    fts.detach(fragment_detail_book);
-                    fts.commit();
+                    if (fragment_detail_book != null) {
+
+                        FragmentTransaction fts = activity.getSupportFragmentManager().beginTransaction();
+                        fts.detach(fragment_detail_book);
+                        fts.commit();
+                    }
                     //Activity for adapter
 
                     //Fragment Transaction (idk)
@@ -110,7 +112,7 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
                     detailFragment.setArguments(args);
                     ft.setReorderingAllowed(true);
                     //replace the fragment
-                    ft.add(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
+                    ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
                     //ft.replace(R.id.flTemp, detailFragment, LocalFeedFragment.class.getSimpleName());
                     //add to backstack
                     ft.addToBackStack(DetailBookFragment.class.getSimpleName());

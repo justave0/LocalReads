@@ -1,4 +1,4 @@
-package com.example.localreads;
+package com.example.localreads.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,14 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.localreads.BookAdapter;
+import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
+import com.example.localreads.R;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -31,6 +36,8 @@ public class LocalFeedFragment extends Fragment {
     Context context;
     public Double searchRadius;
     public List<String> selectedGenres;
+    TextView tvTitleText;
+    ChipGroup cgTopMenu;
 
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
@@ -72,7 +79,10 @@ public class LocalFeedFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rv.setAdapter(adapter);
         rv.setLayoutManager(linearLayoutManager);
-
+        tvTitleText = getActivity().findViewById(R.id.tvTitleText);
+        tvTitleText.setText("Showing New Releases Near: " + ((MainActivity) getActivity()).address);
+        cgTopMenu = getActivity().findViewById(R.id.cgTopMenu);
+        cgTopMenu.setVisibility(View.VISIBLE);
         queryAuthors();
     }
 

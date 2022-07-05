@@ -1,6 +1,7 @@
 package com.example.localreads;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.localreads.Fragments.DetailAuthorFragment;
+import com.example.localreads.Fragments.LocalAuthorFragment;
 import com.example.localreads.Models.Author;
-import com.example.localreads.Models.Book;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +78,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         TextView tvAuthorUsername;
         TextView tvAuthorBio;
         TextView tvAuthorReads;
+        ConstraintLayout clAuthorItem;
 
         public ViewHolder(View authorView) {
             super(authorView);
@@ -78,6 +86,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
             tvAuthorBio = authorView.findViewById(R.id.tvAuthorBio);
             tvAuthorUsername = authorView.findViewById(R.id.tvAuthorUsername);
             tvAuthorReads = authorView.findViewById(R.id.tvAuthorReads);
+            clAuthorItem = authorView.findViewById(R.id.clAuthorItem);
         }
 
         public void bind(Author author) {
@@ -85,6 +94,29 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
             tvAuthorBio.setText(author.getBio());
             tvAuthorUsername.setText(author.getUser().getUsername());
             Glide.with(context).load(author.getUser().getParseFile("profilePic").getUrl()).circleCrop().into(ivAuthorPFP);
+            clAuthorItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Activity for adapter
+                    AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+                    //Fragment Transaction (idk)
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    //Create a new fragment
+                    DetailAuthorFragment detailFragment = new DetailAuthorFragment();
+                    //Create a new bundle
+                    Bundle args = new Bundle();
+                    //Put arguments in the bundle
+                    args.putParcelable("Author", Parcels.wrap(author));
+                    //send bundle to the fragment
+                    detailFragment.setArguments(args);
+                    //replace the fragment
+                    ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
+                    //add to backstack
+                    ft.addToBackStack(LocalAuthorFragment.class.getSimpleName());
+                    //Commit!
+                    ft.commit();
+                }
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.localreads;
+package com.example.localreads.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,8 +14,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.localreads.AuthorAdapter;
+import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
+import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -30,7 +34,9 @@ public class LocalAuthorFragment extends Fragment {
     Context context;
     public Double searchRadius;
     AppBarLayout ablTopMenu;
+    String TAG = "Local Author Fragment";
     TextView tvTitleText;
+    ChipGroup cgTopMenu;
 
     @Override
     public void onAttach(Context context) {
@@ -49,7 +55,10 @@ public class LocalAuthorFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ArrayList<Author> authors = new ArrayList<Author>();
         adapter = new AuthorAdapter(getActivity(), authors);
-        ablTopMenu = getActivity().findViewById(R.id.ablTopMenu);
+        ablTopMenu = getActivity().findViewById(R.id.ablMain);
+        ablTopMenu.setExpanded(true);
+        cgTopMenu = getActivity().findViewById(R.id.cgTopMenu);
+        cgTopMenu.setVisibility(View.GONE);
         tvTitleText = getActivity().findViewById(R.id.tvTitleText);
         tvTitleText.setText("Showing Popular Authors Near: " + ((MainActivity) getActivity()).address);
     }
@@ -73,7 +82,6 @@ public class LocalAuthorFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rv.setAdapter(adapter);
         rv.setLayoutManager(linearLayoutManager);
-
         queryAuthors();
     }
 
@@ -91,6 +99,7 @@ public class LocalAuthorFragment extends Fragment {
                     adapter.clear();
                     authors.addAll(objects);
                     adapter.updateAdapter(authors);
+                    Log.i(TAG, "debug");
                 } else {
                     Log.e("author query failed - ", "Error: " + e.getMessage());
                 }

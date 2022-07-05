@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +25,14 @@ import android.widget.Toast;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localreads.CreateBook.CreateActivity;
+import com.example.localreads.Fragments.DetailBookFragment;
+import com.example.localreads.Fragments.LocalAuthorFragment;
+import com.example.localreads.Fragments.LocalFeedFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String KEY_LOCATION = "location";
     private LocationRequest mLocationRequest;
     Location mCurrentLocation;
-    String address;
+    public String address;
     Menu topMenu;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tabMain = findViewById(R.id.tabMain);
+        tabMain = findViewById(R.id.mtbMain);
         topMenu = tabMain.getMenu();
         ctlMain = findViewById(R.id.ctlMain);
         tvTitleText = findViewById(R.id.tvTitleText);
@@ -327,13 +326,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // tentative might not work
-    public void filterLocalBooksAction(MenuItem mi){
-        if (fragment_local_feed != null && fragment_local_feed.isVisible()) {
-
-        }
-    }
-
 
     public boolean optionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -342,7 +334,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.createBook:
                 saveLocation();
                 createAction(item);
-
                 return true;
 
                 default:
@@ -372,6 +363,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
                         updateLocation(location);
+                        saveLocation();
                     }
                 }
             }
