@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
         MainActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
-
+//hello world
         //Fragment Manager
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
