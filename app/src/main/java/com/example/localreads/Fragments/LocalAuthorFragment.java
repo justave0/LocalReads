@@ -20,6 +20,7 @@ import com.example.localreads.Models.Author;
 import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -61,6 +62,11 @@ public class LocalAuthorFragment extends Fragment {
         cgTopMenu.setVisibility(View.GONE);
         tvTitleText = getActivity().findViewById(R.id.tvTitleText);
         tvTitleText.setText("Showing Popular Authors Near: " + ((MainActivity) getActivity()).address);
+
+        setExitTransition(new MaterialFadeThrough());
+        setReenterTransition(new MaterialFadeThrough());
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,

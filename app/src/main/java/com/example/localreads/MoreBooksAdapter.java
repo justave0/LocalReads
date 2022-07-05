@@ -122,4 +122,8 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
             });
         }
     }
+    public void clear() {
+        mBooks.clear();
+        notifyDataSetChanged();
+    }
 }

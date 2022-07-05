@@ -17,11 +17,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailAuthorFragment extends Fragment {
+    private static final int WRAP_CONTENT = -2;
     private Author mAuthor;
     MoreBooksAdapter adapter;
     FragmentActivity listener;
@@ -68,9 +71,11 @@ public class DetailAuthorFragment extends Fragment {
         mAuthor = Parcels.unwrap(getArguments().getParcelable("Author"));
         adapter = new MoreBooksAdapter(mMoreBooks, getActivity());
         ablMain = getActivity().findViewById(R.id.ablMain);
-        CoordinatorLayout.LayoutParams params= (CoordinatorLayout.LayoutParams) ablMain.getLayoutParams();
-        params.height=0;
-        ablMain.setLayoutParams(params);
+        setExitTransition(new MaterialFadeThrough());
+        setReenterTransition(new MaterialFadeThrough());
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
+
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -91,10 +96,12 @@ public class DetailAuthorFragment extends Fragment {
         tvDetailAuthorName = activity.findViewById(R.id.tvDetailAuthorName);
         tvDetailAuthorReads = activity.findViewById(R.id.tvDetailAuthorReads);
         tvDetailAuthorBio = activity.findViewById(R.id.tvDetailAuthorBio);
+        ivDetailAuthorPFP = activity.findViewById(R.id.ivDetailAuthorPFP);
 
         tvDetailAuthorBio.setText(mAuthor.getBio());
         tvDetailAuthorReads.setText(String.valueOf(mAuthor.getReads())+ " Reads");
         tvDetailAuthorName.setText(mAuthor.getUser().getUsername());
+        Glide.with(context).load(mAuthor.getUser().getParseFile("profilePic").getUrl()).circleCrop().into(ivDetailAuthorPFP);
 
         rvDetailAuthorBooks = activity.findViewById(R.id.rvDetailAuthorBooks);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
@@ -140,5 +147,29 @@ public class DetailAuthorFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter != null) {
+            adapter.clear();
+            mMoreBooks.clear();
+        }
+        if(ablMain != null) {
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ablMain.getLayoutParams();
+            params.height = 0;
+            ablMain.setLayoutParams(params);
+        }
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        if(ablMain != null){
+            CoordinatorLayout.LayoutParams params= (CoordinatorLayout.LayoutParams) ablMain.getLayoutParams();
+            params.height=WRAP_CONTENT;
+            ablMain.setLayoutParams(params);
+        }
     }
 }

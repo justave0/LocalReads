@@ -119,4 +119,5 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
             });
         }
     }
+
 }

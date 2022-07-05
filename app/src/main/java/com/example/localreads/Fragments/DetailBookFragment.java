@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localreads.Models.Book;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -74,6 +75,10 @@ public class DetailBookFragment extends Fragment {
         ablTopMenu.setExpanded(false);
         ArrayList<Book> authorBooks = new ArrayList<Book>();
         adapter = new MoreBooksAdapter(authorBooks, getActivity());
+        setExitTransition(new MaterialFadeThrough());
+        setReenterTransition(new MaterialFadeThrough());
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,

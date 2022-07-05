@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.localreads.Fragments.DetailAuthorFragment;
 import com.example.localreads.Fragments.DetailBookFragment;
 import com.example.localreads.Fragments.LocalFeedFragment;
+import com.example.localreads.Models.Author;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.annotation.NonNull;
@@ -25,7 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Book;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -158,7 +167,46 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     ft.commit();
                 }
             });
+
+            tvBookAuthor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAuthorClick(book);
+                }
+            });
         }
+    }
+
+    private void onAuthorClick(Book book){
+        //find author
+        ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
+        authorQuery.include(Author.KEY_USER);
+        authorQuery.whereEqualTo("books", book.getObjectId());
+        authorQuery.findInBackground(new FindCallback<Author>() {
+            @Override
+            public void done(List<Author> objects, ParseException e) {
+                if (e == null) {
+//                    MaterialFadeThrough fadeThrough = new MaterialFadeThrough();
+//                    fadeThrough.excludeTarget(R.id.bottom_navigation, true);
+
+                    // fragment transaction
+                    AppCompatActivity activity = (AppCompatActivity) context;
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    DetailAuthorFragment detailFragment = new DetailAuthorFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelable("Author", Parcels.wrap(objects.get(0)));
+                    detailFragment.setArguments(args);
+                    ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
+                    ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
+                    ft.commit();
+                } else {
+                    Log.e("author query failed - ", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+
+
     }
 
     public void updateAdapter(ArrayList<Book> mDataList) {

@@ -20,6 +20,7 @@ import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.R;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -59,6 +60,10 @@ public class LocalFeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ArrayList<Book> books = new ArrayList<Book>();
         adapter = new BookAdapter(books, getActivity());
+        setExitTransition(new MaterialFadeThrough());
+        setReenterTransition(new MaterialFadeThrough());
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
