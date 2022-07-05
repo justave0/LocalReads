@@ -127,6 +127,10 @@ public class LocalFeedFragment extends Fragment {
             @Override
             public void done(List<Book> objects, com.parse.ParseException e) {
                 if (e == null) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (getActivity() != null) {
+                        activity.spinner.setVisibility(View.GONE);
+                    }
                     // Access the array of results here
                     adapter.clear();
                     books.addAll(objects);

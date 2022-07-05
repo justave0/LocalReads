@@ -102,6 +102,10 @@ public class LocalAuthorFragment extends Fragment {
             @Override
             public void done(List<Author> objects, ParseException e) {
                 if (e == null) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (getActivity() != null) {
+                        activity.spinner.setVisibility(View.GONE);
+                    }
                     adapter.clear();
                     authors.addAll(objects);
                     adapter.updateAdapter(authors);

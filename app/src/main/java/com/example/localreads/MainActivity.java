@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     Chip genresChip;
     Chip radiusChip;
     List<String> selectedGenres = new ArrayList<>();
+    public ProgressBar spinner;
 
 
 
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         ctlMain = findViewById(R.id.ctlMain);
         tvTitleText = findViewById(R.id.tvTitleText);
         genresChip = findViewById(R.id.genresChip);
-
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
 
         getUserTag();
         fragment_local_feed = new LocalFeedFragment();
@@ -128,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 Fragment fragment = null;
                 String tag = null;
                 switch (item.getItemId()) {
