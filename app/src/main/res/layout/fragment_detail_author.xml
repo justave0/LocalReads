@@ -6,29 +6,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvDetailAuthorName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Author"
-        android:textAppearance="?attr/textAppearanceTitleLarge"
-        android:textColor="?android:attr/textColorPrimary"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvDetailAuthorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="Author"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <Button
+            android:id="@+id/btUserSettings"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            app:icon="@drawable/ic_menu"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsvDetailAuthor"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:fillViewport="true"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDetailAuthorName">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,15 +67,34 @@
                     android:scaleType="centerCrop"
                     tools:srcCompat="@tools:sample/avatars" />
 
-                <TextView
-                    android:id="@+id/tvDetailAuthorReads"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:gravity="center"
-                    android:text="Reads"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvDetailAuthorReads"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Reads"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <Button
+                        android:id="@+id/btAuthorAddBook"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:text="Add Book"
+                        android:visibility="gone" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView

@@ -13,11 +13,4 @@
         android:title="Chat">
     </item>
 
-    <item
-        android:id="@+id/createBook"
-        android:icon="@drawable/selector_create_button"
-        app:showAsAction="ifRoom"
-        android:contentDescription="Create a Book"
-        android:title="Create Book">
-    </item>
 </menu>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.MoreBooksAdapter;
@@ -27,6 +29,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -45,6 +48,8 @@ public class DetailAuthorFragment extends Fragment {
     TextView tvDetailAuthorReads;
     TextView tvDetailAuthorBio;
     TextView tvDetailAuthorName;
+    Button btUserSettings;
+    Button btAuthorAddBook;
     String TAG = "DetailAuthorFragment";
     private ArrayList mMoreBooks = new ArrayList();
 
@@ -97,13 +102,32 @@ public class DetailAuthorFragment extends Fragment {
         tvDetailAuthorReads = activity.findViewById(R.id.tvDetailAuthorReads);
         tvDetailAuthorBio = activity.findViewById(R.id.tvDetailAuthorBio);
         ivDetailAuthorPFP = activity.findViewById(R.id.ivDetailAuthorPFP);
+        btAuthorAddBook = activity.findViewById(R.id.btAuthorAddBook);
+        btUserSettings = activity.findViewById(R.id.btUserSettings);
+        rvDetailAuthorBooks = activity.findViewById(R.id.rvDetailAuthorBooks);
+        populateData();
+    }
 
+    private void populateData() {
         tvDetailAuthorBio.setText(mAuthor.getBio());
         tvDetailAuthorReads.setText(String.valueOf(mAuthor.getReads())+ " Reads");
         tvDetailAuthorName.setText(mAuthor.getUser().getUsername());
         Glide.with(context).load(mAuthor.getUser().getParseFile("profilePic").getUrl()).circleCrop().into(ivDetailAuthorPFP);
 
-        rvDetailAuthorBooks = activity.findViewById(R.id.rvDetailAuthorBooks);
+        String user = ParseUser.getCurrentUser().getObjectId();
+        String hello = mAuthor.getUser().getObjectId();
+        if (mAuthor.getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())){
+            btUserSettings.setVisibility(View.VISIBLE);
+            btAuthorAddBook.setVisibility(View.VISIBLE);
+            btAuthorAddBook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.createAction();
+                }
+            });
+        }
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         rvDetailAuthorBooks.setLayoutManager(gridLayoutManager);
         rvDetailAuthorBooks.setAdapter(adapter);

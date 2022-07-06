@@ -21,14 +21,17 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.localreads.CreateBook.CreateActivity;
+import com.example.localreads.Fragments.DetailAuthorFragment;
 import com.example.localreads.Fragments.DetailBookFragment;
 import com.example.localreads.Fragments.LocalAuthorFragment;
 import com.example.localreads.Fragments.LocalFeedFragment;
+import com.example.localreads.Models.Author;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -47,6 +50,7 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String userTag;
     public String readerId;
-    public String authorId;
+    Author author;
     private final String TAG = "MainActivity";
     private final static String KEY_LOCATION = "location";
     private LocationRequest mLocationRequest;
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     LocalFeedFragment fragment_local_feed;
     DetailBookFragment fragment_detail_book;
     LocalAuthorFragment fragment_local_author;
+    DetailAuthorFragment fragment_detail_author;
     MaterialToolbar tabMain;
     CollapsingToolbarLayout ctlMain;
     TextView tvTitleText;
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         fragment_local_feed = new LocalFeedFragment();
         fragment_detail_book = new DetailBookFragment();
         fragment_local_author = new LocalAuthorFragment();
+        fragment_detail_author = new DetailAuthorFragment();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -133,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Fragment fragment = null;
                 String tag = null;
+                Bundle args = new Bundle();
                 switch (item.getItemId()) {
                     case R.id.action_local_feed:
                         fragment = fragment_local_feed;
@@ -145,9 +152,22 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.action_profile:
-//                        fragment = profile_fragment;
-//                        tag = ProfileFragment.class.getSimpleName();
+                        if (userTag.equals("reader") && readerId != null){
+//                            fragment = fragment_reader_profile;
+//                            tag = ReaderProfileFragment.class.getSimpleName();
+                        }
+                        else if (author != null){
+                            args.putParcelable("Author", Parcels.wrap(author));
+                            fragment_detail_author.setArguments(args);
+                            fragment = fragment_detail_author;
+                            tag = DetailAuthorFragment.class.getSimpleName();
+                        }
+                        else{
+                            String text = "Profile is Loading";
+                            Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+                        }
                         break;
+
 
                     default:
                         fragment = new Fragment();
@@ -156,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
 
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.flTemp, fragment, tag);
-                //ft.replace(R.id.flTemp,fragment_local_feed, LocalFeedFragment.class.getSimpleName());
                 ft.commit();
 
                 return true;
@@ -258,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null) {
                     userTag = user.getString("tag");
                     if (userTag.equals("reader")) {
-                        topMenu.findItem(R.id.createBook).setVisible(false);
                         getReader();
                     } else {
                         getAuthor();
@@ -293,17 +311,19 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getAuthor(){
         // copy getReader()
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Author");
+        ParseQuery<Author> query = ParseQuery.getQuery("Author");
+        query.include("user");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         // The query will search for a ParseObject, given its objectId.
         // When the query finishes running, it will invoke the GetCallback
         // with either the object, or the exception thrown
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<Author>() {
             @Override
-            public void done(ParseObject object, ParseException e) {
+            public void done(Author object, ParseException e) {
                 if (e == null){
-                    authorId = object.getObjectId();
-                    Log.i(TAG, authorId);
+                    author = object;
+
+                    Log.i(TAG, author.getObjectId());
                     saveLocation();
                 }
                 else{
@@ -320,11 +340,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Goes to create activity
-    public void createAction(MenuItem mi) {
-        if (address != null && authorId != null) {
+    public void createAction() {
+        if (address != null && author != null) {
             Intent intent = new Intent(MainActivity.this, CreateActivity.class);
             intent.putExtra("address", address);
-            intent.putExtra("authorID", authorId);
+            intent.putExtra("authorID", author.getObjectId());
             startActivity(intent);
         }
     }
@@ -334,11 +354,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.chat:
                 return true;
-            case R.id.createBook:
-                saveLocation();
-                createAction(item);
-                return true;
-
                 default:
                 return super.onOptionsItemSelected(item);
         }
