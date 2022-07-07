@@ -31,12 +31,15 @@ import com.example.localreads.Fragments.DetailAuthorFragment;
 import com.example.localreads.Fragments.DetailBookFragment;
 import com.example.localreads.Fragments.LocalAuthorFragment;
 import com.example.localreads.Fragments.LocalFeedFragment;
+import com.example.localreads.Fragments.ReaderProfileFragment;
 import com.example.localreads.Models.Author;
+import com.example.localreads.Models.Reader;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -63,7 +66,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class MainActivity extends AppCompatActivity {
 
     public String userTag;
-    public String readerId;
+    public Reader reader;
     Author author;
     private final String TAG = "MainActivity";
     private final static String KEY_LOCATION = "location";
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     DetailBookFragment fragment_detail_book;
     LocalAuthorFragment fragment_local_author;
     DetailAuthorFragment fragment_detail_author;
+    ReaderProfileFragment fragment_reader_profile;
     MaterialToolbar tabMain;
     CollapsingToolbarLayout ctlMain;
     TextView tvTitleText;
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         fragment_detail_book = new DetailBookFragment();
         fragment_local_author = new LocalAuthorFragment();
         fragment_detail_author = new DetailAuthorFragment();
+        fragment_reader_profile = new ReaderProfileFragment();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -152,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.action_profile:
-                        if (userTag.equals("reader") && readerId != null){
-//                            fragment = fragment_reader_profile;
-//                            tag = ReaderProfileFragment.class.getSimpleName();
+                        if (reader != null){
+                            fragment = fragment_reader_profile;
+                            tag = ReaderProfileFragment.class.getSimpleName();
                         }
                         else if (author != null){
                             args.putParcelable("Author", Parcels.wrap(author));
@@ -165,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                         else{
                             String text = "Profile is Loading";
                             Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+                            return false;
                         }
                         break;
 
@@ -289,17 +295,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void getReader(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Reader");
+        ParseQuery<Reader> query = ParseQuery.getQuery("Reader");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         // The query will search for a ParseObject, given its objectId.
         // When the query finishes running, it will invoke the GetCallback
         // with either the object, or the exception thrown
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
+        query.getFirstInBackground(new GetCallback<Reader>() {
             @Override
-            public void done(ParseObject object, ParseException e) {
+            public void done(Reader object, ParseException e) {
                 if (e == null){
-                    readerId = object.getObjectId();
-                    Log.i(TAG, readerId);
+                    reader = object;
+                    Log.i(TAG, reader.getObjectId());
                     saveLocation();
                 }
                 else{
@@ -423,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
                     ex.printStackTrace();
                 }
                 if (mCurrentLocation != null) {
-                    getReverseGeocode();
+                    getReverseGeocode(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 }
             } else {
                 // something went wrong
@@ -437,9 +443,9 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private void getReverseGeocode() {
-        String reverseGeocode = getString(R.string.geocode_url) + "latlng=" + mCurrentLocation.getLatitude()
-                +","+ mCurrentLocation.getLongitude() +"&result_type=locality&key=" + getString(R.string.google_maps_api_key);
+    public String getReverseGeocode(LatLng latlng) {
+        String reverseGeocode = getString(R.string.geocode_url) + "latlng=" + latlng.latitude
+                +","+ latlng.longitude +"&result_type=locality&key=" + getString(R.string.google_maps_api_key);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(reverseGeocode, new JsonHttpResponseHandler() {
             @Override
@@ -463,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        return address;
     }
 
 }

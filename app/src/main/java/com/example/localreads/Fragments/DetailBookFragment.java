@@ -25,14 +25,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.localreads.Models.Book;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DetailBookFragment extends Fragment {
     MoreBooksAdapter adapter;
@@ -50,6 +55,7 @@ public class DetailBookFragment extends Fragment {
     private String TAG = "DetailBookFragment";
     Author mAuthor;
     public ArrayList<Book> authorBooks = new ArrayList<>();
+    Boolean check;
 
 
     // This event fires 1st, before creation of fragment or any views
@@ -124,15 +130,17 @@ public class DetailBookFragment extends Fragment {
         btReadBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkReadPost()){
+                if (check){
                     //remove like
                     removeRead();
                     btReadBook.setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_bookmark_outline));
+                    check = false;
                 }
                 else{
                     //add like
                     addRead();
                     btReadBook.setIcon(AppCompatResources.getDrawable(getContext(),R.drawable.ic_bookmark));
+                    check = true;
                 }
                 tvDetailReads.setText(String.valueOf(mBook.getReads()));
             }
@@ -181,12 +189,16 @@ public class DetailBookFragment extends Fragment {
     private void addRead() {
         //UPDATE like counter
         mBook.addRead();
-        mBook.saveInBackground(e -> {
-            if (e==null){
-                Log.i(TAG, "read updated");
-            }else{
-                //Something went wrong
-                Log.e(TAG, "Error: "+ e.toString());
+        mBook.getRelation("readBy").add(ParseUser.getCurrentUser());
+        mBook.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e==null){
+                    Log.i(TAG, "read updated");
+                }else{
+                    //Something went wrong
+                    Log.e(TAG, "Error: "+ e.toString());
+                }
             }
         });
         mAuthor.addRead();
@@ -202,6 +214,7 @@ public class DetailBookFragment extends Fragment {
 
     private void removeRead() {
         mBook.removeRead();
+        mBook.getRelation("readBy").remove(ParseUser.getCurrentUser());
         mBook.saveInBackground(e -> {
             if (e==null){
                 Log.i(TAG, "read updated");
@@ -221,17 +234,54 @@ public class DetailBookFragment extends Fragment {
         });
     }
 
-    private boolean checkReadPost() {
+    private void checkReadPost() {
 
-        if (mBook.getReadBy().contains(ParseUser.getCurrentUser().getObjectId())){
-            btReadBook.setIcon(AppCompatResources.getDrawable(getContext(),R.drawable.ic_bookmark));
-            return true;
-        }
-        else{
-            btReadBook.setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_bookmark_outline));
-            return false;
-        }
+//        ParseRelation dummy =  mBook.getRelation("readBy");
+//        dummy.add(ParseUser.getCurrentUser());
+//        mBook.saveInBackground(e ->{
+//            if (e==null){
+//                Log.i(TAG, "hello world");
+//            }else{
+//                //Something went wrong
+//                Log.e(TAG, "Error: "+ e.toString());
+//            }
+//        });
 
+
+
+
+
+
+        ParseQuery newQuery = mBook.getRelation("readBy").getQuery();
+
+
+        newQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List <ParseUser> users, ParseException e) {
+                ParseUser user = users.stream().filter(temp -> (temp.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())))
+                        .findAny().orElse(null);
+                if (e == null) {
+                    //Object was successfully retrieved
+                    if (user != null) {
+                        btReadBook.setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_bookmark));
+                        check = true;
+                    }
+                    else{
+                        btReadBook.setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_bookmark_outline));
+                        check = false;
+                    }
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+
+//        newQuery.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUser>() {
+//            @Override
+//            public void done(ParseUser user, ParseException e) {
+//
+//            }
+//        });
     }
 
     // This method is called when the fragment is no longer connected to the Activity

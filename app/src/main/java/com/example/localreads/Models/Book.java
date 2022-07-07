@@ -2,8 +2,10 @@ package com.example.localreads.Models;
 
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -55,31 +57,27 @@ public class Book extends ParseObject {
     }
     public String getLocationString(){return getString(KEY_LOCATION_STRING);}
 
-    public void setReadBy(List<String> users){
+    public void setReadBy(ParseRelation users){
         put(KEY_READ_BY, users);
     }
-    public List<String> getReadBy(){
-        List<String> readBy = getList(KEY_READ_BY);
-        if(readBy == null){
-            readBy = new ArrayList<>();
-        }
+    public ParseRelation getReadBy(){
+        ParseRelation readBy = getRelation("readBy");
         return readBy;
     }
 
 
     public void addRead(){
         int reads = getReads();
-        List<String> users = getReadBy();
+       // ParseRelation users = getReadBy();
         setReads(reads + 1);
-        users.add(ParseUser.getCurrentUser().getObjectId());
-        setReadBy(users);
+        //users.add(ParseUser.getCurrentUser());
+        //setReadBy(users);
     }
 
     public void removeRead(){
         int reads = getReads();
-        List<String> users = getReadBy();
+        //ParseRelation users = getReadBy();
         setReads(reads - 1);
-        users.remove(ParseUser.getCurrentUser().getObjectId());
-        setReadBy(users);
+        //setReadBy(users);
     }
 }

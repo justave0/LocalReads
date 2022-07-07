@@ -19,36 +19,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.localreads.MainActivity;
-import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailAuthorFragment extends Fragment {
+public class ReaderProfileFragment extends Fragment {
     private static final int WRAP_CONTENT = -2;
-    private Author mAuthor;
+    private ParseUser mReader;
     MoreBooksAdapter adapter;
     FragmentActivity listener;
     Context context;
-    RecyclerView rvDetailAuthorBooks;
+    RecyclerView rvProfileReaderBooks;
     AppBarLayout ablMain;
-    ImageView ivDetailAuthorPFP;
-    TextView tvDetailAuthorReads;
-    TextView tvDetailAuthorBio;
-    TextView tvDetailAuthorName;
-    Button btUserSettings;
-    Button btAuthorAddBook;
+    ImageView ivProfileReaderPFP;
+    TextView tvProfileReaderReads;
+    TextView tvProfileReaderLocation;
+    TextView tvProfileReaderName;
+    Button btReaderUserSettings;
     String TAG = "DetailAuthorFragment";
     private ArrayList mMoreBooks = new ArrayList();
 
@@ -72,7 +70,7 @@ public class DetailAuthorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ArrayList<Book> mMoreBooks = new ArrayList<Book>();
-        mAuthor = Parcels.unwrap(getArguments().getParcelable("Author"));
+        mReader = ParseUser.getCurrentUser();
         adapter = new MoreBooksAdapter(mMoreBooks, getActivity());
         ablMain = getActivity().findViewById(R.id.ablMain);
         setExitTransition(new MaterialFadeThrough());
@@ -97,64 +95,54 @@ public class DetailAuthorFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = getActivity();
 
-        tvDetailAuthorName = activity.findViewById(R.id.tvProfileReaderName);
-        tvDetailAuthorReads = activity.findViewById(R.id.tvProfileReaderReads);
-        tvDetailAuthorBio = activity.findViewById(R.id.tvProfileReaderLocation);
-        ivDetailAuthorPFP = activity.findViewById(R.id.ivProfileReaderPFP);
-        btAuthorAddBook = activity.findViewById(R.id.btAuthorAddBook);
-        btUserSettings = activity.findViewById(R.id.btReaderUserSettings);
-        rvDetailAuthorBooks = activity.findViewById(R.id.rvProfileReaderBooks);
+        tvProfileReaderName = activity.findViewById(R.id.tvProfileReaderName);
+        tvProfileReaderReads = activity.findViewById(R.id.tvProfileReaderReads);
+        tvProfileReaderLocation = activity.findViewById(R.id.tvProfileReaderLocation);
+        ivProfileReaderPFP = activity.findViewById(R.id.ivProfileReaderPFP);
+        btReaderUserSettings = activity.findViewById(R.id.btReaderUserSettings);
+        btReaderUserSettings.setVisibility(View.VISIBLE);
+        rvProfileReaderBooks = activity.findViewById(R.id.rvProfileReaderBooks);
         populateData();
     }
 
     private void populateData() {
-        tvDetailAuthorBio.setText(mAuthor.getBio());
-        tvDetailAuthorReads.setText(String.valueOf(mAuthor.getReads())+ " Reads");
-        tvDetailAuthorName.setText(mAuthor.getUser().getUsername());
-        Glide.with(context).load(mAuthor.getUser().getParseFile("profilePic").getUrl()).circleCrop().into(ivDetailAuthorPFP);
-
-        String user = ParseUser.getCurrentUser().getObjectId();
-        String hello = mAuthor.getUser().getObjectId();
-        if (mAuthor.getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())){
-            btUserSettings.setVisibility(View.VISIBLE);
-            btAuthorAddBook.setVisibility(View.VISIBLE);
-            btAuthorAddBook.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.createAction();
-                }
-            });
-        }
+        MainActivity activity = (MainActivity) getActivity();
+        ParseGeoPoint latlng = mReader.getParseGeoPoint("location");
+        tvProfileReaderLocation.setText(activity.getReverseGeocode(new LatLng(latlng.getLatitude(),latlng.getLongitude())));
+        tvProfileReaderName.setText(mReader.getUsername());
+        Glide.with(context).load(mReader.getParseFile("profilePic").getUrl()).circleCrop().into(ivProfileReaderPFP);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
-        rvDetailAuthorBooks.setLayoutManager(gridLayoutManager);
-        rvDetailAuthorBooks.setAdapter(adapter);
-        rvDetailAuthorBooks.setOnFlingListener(null);
+        rvProfileReaderBooks.setLayoutManager(gridLayoutManager);
+        rvProfileReaderBooks.setAdapter(adapter);
+        rvProfileReaderBooks.setOnFlingListener(null);
         queryMoreBooks();
     }
 
 
     private void queryMoreBooks() {
-        if(mAuthor.getBooks() != null && mAuthor.getBooks().size() >= 0) {
-            ParseQuery<Book> queryBook = ParseQuery.getQuery("Book");
-            queryBook.whereContainedIn("objectId", mAuthor.getBooks());
-            queryBook.include(Book.KEY_USER);
-            queryBook.include(Book.KEY_READ_BY);
-            queryBook.findInBackground(new FindCallback<Book>() {
-                @Override
-                public void done(List<Book> objects, ParseException e) {
-                    if(e == null){
-                        mMoreBooks.addAll(objects);
-                        adapter.updateAdapter(mMoreBooks);
+        ParseQuery<Book> queryBook = ParseQuery.getQuery(Book.class);
+        queryBook.whereEqualTo("readBy", ParseUser.getCurrentUser());
+        queryBook.include(Book.KEY_USER);
+        queryBook.findInBackground(new FindCallback<Book>() {
+            @Override
+            public void done(List<Book> objects, ParseException e) {
+                if (e == null){
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (getActivity() != null) {
+                        activity.spinner.setVisibility(View.GONE);
                     }
-                    else{
-                        Log.e(TAG, e.toString());
-                    }
-                }
-            });
+                    tvProfileReaderReads.setText(String.valueOf(objects.size()) + " Books Read");
+                    mMoreBooks.addAll(objects);
+                    adapter.updateAdapter(mMoreBooks);
 
-        }
+                }
+                else{
+                    Log.e(TAG, e.toString());
+                }
+            }
+        });
+
     }
     // This method is called when the fragment is no longer connected to the Activity
     // Any references saved in onAttach should be nulled out here to prevent memory leaks.

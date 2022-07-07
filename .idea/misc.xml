@@ -34,6 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_detail_book.xml" value="0.55" />
         <entry key="app/src/main/res/layout/fragment_local_book.xml" value="0.39375" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.43523550724637683" />
+        <entry key="app/src/main/res/layout/fragment_reader_profile.xml" value="0.40677083333333336" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.338768115942029" />
         <entry key="app/src/main/res/layout/item_author.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_book.xml" value="0.3967136150234742" />

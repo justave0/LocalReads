@@ -11,9 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.localreads.MainActivity;
+import com.example.localreads.Models.Author;
+import com.example.localreads.Models.Book;
+import com.example.localreads.Models.Reader;
 import com.example.localreads.R;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -159,15 +163,18 @@ public class SignOnReaderActivity extends AppCompatActivity {
     }
 
     public void createReader(){
-        ParseObject entity = new ParseObject("Reader");
-        entity.put("username", ParseUser.getCurrentUser().getUsername());
-        //Will fix location later
-        entity.put("favoriteGenres", favoriteGenres);
-        entity.put("user", ParseUser.getCurrentUser());
+        Reader reader = new Reader();
+        reader.setUser(ParseUser.getCurrentUser());
+        reader.setFavoriteGenres(favoriteGenres);
+
+//        ParseObject entity = new ParseObject("Reader");
+//        //Will fix location later
+//        entity.put("favoriteGenres", favoriteGenres);
+//        entity.put("user", ParseUser.getCurrentUser());
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
-        entity.saveInBackground(e -> {
+        reader.saveInBackground(e -> {
             if (e==null){
                 Intent intent = new Intent(SignOnReaderActivity.this, MainActivity.class);
                 startActivity(intent);

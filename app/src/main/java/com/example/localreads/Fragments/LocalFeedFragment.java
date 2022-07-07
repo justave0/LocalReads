@@ -25,6 +25,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class LocalFeedFragment extends Fragment {
     public void queryAuthors() {
         ArrayList<String> authorID = new ArrayList<>();
         ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
-        authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
+        //authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
         authorQuery.setLimit(20);
         authorQuery.findInBackground(new FindCallback<Author>() {
             @Override
@@ -114,12 +115,14 @@ public class LocalFeedFragment extends Fragment {
 
 
         public void queryBooks(ArrayList <String> authorID){
+        ParseUser temp = ParseUser.getCurrentUser();
         ParseQuery<Book> query = ParseQuery.getQuery(Book.class);
         query.include(Book.KEY_USER);
+        query.include(Book.KEY_READ_BY);
         query.addDescendingOrder("createdAt");
         query.whereContainedIn("user", authorID);
         if (selectedGenres != null){
-            query.whereContainedIn("genres", selectedGenres);
+            //query.whereContainedIn("genres", selectedGenres);
         }
         query.setLimit(20);
         // Specify the object id
@@ -132,6 +135,7 @@ public class LocalFeedFragment extends Fragment {
                         activity.spinner.setVisibility(View.GONE);
                     }
                     // Access the array of results here
+                    ParseRelation dummy = (ParseRelation) objects.get(0).get(Book.KEY_READ_BY);
                     adapter.clear();
                     books.addAll(objects);
                     adapter.updateAdapter(books);

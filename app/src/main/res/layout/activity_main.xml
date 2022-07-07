@@ -113,7 +113,8 @@
         android:layout_gravity="bottom"
         app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
     <ProgressBar
         android:id="@+id/progressBar1"

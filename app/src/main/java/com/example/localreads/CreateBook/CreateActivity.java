@@ -117,17 +117,21 @@ public class CreateActivity extends AppCompatActivity {
         book.setUser(ParseUser.getCurrentUser());
         book.setGenres(bookGenres);
         book.setLocationString(address);
+        book.getReadBy().add(ParseUser.getCurrentUser());
 
         // Saves the new object.
         // Notice that the SaveCallback is totally optional!
         book.saveInBackground(e -> {
             if (e==null){
                 updateAuthor(book);
+                book.getReadBy();
             }else{
                 //Something went wrong
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void updateAuthor(Book book){

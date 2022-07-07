@@ -65,11 +65,9 @@ public class Author extends ParseObject {
     }
 
     public void setUser(ParseUser user){put(KEY_USER, user);}
-
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
-
 
     public void setFavoriteGenres (List<String> favoriteGenres){
         put(KEY_FAVORITE_GENRES, favoriteGenres);
@@ -82,7 +80,6 @@ public class Author extends ParseObject {
         int reads = getReads();
         setReads(reads + 1);
     }
-
     public void removeRead(){
         int reads = getReads();
         setReads(reads - 1);
