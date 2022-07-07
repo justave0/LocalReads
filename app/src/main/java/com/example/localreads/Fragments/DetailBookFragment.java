@@ -235,23 +235,6 @@ public class DetailBookFragment extends Fragment {
     }
 
     private void checkReadPost() {
-
-//        ParseRelation dummy =  mBook.getRelation("readBy");
-//        dummy.add(ParseUser.getCurrentUser());
-//        mBook.saveInBackground(e ->{
-//            if (e==null){
-//                Log.i(TAG, "hello world");
-//            }else{
-//                //Something went wrong
-//                Log.e(TAG, "Error: "+ e.toString());
-//            }
-//        });
-
-
-
-
-
-
         ParseQuery newQuery = mBook.getRelation("readBy").getQuery();
 
 

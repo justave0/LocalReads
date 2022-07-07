@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
@@ -172,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
                             return false;
                         }
+                        boolean detailVisible = getVisibleFragment();
                         break;
-
 
                     default:
                         fragment = new Fragment();
@@ -188,6 +189,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.action_local_feed);
+    }
+
+    private boolean getVisibleFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        ArrayList<Fragment> fragments = (ArrayList<Fragment>) fragmentManager.getFragments();
+        for (Fragment fragment: fragments){
+            if (fragment.getClass().getSimpleName().equals(DetailAuthorFragment.class.getSimpleName())){
+                DetailAuthorFragment frag = (DetailAuthorFragment) fragmentManager.findFragmentByTag(DetailAuthorFragment.class.getSimpleName());
+                fragmentManager.beginTransaction().remove(frag).commit();
+            }
+        }
+        return false;
     }
 
     private void inflateGenresMenu() {
