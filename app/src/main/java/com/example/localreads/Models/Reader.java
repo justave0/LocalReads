@@ -15,6 +15,7 @@ public class Reader extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_READ_BOOK = "readBook";
 
+    public Reader(){}
 
     public void setFavoriteGenres (List<String> favoriteGenres){
         put(KEY_FAVORITE_GENRES, favoriteGenres);

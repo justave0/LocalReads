@@ -356,6 +356,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Goes to chat activity
     public void onChatAction(MenuItem mi) {
+        Intent intent = new Intent(MainActivity.this, MessageFeedActivity.class);
+        startActivity(intent);
     }
 
     // Goes to create activity

@@ -135,7 +135,7 @@ public class LocalFeedFragment extends Fragment {
                         activity.spinner.setVisibility(View.GONE);
                     }
                     // Access the array of results here
-                    ParseRelation dummy = (ParseRelation) objects.get(0).get(Book.KEY_READ_BY);
+                   // ParseRelation dummy = (ParseRelation) objects.get(0).get(Book.KEY_READ_BY);
                     adapter.clear();
                     books.addAll(objects);
                     adapter.updateAdapter(books);

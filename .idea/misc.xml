@@ -19,6 +19,8 @@
         <entry key="app/src/main/res/layout/activity_login_test.xml" value="0.1838226318359374" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main_copy.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_message.xml" value="0.13134057971014493" />
+        <entry key="app/src/main/res/layout/activity_message_feed.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/activity_sign_on_author.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_on_author1.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_on_author2.xml" value="0.18617021276595744" />
@@ -36,6 +38,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.43523550724637683" />
         <entry key="app/src/main/res/layout/fragment_reader_profile.xml" value="0.40677083333333336" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.338768115942029" />
+        <entry key="app/src/main/res/layout/hello_world.xml" value="0.2453125" />
         <entry key="app/src/main/res/layout/item_author.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_book.xml" value="0.3967136150234742" />
         <entry key="app/src/main/res/layout/item_condensed_book.xml" value="0.25" />
@@ -62,7 +65,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.1596244131455399" />
+        <option name="scale" value="0.35381774902343754" />
       </ProjectState>
     </option>
   </component>

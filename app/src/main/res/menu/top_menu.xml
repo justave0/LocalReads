@@ -4,13 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
     <item
         android:id="@+id/chat"
-        android:icon="@drawable/chat"
-        app:showAsAction="ifRoom"
         android:contentDescription="Chat with Users"
-        android:title="Chat">
-    </item>
+        android:icon="@drawable/chat"
+        android:onClick="onChatAction"
+        android:title="Chat"
+        app:showAsAction="ifRoom"></item>
 
 </menu>
