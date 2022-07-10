@@ -29,12 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Book;
-import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -103,7 +101,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             btBookDropdown = itemView.findViewById(R.id.btBookDropdown);
             btBookSeeMore = itemView.findViewById(R.id.btBookSeeMore);
             hiddenViewLayout = itemView.findViewById(R.id.hiddenViewLayout);
-            cvBook = itemView.findViewById(R.id.cvBook);
+            cvBook = itemView.findViewById(R.id.cvCondensedMessage);
             tvBookLocation = itemView.findViewById(R.id.tvBookLocation);
         }
 

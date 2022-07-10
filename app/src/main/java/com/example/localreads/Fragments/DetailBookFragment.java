@@ -258,13 +258,6 @@ public class DetailBookFragment extends Fragment {
                 }
             }
         });
-
-//        newQuery.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUser>() {
-//            @Override
-//            public void done(ParseUser user, ParseException e) {
-//
-//            }
-//        });
     }
 
     // This method is called when the fragment is no longer connected to the Activity

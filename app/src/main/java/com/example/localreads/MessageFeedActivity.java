@@ -1,6 +1,8 @@
 package com.example.localreads;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,7 @@ public class MessageFeedActivity extends AppCompatActivity {
     ArrayList<Message> messages;
     String TAG = "MessageFeedActivity";
     HashSet<ArrayList<String>> userIds = new HashSet<>();
+    RecyclerView rvCondensedMessageFeed;
 
 
     @Override
@@ -50,6 +53,12 @@ public class MessageFeedActivity extends AppCompatActivity {
 
         messages=  new ArrayList<>();
         messageAdapter = new CondensedMessageAdapter(messages, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+
+        rvCondensedMessageFeed = findViewById(R.id.rvCondensedMessageFeed);
+        rvCondensedMessageFeed.setLayoutManager(linearLayoutManager);
+        rvCondensedMessageFeed.setAdapter(messageAdapter);
+
 
         queryMessages();
     }
@@ -85,19 +94,10 @@ public class MessageFeedActivity extends AppCompatActivity {
 
             }
         });
-
-
-//        ParseCloud.callFunctionInBackground("getDistinctUsers", new HashMap<>(), new FunctionCallback<List<Message>>() {
-//            @Override
-//            public void done(List<Message> objects, ParseException e) {
-//                Log.i("heelo", objects.toString());
-//            }
-//        });
     }
 
     private ArrayList<String> doSomething(Message message) {
         ParseRelation relation = message.getRelation(Message.KEY_USERS);
-        //relation.add(ParseUser.getCurrentUser());
         ParseQuery pq = relation.getQuery();
         try {
             ArrayList<ParseUser> users = (ArrayList<ParseUser>) pq.find();
