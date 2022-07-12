@@ -143,7 +143,6 @@ public class LocalFeedFragment extends Fragment {
                     Log.e("item", "Error: " + e.getMessage());
                 }
             }
-
         });
     }
 
@@ -158,7 +157,6 @@ public class LocalFeedFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         super.onResume();
         if(adapter != null) {
             adapter.clear();
@@ -172,9 +170,5 @@ public class LocalFeedFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    public double toKilometers(Double miles){
-        return miles * 1.609;
     }
 }

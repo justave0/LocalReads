@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -53,7 +56,7 @@ public class MessageFeedActivity extends AppCompatActivity {
 
         messages=  new ArrayList<>();
         messageAdapter = new CondensedMessageAdapter(messages, this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
 
         rvCondensedMessageFeed = findViewById(R.id.rvCondensedMessageFeed);
         rvCondensedMessageFeed.setLayoutManager(linearLayoutManager);
@@ -97,19 +100,24 @@ public class MessageFeedActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> doSomething(Message message) {
+        ArrayList<String> tempIds = new ArrayList<>();
         ParseRelation relation = message.getRelation(Message.KEY_USERS);
         ParseQuery pq = relation.getQuery();
-        try {
-            ArrayList<ParseUser> users = (ArrayList<ParseUser>) pq.find();
-            ArrayList<String> tempIds = new ArrayList<>();
-            for (int i = 0; i < users.size(); i++){
-                tempIds.add(users.get(i).getObjectId());
+        pq.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null){
+
+                    for (int i = 0; i < objects.size(); i++){
+                        tempIds.add(objects.get(i).getObjectId());
+                    }
+                    Log.i(TAG, tempIds.toString());
+                }
+                else{
+                    e.printStackTrace();
+                }
             }
-            Log.i(TAG, tempIds.toString());
-            return tempIds;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        });
+        return tempIds;
     }
 }

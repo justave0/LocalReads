@@ -1,6 +1,7 @@
 package com.example.localreads;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Message;
+import com.google.android.material.card.MaterialCardView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +75,8 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
         TextView tvCondensedMessageUsernames;
         TextView tvCondensedMessageSnippet;
         TextView tvCondensedMessageTime;
+        MaterialCardView cvCondensedMessage;
+        ArrayList <ParseUser> parseUsers = new ArrayList<>();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,13 +84,22 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
             tvCondensedMessageSnippet = itemView.findViewById(R.id.tvCondensedMessageSnippet);
             tvCondensedMessageTime = itemView.findViewById(R.id.tvCondensedMessageTime);
             tvCondensedMessageUsernames = itemView.findViewById(R.id.tvCondensedMesssageUsernames);
+            cvCondensedMessage = itemView.findViewById(R.id.cvCondensedMessage);
         }
 
         public void bind(Message message) {
             queryUsers(message);
             tvCondensedMessageSnippet.setText(message.getText());
             tvCondensedMessageTime.setText(calculateTimeAgo(message.getCreatedAt()));
+            cvCondensedMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goDetailedMessage(parseUsers);
+                }
+            });
         }
+
+
 
         private void queryUsers(Message message) {
             ParseQuery messageQuery = message.getRelation(Message.KEY_USERS).getQuery();
@@ -94,6 +109,7 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
                     ArrayList<String> usernames = new ArrayList<>();
                     for (int i = 0; i< objects.size(); i++){
                         usernames.add(objects.get(i).getUsername());
+                        parseUsers.add(objects.get(i));
                     }
                     usernames.removeIf(username -> username.equals(ParseUser.getCurrentUser().getUsername()));
                     tvCondensedMessageUsernames.setText(usernames.toString());
@@ -102,6 +118,11 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
                 }
             });
         }
+    }
+    public void goDetailedMessage(ArrayList<ParseUser> parseUsers) {
+        Intent intent = new Intent(context, DetailedMessageActivity.class);
+        intent.putExtra("users", Parcels.wrap(parseUsers));
+        context.startActivity(intent);
     }
 
     //Helper function for timestamp

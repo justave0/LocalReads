@@ -40,6 +40,9 @@
         android:theme="@style/Theme.LocalReads"
         tools:targetApi="31">
         <activity
+            android:name=".DetailedMessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MessageFeedActivity"
             android:exported="false" />
         <activity

@@ -2,6 +2,8 @@ package com.example.localreads.Models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 //@Parcel
 @ParseClassName("Message")
@@ -9,6 +11,7 @@ public class Message extends ParseObject {
 
     public static final String KEY_TEXT = "Text";
     public static final String KEY_USERS = "users";
+    public static final String KEY_SENDER = "sender";
 
     public Message (){}
 
@@ -19,12 +22,9 @@ public class Message extends ParseObject {
         return getString(KEY_TEXT);
     }
 
-    public boolean userEquals(Message message) {
-        if (message.getRelation(KEY_USERS).getQuery().equals(this.getRelation(KEY_USERS).getQuery())){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    public void setSender(ParseUser user){ put(KEY_SENDER, user);}
+    public ParseUser getSender(){return getParseUser(KEY_SENDER);}
+
+    public void setUsers(ParseRelation users){ put(KEY_USERS, users);}
+    public ParseRelation getUsers(){return getRelation(KEY_SENDER);}
 }
