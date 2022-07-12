@@ -7,6 +7,7 @@ import androidx.annotation.RequiresPermission;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.Models.Message;
+import com.example.localreads.Models.MessageGroup;
 import com.example.localreads.Models.Reader;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -27,6 +28,7 @@ public class LocalReadsApplication extends Application {
         ParseObject.registerSubclass(Author.class);
         ParseObject.registerSubclass(Reader.class);
         ParseObject.registerSubclass(Message.class);
+        ParseObject.registerSubclass(MessageGroup.class);
 
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

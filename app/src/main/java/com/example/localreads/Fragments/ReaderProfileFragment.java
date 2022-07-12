@@ -49,6 +49,7 @@ public class ReaderProfileFragment extends Fragment {
     Button btReaderUserSettings;
     String TAG = "DetailAuthorFragment";
     private ArrayList mMoreBooks = new ArrayList();
+    Button btChatWithAuthor;
 
 
     // This event fires 1st, before creation of fragment or any views
@@ -101,6 +102,8 @@ public class ReaderProfileFragment extends Fragment {
         ivProfileReaderPFP = activity.findViewById(R.id.ivProfileReaderPFP);
         btReaderUserSettings = activity.findViewById(R.id.btReaderUserSettings);
         btReaderUserSettings.setVisibility(View.VISIBLE);
+        btChatWithAuthor = activity.findViewById(R.id.btChatWithAuthor);
+        btChatWithAuthor.setVisibility(View.GONE);
         rvProfileReaderBooks = activity.findViewById(R.id.rvProfileReaderBooks);
         populateData();
     }

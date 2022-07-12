@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Message;
+import com.example.localreads.Models.MessageGroup;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,11 +29,11 @@ import java.util.List;
 
 public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessageAdapter.ViewHolder> {
     Context context;
-    ArrayList<Message> mMessages;
+    ArrayList<MessageGroup> mMessageGroups;
 
-    public CondensedMessageAdapter(ArrayList<Message> messages, Context context){
+    public CondensedMessageAdapter(ArrayList<MessageGroup> messageGroups, Context context){
         this.context = context;
-        mMessages = messages;
+        mMessageGroups = messageGroups;
     }
 
     @NonNull
@@ -51,23 +52,23 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Message message = mMessages.get(position);
-        holder.bind(message);
+        MessageGroup messageGroup = mMessageGroups.get(position);
+        holder.bind(messageGroup);
     }
 
     public void clear() {
-        mMessages.clear();
+        mMessageGroups.clear();
         notifyDataSetChanged();
     }
 
-    public void notifyAdapter(ArrayList<Message> messages){
-        mMessages.addAll(messages);
+    public void notifyAdapter(ArrayList<MessageGroup> messageGroups){
+        mMessageGroups.addAll(messageGroups);
         this.notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return mMessages.size();
+        return mMessageGroups.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,41 +88,35 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
             cvCondensedMessage = itemView.findViewById(R.id.cvCondensedMessage);
         }
 
-        public void bind(Message message) {
-            queryUsers(message);
-            tvCondensedMessageSnippet.setText(message.getText());
-            tvCondensedMessageTime.setText(calculateTimeAgo(message.getCreatedAt()));
+        public void bind(MessageGroup messageGroup) {
+            ParseUser recentUser = queryRecentUser(messageGroup);
+            tvCondensedMessageSnippet.setText(messageGroup.getRecentText());
+            tvCondensedMessageTime.setText(calculateTimeAgo(messageGroup.getTimeStamp()));
+            Glide.with(context).load(recentUser.getParseFile("profilePic").getUrl()).circleCrop().into(ivCondensedMessagePFP);
             cvCondensedMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goDetailedMessage(parseUsers);
+                    goDetailedMessage(messageGroup);
                 }
             });
         }
 
-
-
-        private void queryUsers(Message message) {
-            ParseQuery messageQuery = message.getRelation(Message.KEY_USERS).getQuery();
-            messageQuery.findInBackground(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    ArrayList<String> usernames = new ArrayList<>();
-                    for (int i = 0; i< objects.size(); i++){
-                        usernames.add(objects.get(i).getUsername());
-                        parseUsers.add(objects.get(i));
-                    }
-                    usernames.removeIf(username -> username.equals(ParseUser.getCurrentUser().getUsername()));
-                    tvCondensedMessageUsernames.setText(usernames.toString());
-                    Glide.with(context).load(objects.get(0).getParseFile("profilePic").getUrl())
-                            .circleCrop().into(ivCondensedMessagePFP);
-                }
-            });
+        private ParseUser queryRecentUser(MessageGroup messageGroup) {
+            ParseQuery messageUsers = messageGroup.getUsers().getQuery();
+            messageUsers.setLimit(1);
+            messageUsers.addDescendingOrder(MessageGroup.KEY_CREATED_AT);
+            try {
+                return (ParseUser) messageUsers.find().get(0);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
+
     }
-    public void goDetailedMessage(ArrayList<ParseUser> parseUsers) {
+    public void goDetailedMessage(MessageGroup messageGroup) {
         Intent intent = new Intent(context, DetailedMessageActivity.class);
-        intent.putExtra("users", Parcels.wrap(parseUsers));
+        intent.putExtra("messageGroup", Parcels.wrap(messageGroup));
         context.startActivity(intent);
     }
 

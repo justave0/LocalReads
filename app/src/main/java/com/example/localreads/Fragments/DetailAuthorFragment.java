@@ -25,6 +25,7 @@ import com.example.localreads.DetailedMessageActivity;
 import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
+import com.example.localreads.Models.MessageGroup;
 import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
@@ -32,6 +33,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -119,6 +121,19 @@ public class DetailAuthorFragment extends Fragment {
                 users.add(ParseUser.getCurrentUser());
                 users.add(mAuthor.getUser());
                 intent.putExtra("users", Parcels.wrap(users));
+
+                ParseQuery messageQuery = new ParseQuery(MessageGroup.class);
+                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, ParseUser.getCurrentUser());
+                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, mAuthor.getUser());
+                messageQuery.include(MessageGroup.KEY_MESSAGES);
+               // messageQuery.addAscendingOrder(MessageGroup.KEY_USERS);
+                try {
+                    MessageGroup mg = (MessageGroup) messageQuery.getFirst();
+                    intent.putExtra("messageGroup", Parcels.wrap(mg));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 context.startActivity(intent);
                 fromChat = true;
             }

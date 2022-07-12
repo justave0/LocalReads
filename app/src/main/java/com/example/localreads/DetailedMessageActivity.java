@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import com.example.localreads.Models.Message;
+import com.example.localreads.Models.MessageGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.parse.FindCallback;
@@ -24,6 +25,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DetailedMessageActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class DetailedMessageActivity extends AppCompatActivity {
     CoordinatorLayout clDetailedMessage;
     public static final String TAG = "DetailedMessageActivity";
 //    private static int KEYBOARD_HEIGHT;
+    private MessageGroup mMessageGroup;
     RecyclerView rvDetailedMessageFeed;
     private ArrayList<ParseUser> mUsers;
     private ArrayList<Message> mMessages;
@@ -45,7 +48,8 @@ public class DetailedMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_message);
 
         mMessages = new ArrayList<>();
-        mUsers = (ArrayList<ParseUser>) Parcels.unwrap(getIntent().getParcelableExtra("users"));
+        mMessageGroup = Parcels.unwrap(getIntent().getParcelableExtra("messageGroup"));
+        mUsers = Parcels.unwrap(getIntent().getParcelableExtra("users"));
 
         tlSendMessage = findViewById(R.id.tlSendMessage);
         etSendMessage = findViewById(R.id.etSendMessage);
@@ -61,9 +65,14 @@ public class DetailedMessageActivity extends AppCompatActivity {
         tlSendMessage.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //saveToMessageGroup();
                 sendMessage();
             }
         });
+    }
+
+    private void saveToMessageGroup() {
+
     }
 
     private void sendMessage() {
@@ -75,9 +84,11 @@ public class DetailedMessageActivity extends AppCompatActivity {
         Message message = new Message();
         message.setText(text);
         message.setSender(ParseUser.getCurrentUser());
-        ParseRelation relation = message.getRelation(Message.KEY_USERS);
-        for (int i= 0; i < mUsers.size(); i++){
-            relation.add(mUsers.get(i));
+        if(mMessageGroup == null){
+            createNewMessageGroup(text, message);
+        }
+        else{
+            updateMessageGroup(text, message);
         }
         message.saveInBackground(new SaveCallback() {
             @Override
@@ -92,6 +103,34 @@ public class DetailedMessageActivity extends AppCompatActivity {
         });
     }
 
+    private void updateMessageGroup(String text, Message message) {
+        ArrayList<Message> messages = (ArrayList<Message>) mMessageGroup.getMessages();
+        messages.add(message);
+        mMessageGroup.setMessages(messages);
+        mMessageGroup.setTimeStamp(Calendar.getInstance().getTime());
+        mMessageGroup.setRecentText(text);
+        mMessageGroup.saveInBackground();
+    }
+
+    private void createNewMessageGroup(String text, Message message) {
+        mMessageGroup = new MessageGroup();
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(message);
+        mMessageGroup.setMessages(messages);
+        mMessageGroup.setTimeStamp(Calendar.getInstance().getTime());
+        ParseRelation relation = mMessageGroup.getRelation(MessageGroup.KEY_USERS);
+        for (int i = 0; i < mUsers.size(); i++){
+            relation.add(mUsers.get(i));
+        }
+//        ParseRelation relation = mMessageGroup.getUsers();
+//        for (int i = 0; i < mUsers.size(); i++){
+//            relation.add(mUsers.get(i));
+//        }
+//        mMessageGroup.setUsers(relation);
+        mMessageGroup.setRecentText(text);
+        mMessageGroup.saveInBackground();
+    }
+
     private void updateSentMessage(Message message) {
         etSendMessage.setText("");
         mMessages.add(0, message);
@@ -99,21 +138,24 @@ public class DetailedMessageActivity extends AppCompatActivity {
     }
 
     private void loadMessages() {
-        ParseQuery<Message> mainQuery = ParseQuery.getQuery(Message.class);
-        for (int i = 0; i<mUsers.size(); i++){
-            mainQuery.whereEqualTo(Message.KEY_USERS, mUsers.get(i));
+//        ParseQuery<Message> mainQuery = ParseQuery.getQuery(Message.class);
+//        for (int i = 0; i<mUsers.size(); i++){
+//            mainQuery.whereEqualTo(Message.KEY_USERS, mUsers.get(i));
+//        }
+//        mainQuery.include(Message.KEY_USERS);
+//        mainQuery.setLimit(100);
+//        mainQuery.addDescendingOrder("createdAt");
+//        mainQuery.include(Message.KEY_SENDER);
+//
+//        mainQuery.findInBackground(new FindCallback<Message>(){
+//            @Override
+//            public void done(List<Message> objects, ParseException e) {
+//                mMessages.addAll(objects);
+//                messageAdapter.notifyDataSetChanged();
+//            }
+//        });
+        if (mMessageGroup != null && mMessageGroup.getMessages() != null) {
+            mMessages.addAll(mMessageGroup.getMessages());
         }
-        mainQuery.include(Message.KEY_USERS);
-        mainQuery.setLimit(100);
-        mainQuery.addDescendingOrder("createdAt");
-        mainQuery.include(Message.KEY_SENDER);
-
-        mainQuery.findInBackground(new FindCallback<Message>(){
-            @Override
-            public void done(List<Message> objects, ParseException e) {
-                mMessages.addAll(objects);
-                messageAdapter.notifyDataSetChanged();
-            }
-        });
     }
 }

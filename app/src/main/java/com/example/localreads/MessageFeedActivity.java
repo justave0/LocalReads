@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.example.localreads.Models.Message;
+import com.example.localreads.Models.MessageGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -34,7 +35,7 @@ public class MessageFeedActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     TextView tvMessageUsername;
     CondensedMessageAdapter messageAdapter;
-    ArrayList<Message> messages;
+    ArrayList<MessageGroup> messages;
     String TAG = "MessageFeedActivity";
     HashSet<ArrayList<String>> userIds = new HashSet<>();
     RecyclerView rvCondensedMessageFeed;
@@ -56,7 +57,7 @@ public class MessageFeedActivity extends AppCompatActivity {
 
         messages=  new ArrayList<>();
         messageAdapter = new CondensedMessageAdapter(messages, this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
         rvCondensedMessageFeed = findViewById(R.id.rvCondensedMessageFeed);
         rvCondensedMessageFeed.setLayoutManager(linearLayoutManager);
@@ -67,27 +68,17 @@ public class MessageFeedActivity extends AppCompatActivity {
     }
 
     private void queryMessages() {
-        ParseQuery messageQuery = new ParseQuery(Message.class);
+        ParseQuery messageQuery = new ParseQuery(MessageGroup.class);
         messageQuery.setLimit(100);
-        messageQuery.whereEqualTo(Message.KEY_USERS, ParseUser.getCurrentUser());
-        messageQuery.include(Message.KEY_USERS);
+        messageQuery.whereEqualTo(MessageGroup.KEY_USERS, ParseUser.getCurrentUser());
+        messageQuery.include(MessageGroup.KEY_MESSAGES);
         messageQuery.addDescendingOrder("createdAt");
-
-        messageQuery.findInBackground(new FindCallback<Message>(){
+        messageQuery.findInBackground(new FindCallback<MessageGroup>(){
             @Override
-            public void done(List<Message> objects, ParseException e) {
-
-//                messages.addAll(objects);
-                for(int i = 0; i < objects.size(); i++){
-                    ArrayList<String> help = doSomething(objects.get(i));
-                    if (userIds.add(help)){
-                        messages.add(objects.get(i));
-                    }
-//                    userIds.add(help);
-                }
-                Log.i(TAG, messages.toString());
-                //ArrayList<ParseRelation> distinctUsers = (ArrayList<ParseRelation>) messageUsers.stream().distinct().collect(Collectors.toList());
+            public void done(List<MessageGroup> objects, ParseException e) {
+                messages.addAll(objects);
                 messageAdapter.notifyDataSetChanged();
+
             }
         });
 
@@ -99,25 +90,4 @@ public class MessageFeedActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<String> doSomething(Message message) {
-        ArrayList<String> tempIds = new ArrayList<>();
-        ParseRelation relation = message.getRelation(Message.KEY_USERS);
-        ParseQuery pq = relation.getQuery();
-        pq.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e == null){
-
-                    for (int i = 0; i < objects.size(); i++){
-                        tempIds.add(objects.get(i).getObjectId());
-                    }
-                    Log.i(TAG, tempIds.toString());
-                }
-                else{
-                    e.printStackTrace();
-                }
-            }
-        });
-        return tempIds;
-    }
 }

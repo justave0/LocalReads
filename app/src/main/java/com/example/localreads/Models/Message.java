@@ -10,7 +10,6 @@ import com.parse.ParseUser;
 public class Message extends ParseObject {
 
     public static final String KEY_TEXT = "Text";
-    public static final String KEY_USERS = "users";
     public static final String KEY_SENDER = "sender";
 
     public Message (){}
@@ -25,6 +24,4 @@ public class Message extends ParseObject {
     public void setSender(ParseUser user){ put(KEY_SENDER, user);}
     public ParseUser getSender(){return getParseUser(KEY_SENDER);}
 
-    public void setUsers(ParseRelation users){ put(KEY_USERS, users);}
-    public ParseRelation getUsers(){return getRelation(KEY_SENDER);}
 }
