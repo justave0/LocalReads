@@ -64,6 +64,7 @@
                     android:id="@+id/ivProfileReaderPFP"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     tools:srcCompat="@tools:sample/avatars" />
 
@@ -93,6 +94,16 @@
                         android:layout_marginTop="8dp"
                         android:text="Add Book"
                         android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btChatWithAuthor"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center"
+                        android:text="Chat with Author"
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>

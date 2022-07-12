@@ -2,6 +2,7 @@ package com.example.localreads.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +12,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.localreads.DetailedMessageActivity;
 import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
@@ -48,11 +52,11 @@ public class DetailAuthorFragment extends Fragment {
     TextView tvDetailAuthorBio;
     TextView tvDetailAuthorName;
     Button btUserSettings;
+    Button btChatWithAuthor;
     Button btAuthorAddBook;
     String TAG = "DetailAuthorFragment";
     private ArrayList mMoreBooks = new ArrayList();
-
-
+    boolean fromChat;
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
     // This does not mean the Activity is fully initialized.
@@ -104,7 +108,21 @@ public class DetailAuthorFragment extends Fragment {
         btAuthorAddBook = activity.findViewById(R.id.btAuthorAddBook);
         btUserSettings = activity.findViewById(R.id.btReaderUserSettings);
         rvDetailAuthorBooks = activity.findViewById(R.id.rvProfileReaderBooks);
+        btChatWithAuthor = activity.findViewById(R.id.btChatWithAuthor);
         populateData();
+
+        btChatWithAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailedMessageActivity.class);
+                ArrayList<ParseUser> users = new ArrayList<>();
+                users.add(ParseUser.getCurrentUser());
+                users.add(mAuthor.getUser());
+                intent.putExtra("users", Parcels.wrap(users));
+                context.startActivity(intent);
+                fromChat = true;
+            }
+        });
     }
 
     private void populateData() {
@@ -116,6 +134,7 @@ public class DetailAuthorFragment extends Fragment {
         String user = ParseUser.getCurrentUser().getObjectId();
         String hello = mAuthor.getUser().getObjectId();
         if (mAuthor.getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())){
+            btChatWithAuthor.setVisibility(View.GONE);
             btUserSettings.setVisibility(View.VISIBLE);
             btAuthorAddBook.setVisibility(View.VISIBLE);
             btAuthorAddBook.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +144,7 @@ public class DetailAuthorFragment extends Fragment {
                     mainActivity.createAction();
                 }
             });
+
         }
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
@@ -176,16 +196,17 @@ public class DetailAuthorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(adapter != null) {
-            adapter.clear();
-            mMoreBooks.clear();
-        }
+
+
+
         if(ablMain != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ablMain.getLayoutParams();
             params.height = 0;
             ablMain.setLayoutParams(params);
         }
     }
+
+
 
     @Override
     public void onStop(){
@@ -195,5 +216,14 @@ public class DetailAuthorFragment extends Fragment {
             params.height=WRAP_CONTENT;
             ablMain.setLayoutParams(params);
         }
+        if(adapter != null && !fromChat) {
+            adapter.clear();
+            mMoreBooks.clear();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

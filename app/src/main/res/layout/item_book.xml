@@ -109,7 +109,7 @@
                 android:paddingEnd="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <FrameLayout
                     android:layout_width="match_parent"
