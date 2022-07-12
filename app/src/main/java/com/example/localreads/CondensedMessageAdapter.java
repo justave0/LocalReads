@@ -13,11 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.localreads.Models.Message;
 import com.example.localreads.Models.MessageGroup;
 import com.google.android.material.card.MaterialCardView;
-import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -90,6 +89,19 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
 
         public void bind(MessageGroup messageGroup) {
             ParseUser recentUser = queryRecentUser(messageGroup);
+            try {
+                List<ParseObject> users= messageGroup.getRelation(MessageGroup.KEY_USERS).getQuery().find();
+                String usernames = "";
+                for (int i = 0; i < users.size(); i ++){
+                    if (!((ParseUser)users.get(i)).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        usernames += ((ParseUser) users.get(i)).getUsername() + ", ";
+                    }
+                }
+                usernames = usernames.replaceAll(", $", "");
+                tvCondensedMessageUsernames.setText(usernames);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             tvCondensedMessageSnippet.setText(messageGroup.getRecentText());
             tvCondensedMessageTime.setText(calculateTimeAgo(messageGroup.getTimeStamp()));
             Glide.with(context).load(recentUser.getParseFile("profilePic").getUrl()).circleCrop().into(ivCondensedMessagePFP);

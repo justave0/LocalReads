@@ -156,6 +156,7 @@ public class DetailedMessageActivity extends AppCompatActivity {
 //        });
         if (mMessageGroup != null && mMessageGroup.getMessages() != null) {
             mMessages.addAll(mMessageGroup.getMessages());
+            messageAdapter.notifyDataSetChanged();
         }
     }
 }
