@@ -1,8 +1,10 @@
 package com.example.localreads.SignOn;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.localreads.R;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -26,6 +34,10 @@ public class SignUpActivity extends AppCompatActivity {
     RadioGroup rgToggle;
     String TAG = "SignUpActivity";
     String userTag;
+    private SignInClient oneTapClient;
+    private BeginSignInRequest signUpRequest;
+    private static final int REQ_ONE_TAP = 1;  // Can be any integer unique to the Activity.
+    private boolean showOneTapUI = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,18 @@ public class SignUpActivity extends AppCompatActivity {
         rgToggle = findViewById(R.id.rgToggle);
 
         ParseUser user = new ParseUser();
+
+        oneTapClient = Identity.getSignInClient(this);
+        signUpRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId(getString(R.string.parse_client_key))
+                        // Show all accounts on the device.
+                        .setFilterByAuthorizedAccounts(false)
+                        .build())
+                .build();
+
 
         btSignUp.setOnClickListener( new View.OnClickListener(){
             @Override
@@ -70,9 +94,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 intent = new Intent(SignUpActivity.this, SignOnReaderActivity.class);
                             }
                             else{
+                                displayOneTapUI();
                                 intent = new Intent(SignUpActivity.this, SignOnAuthorActivity1.class);
                             }
-                            startActivity(intent);
+                            //startActivity(intent);
                         } else {
                             Log.e(TAG, e.toString());
                         }
@@ -80,6 +105,10 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
+
+    }
+
+    private void displayOneTapUI() {
 
     }
 }

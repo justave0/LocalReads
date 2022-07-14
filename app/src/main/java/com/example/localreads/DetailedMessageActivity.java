@@ -26,6 +26,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DetailedMessageActivity extends AppCompatActivity {
@@ -118,6 +120,7 @@ public class DetailedMessageActivity extends AppCompatActivity {
         messages.add(message);
         mMessageGroup.setMessages(messages);
         mMessageGroup.setTimeStamp(Calendar.getInstance().getTime());
+        mMessageGroup.setCounter(mUsers.size());
         ParseRelation relation = mMessageGroup.getRelation(MessageGroup.KEY_USERS);
         for (int i = 0; i < mUsers.size(); i++){
             relation.add(mUsers.get(i));
@@ -138,24 +141,9 @@ public class DetailedMessageActivity extends AppCompatActivity {
     }
 
     private void loadMessages() {
-//        ParseQuery<Message> mainQuery = ParseQuery.getQuery(Message.class);
-//        for (int i = 0; i<mUsers.size(); i++){
-//            mainQuery.whereEqualTo(Message.KEY_USERS, mUsers.get(i));
-//        }
-//        mainQuery.include(Message.KEY_USERS);
-//        mainQuery.setLimit(100);
-//        mainQuery.addDescendingOrder("createdAt");
-//        mainQuery.include(Message.KEY_SENDER);
-//
-//        mainQuery.findInBackground(new FindCallback<Message>(){
-//            @Override
-//            public void done(List<Message> objects, ParseException e) {
-//                mMessages.addAll(objects);
-//                messageAdapter.notifyDataSetChanged();
-//            }
-//        });
         if (mMessageGroup != null && mMessageGroup.getMessages() != null) {
             mMessages.addAll(mMessageGroup.getMessages());
+            Collections.reverse(mMessages);
             messageAdapter.notifyDataSetChanged();
         }
     }

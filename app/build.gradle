@@ -29,6 +29,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 ext {
     googlePlayVersion = "17.0.0"
@@ -56,4 +59,9 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.12'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    implementation 'com.google.api-client:google-api-client:1.33.0'
+    implementation 'com.google.http-client:google-http-client:1.42.1'
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.22.0'
 }

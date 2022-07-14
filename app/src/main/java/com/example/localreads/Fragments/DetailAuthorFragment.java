@@ -25,12 +25,14 @@ import com.example.localreads.DetailedMessageActivity;
 import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
+import com.example.localreads.Models.Message;
 import com.example.localreads.Models.MessageGroup;
 import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -122,10 +124,16 @@ public class DetailAuthorFragment extends Fragment {
                 users.add(mAuthor.getUser());
                 intent.putExtra("users", Parcels.wrap(users));
 
-                ParseQuery messageQuery = new ParseQuery(MessageGroup.class);
-                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, ParseUser.getCurrentUser());
-                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, mAuthor.getUser());
+
+
+                ParseQuery<MessageGroup> messageQuery = generateMessageQuery(users);
+
+                //ParseQuery messageQuery = new ParseQuery(MessageGroup.class);
+//                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, ParseUser.getCurrentUser());
+//                messageQuery.whereEqualTo(MessageGroup.KEY_USERS, mAuthor.getUser());
                 messageQuery.include(MessageGroup.KEY_MESSAGES);
+                messageQuery.include("messages.sender");
+                messageQuery.addDescendingOrder("messages.createdAt");
                // messageQuery.addAscendingOrder(MessageGroup.KEY_USERS);
                 try {
                     MessageGroup mg = (MessageGroup) messageQuery.getFirst();
@@ -138,6 +146,38 @@ public class DetailAuthorFragment extends Fragment {
                 fromChat = true;
             }
         });
+    }
+
+    private ParseQuery<MessageGroup> generateMessageQuery(ArrayList<ParseUser> users) {
+        ArrayList<String> userIds = new ArrayList<>();
+        for (int i = 0; i < users.size(); i ++){
+            userIds.add(users.get(i).getObjectId());
+        }
+        ParseQuery <ParseUser> userQuery = new ParseQuery<ParseUser>("_User");
+        userQuery.whereContainedIn("objectId", userIds);
+//        List<ParseUser> pus;
+//        try {
+//            pus = userQuery.find();
+//            Log.i(TAG, pus.toString());
+//        } catch (ParseException e) {
+//            pus = null;
+//            e.printStackTrace();
+//        }
+//userQuery.where
+
+        ParseQuery <MessageGroup> mgQuery = new ParseQuery<MessageGroup>(MessageGroup.class);
+        mgQuery.whereEqualTo("users", users.get(0));
+
+        for (int i = 0; i < users.size(); i++){
+            mgQuery = new ParseQuery<MessageGroup>(MessageGroup.class).whereMatchesKeyInQuery("objectId","objectId", mgQuery).whereEqualTo("users", users.get(i));
+        }
+
+
+
+        ParseQuery <MessageGroup> temp = new ParseQuery<MessageGroup>(MessageGroup.class);
+        temp.whereMatchesKeyInQuery("users", "objectId", userQuery);
+        temp.whereEqualTo(MessageGroup.KEY_COUNTER, users.size());
+        return mgQuery;
     }
 
     private void populateData() {

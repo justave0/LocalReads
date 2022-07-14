@@ -16,6 +16,7 @@ public class MessageGroup extends ParseObject {
     public static final String KEY_USERS = "users";
     public static final String KEY_MESSAGES = "messages";
     public static final String KEY_TIME_STAMP = "timeStamp";
+    public static final String KEY_COUNTER = "counter";
 
     public MessageGroup(){}
 
@@ -46,4 +47,7 @@ public class MessageGroup extends ParseObject {
     public Date getTimeStamp(){
         return getDate(KEY_TIME_STAMP);
     }
+
+    public void setCounter(int counter){put(KEY_COUNTER, counter);}
+    public int getCounter(){return getInt(KEY_COUNTER);}
 }
