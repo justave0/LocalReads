@@ -40,6 +40,9 @@
         android:theme="@style/Theme.LocalReads"
         tools:targetApi="31">
         <activity
+            android:name=".SignOn.GoogleSignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetailedMessageActivity"
             android:exported="false" />
         <activity

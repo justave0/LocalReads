@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_local_feed"
-        android:enabled="true"
-        android:icon="@drawable/selector_local_feed_icon"
-        android:title="@string/text_local_feed"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_local_author"
         android:enabled="true"
         android:icon="@drawable/selector_local_author_icon"
         android:title="@string/text_local_author"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_local_feed"
+        android:enabled="true"
+        android:icon="@drawable/selector_local_feed_icon"
+        android:title="@string/text_local_feed"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"

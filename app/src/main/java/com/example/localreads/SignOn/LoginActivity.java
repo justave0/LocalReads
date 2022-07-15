@@ -3,6 +3,7 @@ package com.example.localreads.SignOn;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,6 +32,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 
@@ -39,6 +42,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import okhttp3.Headers;
 
@@ -62,10 +66,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 //        //Login persistence
-//        if (ParseUser.getCurrentUser() != null){
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        }
+        if (ParseUser.getCurrentUser() != null){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
 
         etLoginUsername = findViewById(R.id.etLoginUsername);
         etLoginPassword = findViewById(R.id.etLoginPassword);
@@ -262,6 +266,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -276,24 +282,38 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void authenticateBackend(JSONObject jsonObject) throws JSONException {
+    private void authenticateBackend(JSONObject jsonObject) throws JSONException, ParseException {
 
+        HashMap<String, String> jsonData = new HashMap<String, String>();
 
         // Print user identifier
-        String userId = jsonObject.getString("sub");
-        System.out.println("User ID: " + userId);
+        jsonData.put("userId",jsonObject.getString("sub"));
+        //System.out.println("User ID: " + userId);
 
         // Get profile information from payload
-        String email = jsonObject.getString("email");
-        boolean emailVerified = Boolean.valueOf(jsonObject.getBoolean("email_verified"));
-        String name = (String) jsonObject.getString("name");
-        String pictureUrl = (String) jsonObject.getString("picture");
-        String locale = (String) jsonObject.getString("locale");
-        String familyName = (String) jsonObject.getString("family_name");
-        String givenName = (String) jsonObject.getString("given_name");
+        jsonData.put("email",jsonObject.getString("email"));
+        jsonData.put("emailVerified", jsonObject.getString("email_verified"));
+        jsonData.put("name", jsonObject.getString("name"));
+        jsonData.put("picture", jsonObject.getString("picture"));
+        jsonData.put("locale", jsonObject.getString("locale"));
+        jsonData.put("family_name",jsonObject.getString("family_name"));
+        jsonData.put("given_name", jsonObject.getString("given_name"));
 
-
+        ParseQuery userQuery = new ParseQuery("_User");
+        userQuery.whereEqualTo("email", jsonData.get("email"));
+        if (userQuery.count() == 0) {
+//            Intent intent = new Intent(LoginActivity.this, GoogleSignUpActivity.class);
+//            intent.putExtra("jsonData", jsonData);
+//            startActivity(intent);
+            showGoogleSignUpDialog(jsonData);
+        }
 //        savePassword(userId, (String) payload.get("password"));
+    }
+
+    private void showGoogleSignUpDialog(HashMap<String, String> jsonData) {
+        FragmentManager fm = getSupportFragmentManager();
+        GoogleSignUpDialogFragment googleSignUpDialogFragment = GoogleSignUpDialogFragment.newInstance(jsonData);
+        googleSignUpDialogFragment.show(fm, GoogleSignUpDialogFragment.class.getSimpleName());
     }
 
     private void savePassword(String userId, String password) {

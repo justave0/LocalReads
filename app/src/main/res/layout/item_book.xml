@@ -111,12 +111,12 @@
                 android:paddingBottom="16dp"
                 android:visibility="visible">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@drawable/customborder">
+<!--                <FrameLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="2dp"-->
+<!--                    android:background="@drawable/customborder">-->
 
-                </FrameLayout>
+<!--                </FrameLayout>-->
 
                 <TextView
                     android:id="@+id/tvBookLocation"
