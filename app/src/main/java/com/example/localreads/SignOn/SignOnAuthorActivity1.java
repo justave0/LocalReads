@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -51,27 +49,27 @@ public class SignOnAuthorActivity1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on_author1);
         tvAuthorFavoriteGenres = findViewById(R.id.tvAuthorFavoriteGenres);
-        cbAAction = findViewById(R.id.cbAAction);
-        cbABiographies = findViewById(R.id.cbABiographies);
-        cbAClassics = findViewById(R.id.cbAClassics);
-        cbAComics = findViewById(R.id.cbAComics);
-        cbACookbooks = findViewById(R.id.cbACookbooks);
-        cbADetective = findViewById(R.id.cbADetective);
-        cbAEssays = findViewById(R.id.cbAEssays);
-        cbAFantasy = findViewById(R.id.cbAFantasy);
-        cbAFiction = findViewById(R.id.cbAFiction);
-        cbAHistoricalFiction = findViewById(R.id.cbAHistoricalFiction);
-        cbAHorror = findViewById(R.id.cbAHorror);
-        cbARomance = findViewById(R.id.cbARomance);
-        cbASciFi = findViewById(R.id.cbASciFi);
-        cbAShortStories = findViewById(R.id.cbAShortStories);
-        cbAWomen = findViewById(R.id.cbAWomen);
-        cbAHistory = findViewById(R.id.cbAHistory);
-        cbAMemoir = findViewById(R.id.cbAMemoir);
-        cbAPoetry = findViewById(R.id.cbAPoetry);
-        cbASelfHelp = findViewById(R.id.cbASelfHelp);
-        cbATrueCrime = findViewById(R.id.cbATrueCrime);
-        cbASuspense = findViewById(R.id.cbASuspense);
+        cbAAction = findViewById(R.id.cbGAction);
+        cbABiographies = findViewById(R.id.cbGBiographies);
+        cbAClassics = findViewById(R.id.cbGClassics);
+        cbAComics = findViewById(R.id.cbGComics);
+        cbACookbooks = findViewById(R.id.cbGCookbooks);
+        cbADetective = findViewById(R.id.cbGDetective);
+        cbAEssays = findViewById(R.id.cbGEssays);
+        cbAFantasy = findViewById(R.id.cbGFantasy);
+        cbAFiction = findViewById(R.id.cbGFiction);
+        cbAHistoricalFiction = findViewById(R.id.cbGHistoricalFiction);
+        cbAHorror = findViewById(R.id.cbGHorror);
+        cbARomance = findViewById(R.id.cbGRomance);
+        cbASciFi = findViewById(R.id.cbGSciFi);
+        cbAShortStories = findViewById(R.id.cbGShortStories);
+        cbAWomen = findViewById(R.id.cbGWomen);
+        cbAHistory = findViewById(R.id.cbGHistory);
+        cbAMemoir = findViewById(R.id.cbGMemoir);
+        cbAPoetry = findViewById(R.id.cbGPoetry);
+        cbASelfHelp = findViewById(R.id.cbGSelfHelp);
+        cbATrueCrime = findViewById(R.id.cbGTrueCrime);
+        cbASuspense = findViewById(R.id.cbGSuspense);
         fabGoNext = findViewById(R.id.fabGoNext);
         fabGoNext.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,13 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.localreads.MainActivity;
-import com.example.localreads.Models.Author;
-import com.example.localreads.Models.Book;
 import com.example.localreads.Models.Reader;
 import com.example.localreads.R;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -60,27 +55,27 @@ public class SignOnReaderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_on_reader);
 
         tvReaderFavoriteGenres = findViewById(R.id.tvAuthorFavoriteGenres);
-        cbRAction = findViewById(R.id.cbAAction);
-        cbRBiographies = findViewById(R.id.cbABiographies);
-        cbRClassics = findViewById(R.id.cbAClassics);
-        cbRComics = findViewById(R.id.cbAComics);
-        cbRCookbooks = findViewById(R.id.cbACookbooks);
-        cbRDetective = findViewById(R.id.cbADetective);
-        cbREssays = findViewById(R.id.cbAEssays);
-        cbRFantasy = findViewById(R.id.cbAFantasy);
-        cbRFiction = findViewById(R.id.cbAFiction);
-        cbRHistoricalFiction = findViewById(R.id.cbAHistoricalFiction);
-        cbRHorror = findViewById(R.id.cbAHorror);
-        cbRRomance = findViewById(R.id.cbARomance);
-        cbRSciFi = findViewById(R.id.cbASciFi);
-        cbRShortStories = findViewById(R.id.cbAShortStories);
-        cbRWomen = findViewById(R.id.cbAWomen);
-        cbRHistory = findViewById(R.id.cbAHistory);
-        cbRMemoir = findViewById(R.id.cbAMemoir);
-        cbRPoetry = findViewById(R.id.cbAPoetry);
-        cbRSelfHelp = findViewById(R.id.cbASelfHelp);
-        cbRTrueCrime = findViewById(R.id.cbATrueCrime);
-        cbRSuspense = findViewById(R.id.cbASuspense);
+        cbRAction = findViewById(R.id.cbGAction);
+        cbRBiographies = findViewById(R.id.cbGBiographies);
+        cbRClassics = findViewById(R.id.cbGClassics);
+        cbRComics = findViewById(R.id.cbGComics);
+        cbRCookbooks = findViewById(R.id.cbGCookbooks);
+        cbRDetective = findViewById(R.id.cbGDetective);
+        cbREssays = findViewById(R.id.cbGEssays);
+        cbRFantasy = findViewById(R.id.cbGFantasy);
+        cbRFiction = findViewById(R.id.cbGFiction);
+        cbRHistoricalFiction = findViewById(R.id.cbGHistoricalFiction);
+        cbRHorror = findViewById(R.id.cbGHorror);
+        cbRRomance = findViewById(R.id.cbGRomance);
+        cbRSciFi = findViewById(R.id.cbGSciFi);
+        cbRShortStories = findViewById(R.id.cbGShortStories);
+        cbRWomen = findViewById(R.id.cbGWomen);
+        cbRHistory = findViewById(R.id.cbGHistory);
+        cbRMemoir = findViewById(R.id.cbGMemoir);
+        cbRPoetry = findViewById(R.id.cbGPoetry);
+        cbRSelfHelp = findViewById(R.id.cbGSelfHelp);
+        cbRTrueCrime = findViewById(R.id.cbGTrueCrime);
+        cbRSuspense = findViewById(R.id.cbGSuspense);
         btReaderSignOn = findViewById(R.id.btReaderSignOn);
         // set Favorite Genres of Reader
         btReaderSignOn.setOnClickListener(new View.OnClickListener() {

@@ -94,10 +94,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 intent = new Intent(SignUpActivity.this, SignOnReaderActivity.class);
                             }
                             else{
-                                displayOneTapUI();
                                 intent = new Intent(SignUpActivity.this, SignOnAuthorActivity1.class);
                             }
-                            //startActivity(intent);
+                            startActivity(intent);
                         } else {
                             Log.e(TAG, e.toString());
                         }
@@ -105,10 +104,6 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
-
-    }
-
-    private void displayOneTapUI() {
 
     }
 }

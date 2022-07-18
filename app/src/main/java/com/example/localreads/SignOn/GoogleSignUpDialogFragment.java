@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.localreads.R;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
 
@@ -23,6 +25,9 @@ public class GoogleSignUpDialogFragment extends DialogFragment {
     private HashMap<String, String> userData;
     EditText etGoogleSignUpEmail;
     Button btGoogleMoreInfo;
+    public TextInputEditText etGoogleSignUpUsername;
+    public MaterialButtonToggleGroup bgGoogleChoice;
+    public Button btGoogleSignUpContinue;
 
 
     public GoogleSignUpDialogFragment() {
@@ -57,7 +62,9 @@ public class GoogleSignUpDialogFragment extends DialogFragment {
         
         btGoogleMoreInfo = view.findViewById(R.id.btGoogleMoreInfo);
 
-
+        etGoogleSignUpUsername = view.findViewById(R.id.etGoogleSignUpUsername);
+        bgGoogleChoice = view.findViewById(R.id.bgGoogleChoice);
+        btGoogleSignUpContinue = view.findViewById(R.id.btGoogleSignUpContinue);
 
 
         // Get field from view
@@ -76,6 +83,15 @@ public class GoogleSignUpDialogFragment extends DialogFragment {
                 inflateInfoMenu(v);
             }
         });
+
+        btGoogleSignUpContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = etGoogleSignUpUsername.getText().toString();
+                String tag = (String) ((Button)view.findViewById(bgGoogleChoice.getCheckedButtonId())).getText();
+                ((LoginActivity)getActivity()).signUpUserIntent(username, tag);
+            }
+        });
     }
 
     private void inflateInfoMenu(View v) {
@@ -86,9 +102,6 @@ public class GoogleSignUpDialogFragment extends DialogFragment {
                         " and then change to an author to publish their books to the app. Authors are " +
                         "required to give sensitive information like their city and state of residence.")
                 .show();
-
-
-
     }
 
     @Override
@@ -102,6 +115,4 @@ public class GoogleSignUpDialogFragment extends DialogFragment {
         // Call super onResume after sizing
         super.onResume();
     }
-
-
 }

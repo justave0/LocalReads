@@ -19,220 +19,220 @@
         app:layout_constraintTop_toBottomOf="@+id/tvAuthorSignOnStep1" />
 
     <CheckBox
-        android:id="@+id/cbAAction"
+        android:id="@+id/cbGAction"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:text="Action and Adventure"
-        app:layout_constraintBottom_toTopOf="@+id/cbADetective"
-        app:layout_constraintEnd_toStartOf="@+id/cbAClassics"
+        app:layout_constraintBottom_toTopOf="@+id/cbGDetective"
+        app:layout_constraintEnd_toStartOf="@+id/cbGClassics"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cbAClassics" />
+        app:layout_constraintTop_toTopOf="@+id/cbGClassics" />
 
     <CheckBox
-        android:id="@+id/cbAClassics"
+        android:id="@+id/cbGClassics"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
         android:text="Classics"
-        app:layout_constraintBottom_toTopOf="@+id/cbAFantasy"
-        app:layout_constraintEnd_toStartOf="@+id/cbAComics"
-        app:layout_constraintStart_toEndOf="@+id/cbAAction"
+        app:layout_constraintBottom_toTopOf="@+id/cbGFantasy"
+        app:layout_constraintEnd_toStartOf="@+id/cbGComics"
+        app:layout_constraintStart_toEndOf="@+id/cbGAction"
         app:layout_constraintTop_toBottomOf="@+id/tvAuthorFavoriteGenres" />
 
     <CheckBox
-        android:id="@+id/cbAComics"
+        android:id="@+id/cbGComics"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
         android:text="Comic Books and Graphic Novels"
-        app:layout_constraintBottom_toTopOf="@+id/cbAHistoricalFiction"
+        app:layout_constraintBottom_toTopOf="@+id/cbGHistoricalFiction"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cbAClassics"
-        app:layout_constraintTop_toTopOf="@+id/cbAClassics" />
+        app:layout_constraintStart_toEndOf="@+id/cbGClassics"
+        app:layout_constraintTop_toTopOf="@+id/cbGClassics" />
 
     <CheckBox
-        android:id="@+id/cbADetective"
+        android:id="@+id/cbGDetective"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Detective and Mystery"
-        app:layout_constraintBottom_toTopOf="@+id/cbAHorror"
-        app:layout_constraintEnd_toEndOf="@+id/cbAAction"
-        app:layout_constraintStart_toStartOf="@+id/cbAAction"
-        app:layout_constraintTop_toBottomOf="@+id/cbAAction" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGHorror"
+        app:layout_constraintEnd_toEndOf="@+id/cbGAction"
+        app:layout_constraintStart_toStartOf="@+id/cbGAction"
+        app:layout_constraintTop_toBottomOf="@+id/cbGAction" />
 
     <CheckBox
-        android:id="@+id/cbAFantasy"
+        android:id="@+id/cbGFantasy"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Fantasy"
-        app:layout_constraintBottom_toTopOf="@+id/cbAFiction"
-        app:layout_constraintEnd_toEndOf="@+id/cbAClassics"
-        app:layout_constraintStart_toEndOf="@+id/cbADetective"
-        app:layout_constraintTop_toBottomOf="@+id/cbAClassics" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGFiction"
+        app:layout_constraintEnd_toEndOf="@+id/cbGClassics"
+        app:layout_constraintStart_toEndOf="@+id/cbGDetective"
+        app:layout_constraintTop_toBottomOf="@+id/cbGClassics" />
 
     <CheckBox
-        android:id="@+id/cbAHistoricalFiction"
+        android:id="@+id/cbGHistoricalFiction"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Historical Fiction"
-        app:layout_constraintBottom_toTopOf="@+id/cbARomance"
-        app:layout_constraintEnd_toEndOf="@+id/cbAComics"
-        app:layout_constraintStart_toEndOf="@+id/cbAFantasy"
-        app:layout_constraintTop_toBottomOf="@+id/cbAComics" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGRomance"
+        app:layout_constraintEnd_toEndOf="@+id/cbGComics"
+        app:layout_constraintStart_toEndOf="@+id/cbGFantasy"
+        app:layout_constraintTop_toBottomOf="@+id/cbGComics" />
 
     <CheckBox
-        android:id="@+id/cbAHorror"
+        android:id="@+id/cbGHorror"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Horror"
-        app:layout_constraintBottom_toTopOf="@+id/cbASciFi"
-        app:layout_constraintEnd_toEndOf="@+id/cbADetective"
-        app:layout_constraintStart_toStartOf="@+id/cbADetective"
-        app:layout_constraintTop_toBottomOf="@+id/cbADetective" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGSciFi"
+        app:layout_constraintEnd_toEndOf="@+id/cbGDetective"
+        app:layout_constraintStart_toStartOf="@+id/cbGDetective"
+        app:layout_constraintTop_toBottomOf="@+id/cbGDetective" />
 
     <CheckBox
-        android:id="@+id/cbAFiction"
+        android:id="@+id/cbGFiction"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Literary Fiction"
-        app:layout_constraintBottom_toTopOf="@+id/cbAShortStories"
-        app:layout_constraintEnd_toEndOf="@+id/cbAFantasy"
-        app:layout_constraintStart_toEndOf="@+id/cbAHorror"
-        app:layout_constraintTop_toBottomOf="@+id/cbAFantasy" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGShortStories"
+        app:layout_constraintEnd_toEndOf="@+id/cbGFantasy"
+        app:layout_constraintStart_toEndOf="@+id/cbGHorror"
+        app:layout_constraintTop_toBottomOf="@+id/cbGFantasy" />
 
     <CheckBox
-        android:id="@+id/cbARomance"
+        android:id="@+id/cbGRomance"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Romance"
-        app:layout_constraintBottom_toTopOf="@+id/cbASuspense"
-        app:layout_constraintEnd_toEndOf="@+id/cbAHistoricalFiction"
-        app:layout_constraintStart_toEndOf="@+id/cbAFiction"
-        app:layout_constraintTop_toBottomOf="@+id/cbAHistoricalFiction" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGSuspense"
+        app:layout_constraintEnd_toEndOf="@+id/cbGHistoricalFiction"
+        app:layout_constraintStart_toEndOf="@+id/cbGFiction"
+        app:layout_constraintTop_toBottomOf="@+id/cbGHistoricalFiction" />
 
     <CheckBox
-        android:id="@+id/cbASciFi"
+        android:id="@+id/cbGSciFi"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Science Fiction"
-        app:layout_constraintBottom_toTopOf="@+id/cbAWomen"
-        app:layout_constraintEnd_toEndOf="@+id/cbAHorror"
-        app:layout_constraintStart_toStartOf="@+id/cbAHorror"
-        app:layout_constraintTop_toBottomOf="@+id/cbAHorror" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGWomen"
+        app:layout_constraintEnd_toEndOf="@+id/cbGHorror"
+        app:layout_constraintStart_toStartOf="@+id/cbGHorror"
+        app:layout_constraintTop_toBottomOf="@+id/cbGHorror" />
 
     <CheckBox
-        android:id="@+id/cbAShortStories"
+        android:id="@+id/cbGShortStories"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Short Stories"
-        app:layout_constraintBottom_toTopOf="@+id/cbABiographies"
-        app:layout_constraintEnd_toEndOf="@+id/cbAFiction"
-        app:layout_constraintStart_toEndOf="@+id/cbASciFi"
-        app:layout_constraintTop_toBottomOf="@+id/cbAFiction" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGBiographies"
+        app:layout_constraintEnd_toEndOf="@+id/cbGFiction"
+        app:layout_constraintStart_toEndOf="@+id/cbGSciFi"
+        app:layout_constraintTop_toBottomOf="@+id/cbGFiction" />
 
     <CheckBox
-        android:id="@+id/cbASuspense"
+        android:id="@+id/cbGSuspense"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Suspense and Thrillers"
-        app:layout_constraintBottom_toTopOf="@+id/cbACookbooks"
-        app:layout_constraintEnd_toEndOf="@+id/cbARomance"
-        app:layout_constraintStart_toEndOf="@+id/cbAShortStories"
-        app:layout_constraintTop_toBottomOf="@+id/cbARomance" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGCookbooks"
+        app:layout_constraintEnd_toEndOf="@+id/cbGRomance"
+        app:layout_constraintStart_toEndOf="@+id/cbGShortStories"
+        app:layout_constraintTop_toBottomOf="@+id/cbGRomance" />
 
     <CheckBox
-        android:id="@+id/cbAWomen"
+        android:id="@+id/cbGWomen"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Women's Fiction"
-        app:layout_constraintBottom_toTopOf="@+id/cbAEssays"
-        app:layout_constraintEnd_toEndOf="@+id/cbASciFi"
-        app:layout_constraintStart_toStartOf="@+id/cbASciFi"
-        app:layout_constraintTop_toBottomOf="@+id/cbASciFi" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGEssays"
+        app:layout_constraintEnd_toEndOf="@+id/cbGSciFi"
+        app:layout_constraintStart_toStartOf="@+id/cbGSciFi"
+        app:layout_constraintTop_toBottomOf="@+id/cbGSciFi" />
 
     <CheckBox
-        android:id="@+id/cbABiographies"
+        android:id="@+id/cbGBiographies"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Biographies and Autobiographies"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/cbAHistory"
-        app:layout_constraintEnd_toEndOf="@+id/cbAShortStories"
+        app:layout_constraintBottom_toTopOf="@+id/cbGHistory"
+        app:layout_constraintEnd_toEndOf="@+id/cbGShortStories"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/cbAWomen"
-        app:layout_constraintTop_toBottomOf="@+id/cbAShortStories" />
+        app:layout_constraintStart_toEndOf="@+id/cbGWomen"
+        app:layout_constraintTop_toBottomOf="@+id/cbGShortStories" />
 
     <CheckBox
-        android:id="@+id/cbACookbooks"
+        android:id="@+id/cbGCookbooks"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Cookbooks"
-        app:layout_constraintBottom_toTopOf="@+id/cbAMemoir"
-        app:layout_constraintEnd_toEndOf="@+id/cbASuspense"
-        app:layout_constraintStart_toEndOf="@+id/cbABiographies"
-        app:layout_constraintTop_toBottomOf="@+id/cbASuspense" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGMemoir"
+        app:layout_constraintEnd_toEndOf="@+id/cbGSuspense"
+        app:layout_constraintStart_toEndOf="@+id/cbGBiographies"
+        app:layout_constraintTop_toBottomOf="@+id/cbGSuspense" />
 
     <CheckBox
-        android:id="@+id/cbAEssays"
+        android:id="@+id/cbGEssays"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Essays"
-        app:layout_constraintBottom_toTopOf="@+id/cbAPoetry"
-        app:layout_constraintEnd_toEndOf="@+id/cbAWomen"
-        app:layout_constraintStart_toStartOf="@+id/cbAWomen"
-        app:layout_constraintTop_toBottomOf="@+id/cbAWomen" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGPoetry"
+        app:layout_constraintEnd_toEndOf="@+id/cbGWomen"
+        app:layout_constraintStart_toStartOf="@+id/cbGWomen"
+        app:layout_constraintTop_toBottomOf="@+id/cbGWomen" />
 
     <CheckBox
-        android:id="@+id/cbAHistory"
+        android:id="@+id/cbGHistory"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="History"
-        app:layout_constraintBottom_toTopOf="@+id/cbASelfHelp"
-        app:layout_constraintEnd_toEndOf="@+id/cbABiographies"
-        app:layout_constraintStart_toEndOf="@+id/cbAEssays"
-        app:layout_constraintTop_toBottomOf="@+id/cbABiographies" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGSelfHelp"
+        app:layout_constraintEnd_toEndOf="@+id/cbGBiographies"
+        app:layout_constraintStart_toEndOf="@+id/cbGEssays"
+        app:layout_constraintTop_toBottomOf="@+id/cbGBiographies" />
 
     <CheckBox
-        android:id="@+id/cbAMemoir"
+        android:id="@+id/cbGMemoir"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Memoir"
-        app:layout_constraintBottom_toTopOf="@+id/cbATrueCrime"
-        app:layout_constraintEnd_toEndOf="@+id/cbACookbooks"
-        app:layout_constraintStart_toEndOf="@+id/cbAHistory"
-        app:layout_constraintTop_toBottomOf="@+id/cbACookbooks" />
+        app:layout_constraintBottom_toTopOf="@+id/cbGTrueCrime"
+        app:layout_constraintEnd_toEndOf="@+id/cbGCookbooks"
+        app:layout_constraintStart_toEndOf="@+id/cbGHistory"
+        app:layout_constraintTop_toBottomOf="@+id/cbGCookbooks" />
 
     <CheckBox
-        android:id="@+id/cbAPoetry"
+        android:id="@+id/cbGPoetry"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Poetry"
-        app:layout_constraintBottom_toBottomOf="@+id/cbASelfHelp"
-        app:layout_constraintEnd_toEndOf="@+id/cbAEssays"
-        app:layout_constraintStart_toStartOf="@+id/cbAEssays"
-        app:layout_constraintTop_toBottomOf="@+id/cbAEssays" />
+        app:layout_constraintBottom_toBottomOf="@+id/cbGSelfHelp"
+        app:layout_constraintEnd_toEndOf="@+id/cbGEssays"
+        app:layout_constraintStart_toStartOf="@+id/cbGEssays"
+        app:layout_constraintTop_toBottomOf="@+id/cbGEssays" />
 
     <CheckBox
-        android:id="@+id/cbASelfHelp"
+        android:id="@+id/cbGSelfHelp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="160dp"
         android:text="Self-Help"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cbAHistory"
-        app:layout_constraintStart_toEndOf="@+id/cbAPoetry"
-        app:layout_constraintTop_toBottomOf="@+id/cbAHistory" />
+        app:layout_constraintEnd_toEndOf="@+id/cbGHistory"
+        app:layout_constraintStart_toEndOf="@+id/cbGPoetry"
+        app:layout_constraintTop_toBottomOf="@+id/cbGHistory" />
 
     <CheckBox
-        android:id="@+id/cbATrueCrime"
+        android:id="@+id/cbGTrueCrime"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="True Crime"
-        app:layout_constraintBottom_toBottomOf="@+id/cbASelfHelp"
-        app:layout_constraintEnd_toEndOf="@+id/cbAMemoir"
-        app:layout_constraintStart_toEndOf="@+id/cbASelfHelp"
-        app:layout_constraintTop_toBottomOf="@+id/cbAMemoir" />
+        app:layout_constraintBottom_toBottomOf="@+id/cbGSelfHelp"
+        app:layout_constraintEnd_toEndOf="@+id/cbGMemoir"
+        app:layout_constraintStart_toEndOf="@+id/cbGSelfHelp"
+        app:layout_constraintTop_toBottomOf="@+id/cbGMemoir" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabGoNext"

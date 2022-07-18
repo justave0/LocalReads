@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btGoNextAuthorSignOn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignOn.SignOnReaderActivity">
@@ -10,7 +11,7 @@
         android:id="@+id/tvAuthorFavoriteGenres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Please Select Your Favorite Genres"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -234,14 +235,19 @@
         app:layout_constraintTop_toBottomOf="@+id/cbGMemoir" />
 
     <Button
-        android:id="@+id/btReaderSignOn"
+        android:id="@+id/fabGoNext"
+        style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Get Started!"
-        app:layout_constraintEnd_toEndOf="@+id/cbGTrueCrime"
-        app:layout_constraintStart_toStartOf="@+id/cbGPoetry"
-        app:layout_constraintTop_toBottomOf="@+id/cbGSelfHelp" />
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
+        android:clickable="true"
+        android:text="Continue"
+        app:icon="@android:drawable/ic_media_play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_play"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

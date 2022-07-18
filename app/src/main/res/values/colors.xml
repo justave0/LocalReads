@@ -60,4 +60,5 @@
     <color name="md_theme_dark_surfaceTint">#5BDBBF</color>
     <color name="md_theme_dark_surfaceTintColor">#5BDBBF</color>
     <color name="transparent">#00F44336</color>
+    <color name="grey_container">#494949</color>
 </resources>

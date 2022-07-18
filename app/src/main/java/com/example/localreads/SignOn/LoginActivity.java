@@ -31,18 +31,24 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 import okhttp3.Headers;
 
@@ -59,16 +65,20 @@ public class LoginActivity extends AppCompatActivity {
     private BeginSignInRequest signUpRequest;
     private static final int REQUEST_CODE_GIS_SAVE_PASSWORD = 2; /* unique request id */
     private AsyncHttpClient clienthttp;
+    private HashMap<String, String> userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        //Login persistence
+        //Login persistence
         if (ParseUser.getCurrentUser() != null){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+        }
+        else{
+            callOneTap();
         }
 
         etLoginUsername = findViewById(R.id.etLoginUsername);
@@ -76,31 +86,39 @@ public class LoginActivity extends AppCompatActivity {
         btLogin = findViewById(R.id.btLogin);
         btLoginCreateAccount = findViewById(R.id.btLoginCreateAccount);
 
-//        Map<String, String> authData = new HashMap<String, String>();
-//        authData.put("access_token", "ya29.A0AVA9y1uq44RZr7nUWP4_fA9WRiOCEVX0JJ1fwfi-14d7fG7w6egNmazdRWILd1jo0Wia6r74sXba-_zNVCkBkwTQvAIosAQ5Vt_rwT8zAIDm0diah7Bp5CaLWISyPjyCYqJcMSv5TEGVGXypoSQE-ijvDoVPYUNnWUtBVEFTQVRBU0ZRRTY1ZHI4blFZaklUNm5wdFAwY19CbDlQa1VJQQ0163");
-//        authData.put("id", "111622660517888927203");
-//
-//        if (ParseUser.logInWithInBackground("google", badData) != null) {
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        }
 
 
+        btLogin.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logInInBackground(etLoginUsername.getText().toString(), etLoginPassword.getText().toString(),
+                        new LogInCallback() {
+                            @Override
+                            public void done(ParseUser user, com.parse.ParseException e) {
+                                if (user != null) {
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Log.e(TAG, e.toString());
+                                    Toast.makeText(LoginActivity.this, "Incorrect Username or Password", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        btLoginCreateAccount.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void callOneTap() {
         oneTapClient = Identity.getSignInClient(this);
-//        signInRequest = BeginSignInRequest.builder()
-//                .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
-//                        .setSupported(true)
-//                        .build())
-//                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-//                        .setSupported(true)
-//                        // Your server's client ID, not your Android client ID.
-//                        .setServerClientId(getString(R.string.web_client_id))
-//                        // Only show accounts previously used to sign in.
-//                        .setFilterByAuthorizedAccounts(true)
-//                        .build())
-//                // Automatically sign in when exactly one credential is retrieved.
-//                .setAutoSelectEnabled(true)
-//                .build();
+
         signUpRequest = BeginSignInRequest.builder()
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
@@ -132,33 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, e.getLocalizedMessage());
                     }
                 });
-
-        btLogin.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser.logInInBackground(etLoginUsername.getText().toString(), etLoginPassword.getText().toString(),
-                        new LogInCallback() {
-                            @Override
-                            public void done(ParseUser user, com.parse.ParseException e) {
-                                if (user != null) {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Log.e(TAG, e.toString());
-                                    Toast.makeText(LoginActivity.this, "Incorrect Username or Password", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-            }
-        });
-
-        btLoginCreateAccount.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void signUpUser() {
@@ -283,7 +274,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void authenticateBackend(JSONObject jsonObject) throws JSONException, ParseException {
-
         HashMap<String, String> jsonData = new HashMap<String, String>();
 
         // Print user identifier
@@ -302,12 +292,12 @@ public class LoginActivity extends AppCompatActivity {
         ParseQuery userQuery = new ParseQuery("_User");
         userQuery.whereEqualTo("email", jsonData.get("email"));
         if (userQuery.count() == 0) {
-//            Intent intent = new Intent(LoginActivity.this, GoogleSignUpActivity.class);
-//            intent.putExtra("jsonData", jsonData);
-//            startActivity(intent);
+            userData = jsonData;
             showGoogleSignUpDialog(jsonData);
         }
-//        savePassword(userId, (String) payload.get("password"));
+        else{
+
+        }
     }
 
     private void showGoogleSignUpDialog(HashMap<String, String> jsonData) {
@@ -316,26 +306,66 @@ public class LoginActivity extends AppCompatActivity {
         googleSignUpDialogFragment.show(fm, GoogleSignUpDialogFragment.class.getSimpleName());
     }
 
-    private void savePassword(String userId, String password) {
-        SignInPassword signInPassword = new SignInPassword(userId, password);
-        SavePasswordRequest savePasswordRequest =
-                SavePasswordRequest.builder().setSignInPassword(signInPassword).build();
-        Identity.getCredentialSavingClient(this)
-                .savePassword(savePasswordRequest)
-                .addOnSuccessListener(
-                        result -> {
-                            try {
-                                startIntentSenderForResult(
-                                        result.getPendingIntent().getIntentSender(),
-                                        REQUEST_CODE_GIS_SAVE_PASSWORD,
-                                        /* fillInIntent= */ null,
-                                        /* flagsMask= */ 0,
-                                        /* flagsValue= */ 0,
-                                        /* extraFlags= */ 0,
-                                        /* options= */ null);
-                            } catch (IntentSender.SendIntentException e) {
-                                e.printStackTrace();
-                            }
-                        });
+    public void signUpUserIntent(String username, String tag) {
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+
+        //Random Password Generator
+        byte[] array = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(array);
+        String generatedString = new String(array, Charset.forName("UTF-8"));
+
+        user.setPassword(generatedString);
+        user.setEmail(userData.get("email"));
+        user.put("location", new ParseGeoPoint(0,0));
+
+        if (tag.equals("Reader")) {
+            user.put("tag", "reader");
+        }
+        else {
+            user.put("tag", "author");
+        }
+        // Set custom properties
+        // Invoke signUpInBackground
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                if (e == null) {
+                    Intent intent;
+                    if (tag.equals("Reader")){
+                        intent = new Intent(LoginActivity.this, SignOnReaderActivity.class);
+                    }
+                    else{
+                        intent = new Intent(LoginActivity.this, SignOnAuthorActivity1.class);
+                    }
+                    startActivity(intent);
+                } else {
+                    Log.e(TAG, e.toString());
+                }
+            }
+        });
     }
+
+//    private void savePassword(String userId, String password) {
+//        SignInPassword signInPassword = new SignInPassword(userId, password);
+//        SavePasswordRequest savePasswordRequest =
+//                SavePasswordRequest.builder().setSignInPassword(signInPassword).build();
+//        Identity.getCredentialSavingClient(this)
+//                .savePassword(savePasswordRequest)
+//                .addOnSuccessListener(
+//                        result -> {
+//                            try {
+//                                startIntentSenderForResult(
+//                                        result.getPendingIntent().getIntentSender(),
+//                                        REQUEST_CODE_GIS_SAVE_PASSWORD,
+//                                        /* fillInIntent= */ null,
+//                                        /* flagsMask= */ 0,
+//                                        /* flagsValue= */ 0,
+//                                        /* extraFlags= */ 0,
+//                                        /* options= */ null);
+//                            } catch (IntentSender.SendIntentException e) {
+//                                e.printStackTrace();
+//                            }
+//                        });
+//    }
 }
