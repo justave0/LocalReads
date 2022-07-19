@@ -19,6 +19,8 @@ import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.R;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
@@ -40,6 +42,8 @@ public class LocalFeedFragment extends Fragment {
     public List<String> selectedGenres;
     TextView tvTitleText;
     ChipGroup cgTopMenu;
+    CollapsingToolbarLayout ctlMain;
+    BottomNavigationView bottom_navigation;
 
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
@@ -61,6 +65,9 @@ public class LocalFeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ArrayList<Book> books = new ArrayList<Book>();
         adapter = new BookAdapter(books, getActivity());
+        ctlMain = getActivity().findViewById(R.id.ctlMain);
+        bottom_navigation = getActivity().findViewById(R.id.bottom_navigation);
+
         setExitTransition(new MaterialFadeThrough());
         setReenterTransition(new MaterialFadeThrough());
         setEnterTransition(new MaterialFadeThrough());
@@ -162,6 +169,9 @@ public class LocalFeedFragment extends Fragment {
             adapter.clear();
             books.clear();
         }
+
+        ctlMain.setVisibility(View.VISIBLE);
+        ctlMain.setVisibility(View.VISIBLE);
     }
 
     // This method is called after the parent Activity's onCreate() method has completed.

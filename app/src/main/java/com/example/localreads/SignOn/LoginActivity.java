@@ -41,6 +41,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+import com.parse.boltsinternal.Task;
 
 
 import org.json.JSONException;
@@ -50,6 +51,7 @@ import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import okhttp3.Headers;
@@ -263,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
                     long expTime = Long.valueOf(jsonObject.getString("exp"));
                     Boolean exp = Long.valueOf(jsonObject.getString("exp")) > time;
                     if(jsonObject.getString("iss").equals("https://accounts.google.com") && exp){
-                        authenticateBackend(jsonObject);
+                        authenticateBackend(jsonObject, idTokenString);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -283,7 +285,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void authenticateBackend(JSONObject jsonObject) throws JSONException, ParseException {
+    private void authenticateBackend(JSONObject jsonObject, String idTokenString) throws JSONException, ParseException {
         HashMap<String, String> jsonData = new HashMap<String, String>();
 
         // Print user identifier
@@ -302,14 +304,17 @@ public class LoginActivity extends AppCompatActivity {
         ParseQuery userQuery = new ParseQuery("_User");
         userQuery.whereEqualTo("email", jsonData.get("email"));
 
-
+        ParseUser user = (ParseUser) userQuery.getFirst();
         if (userQuery.count() == 0) {
             userData = jsonData;
             showGoogleSignUpDialog(jsonData);
         }
         else{
-//            String sessionToken = (currUser.getSessionToken());
-//            ParseUser.become(currUser.getSessionToken());
+            Map<String, String> authData = new HashMap<String, String>();
+            authData.put("access_token", idTokenString);
+            authData.put("id", jsonData.get("userId"));
+            ParseUser.logInWithInBackground("google", authData);
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("googleUserData", jsonData);
             startActivity(intent);

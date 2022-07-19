@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -24,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -69,6 +71,7 @@ public class DetailBookFragment extends Fragment {
     RecyclerView rvDetailGoogleBooks;
     CollapsingToolbarLayout ctlMain;
     BottomNavigationView bottom_navigation;
+    FrameLayout flTemp;
 
 
     // This event fires 1st, before creation of fragment or any views
@@ -91,14 +94,16 @@ public class DetailBookFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBook = Parcels.unwrap(getArguments().getParcelable("book"));
         ablTopMenu = getActivity().findViewById(R.id.ablMain);
-//        ablTopMenu.setExpanded(false);
         ablTopMenu.setEnabled(false);
         ctlMain = getActivity().findViewById(R.id.ctlMain);
-//        ctlMain.setTitleEnabled(false);
         ctlMain.setVisibility(View.GONE);
 
         bottom_navigation = getActivity().findViewById(R.id.bottom_navigation);
-        bottom_navigation.setVisibility(View.GONE);
+        bottom_navigation.setVisibility(View.INVISIBLE);
+
+        flTemp = getActivity().findViewById(R.id.flTemp);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
+        params.setBehavior(null);
 
         ArrayList<Book> authorBooks = new ArrayList<Book>();
         moreBooksAdapter = new MoreBooksAdapter(authorBooks, getActivity());
@@ -382,6 +387,13 @@ public class DetailBookFragment extends Fragment {
     public void onPause() {
         super.onPause();
         this.listener = null;
+
+        bottom_navigation.setVisibility(View.VISIBLE);
+        ctlMain.setVisibility(View.VISIBLE);
+        AppBarLayout.ScrollingViewBehavior viewBehavior = new AppBarLayout.ScrollingViewBehavior();
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
+        params.setBehavior(viewBehavior);
     }
 // This method is called after the parent Activity's onCreate() method has completed.
     // Accessing the view hierarchy of the parent activity must be done in the onActivityCreated.
