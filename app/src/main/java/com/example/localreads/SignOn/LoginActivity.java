@@ -334,6 +334,7 @@ public class LoginActivity extends AppCompatActivity {
         user.setPassword(generatedString);
         user.setEmail(userData.get("email"));
         user.put("location", new ParseGeoPoint(0,0));
+        user.put("profilePic", userData.get("picture"));
 
         if (tag.equals("Reader")) {
             user.put("tag", "reader");

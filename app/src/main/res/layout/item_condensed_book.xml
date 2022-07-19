@@ -27,7 +27,7 @@
 
             <ImageView
                 android:id="@+id/ivCondensedBookImage"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="356dp"
                 android:layout_gravity="center"
                 android:maxHeight="200dp"
@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:maxWidth="180dp"
                 android:text="Title"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 app:layout_constraintBottom_toBottomOf="@+id/ivCondensedBookImage"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:maxWidth="180dp"
                 android:singleLine="true"
                 android:text="Genres"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
