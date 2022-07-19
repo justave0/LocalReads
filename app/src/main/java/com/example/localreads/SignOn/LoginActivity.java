@@ -26,6 +26,8 @@ import com.google.android.gms.auth.api.identity.SavePasswordRequest;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.identity.SignInPassword;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,17 +68,25 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GIS_SAVE_PASSWORD = 2; /* unique request id */
     private AsyncHttpClient clienthttp;
     private HashMap<String, String> userData;
+    private static final int NULL_GOOGLE_USER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
         //Login persistence
-        if (ParseUser.getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+        GoogleSignInAccount lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (lastSignedInAccount != null) {
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
         }
+//        if (ParseUser.getCurrentUser() != null){
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//        }
         else{
             callOneTap();
         }
@@ -291,12 +301,18 @@ public class LoginActivity extends AppCompatActivity {
 
         ParseQuery userQuery = new ParseQuery("_User");
         userQuery.whereEqualTo("email", jsonData.get("email"));
+
+
         if (userQuery.count() == 0) {
             userData = jsonData;
             showGoogleSignUpDialog(jsonData);
         }
         else{
-
+//            String sessionToken = (currUser.getSessionToken());
+//            ParseUser.become(currUser.getSessionToken());
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("googleUserData", jsonData);
+            startActivity(intent);
         }
     }
 
@@ -331,6 +347,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(com.parse.ParseException e) {
                 if (e == null) {
+                    ParseUser user1 = ParseUser.getCurrentUser();
                     Intent intent;
                     if (tag.equals("Reader")){
                         intent = new Intent(LoginActivity.this, SignOnReaderActivity.class);

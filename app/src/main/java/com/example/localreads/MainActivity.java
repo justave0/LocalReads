@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     Chip radiusChip;
     List<String> selectedGenres = new ArrayList<>();
     public ProgressBar spinner;
+    public static HashMap<String, String> googleUserData = new HashMap<String, String>();
 
 
 
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         tvTitleText = findViewById(R.id.tvTitleText);
         genresChip = findViewById(R.id.genresChip);
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
+
+        googleUserData = (HashMap<String, String>) getIntent().getSerializableExtra("googleUserData");
 
         getUserTag();
         fragment_local_feed = new LocalFeedFragment();
@@ -289,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
     // Helper function to get if the current user is a reader or author
     private void getUserTag() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        ParseUser me = ParseUser.getCurrentUser();
         query.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -428,29 +433,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveLocation() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        // Retrieve the object by id
-        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), (object, e) -> {
-            if (e == null) {
-                //Object was successfully retrieved
-                // Update the fields we want to
-                if(mCurrentLocation != null) {
-                    object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-                }
-                //All other fields will remain the same
-                try {
-                    object.save();
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                }
-                if (mCurrentLocation != null) {
+        ParseUser currUser = ParseUser.getCurrentUser();
+        if(currUser != null&& mCurrentLocation != null){
+            currUser.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+            currUser.saveInBackground(e -> {
+                if(e==null){
+                    //Save successfull
+//                    Toast.makeText(this, "Save Successful", Toast.LENGTH_SHORT).show();
                     getReverseGeocode(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                }else{
+                    // Something went wrong while saving
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                // something went wrong
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        }
+
+
+
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+//        // Retrieve the object by id
+//        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), (object, e) -> {
+//            if (e == null) {
+//                //Object was successfully retrieved
+//                // Update the fields we want to
+//                if(mCurrentLocation != null) {
+//                    object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+//                }
+//                //All other fields will remain the same
+//                try {
+//                    object.save();
+//                } catch (ParseException ex) {
+//                    ex.printStackTrace();
+//                }
+//                if (mCurrentLocation != null) {
+//                    getReverseGeocode(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+//                }
+//            } else {
+//                // something went wrong
+//                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
     public void onSaveInstanceState(Bundle savedInstanceState) {

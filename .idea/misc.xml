@@ -37,8 +37,8 @@
         <entry key="app/src/main/res/layout/fragment_create_1.xml" value="0.3166144200626959" />
         <entry key="app/src/main/res/layout/fragment_create_2.xml" value="0.2668711656441718" />
         <entry key="app/src/main/res/layout/fragment_detail_author.xml" value="0.24030831207132117" />
-        <entry key="app/src/main/res/layout/fragment_detail_book.xml" value="0.55" />
-        <entry key="app/src/main/res/layout/fragment_google_sign_up.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_detail_book.xml" value="0.258148193359375" />
+        <entry key="app/src/main/res/layout/fragment_google_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_local_book.xml" value="0.39375" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.43523550724637683" />
         <entry key="app/src/main/res/layout/fragment_reader_profile.xml" value="0.40677083333333336" />

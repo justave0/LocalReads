@@ -95,7 +95,7 @@ public class LocalFeedFragment extends Fragment {
     public void queryAuthors() {
         ArrayList<String> authorID = new ArrayList<>();
         ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
-        //authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
+        authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
         authorQuery.setLimit(20);
         authorQuery.findInBackground(new FindCallback<Author>() {
             @Override
@@ -122,7 +122,7 @@ public class LocalFeedFragment extends Fragment {
         query.addDescendingOrder("createdAt");
         query.whereContainedIn("user", authorID);
         if (selectedGenres != null){
-            //query.whereContainedIn("genres", selectedGenres);
+            query.whereContainedIn("genres", selectedGenres);
         }
         query.setLimit(20);
         // Specify the object id

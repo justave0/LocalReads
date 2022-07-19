@@ -38,6 +38,8 @@ public class SignUpActivity extends AppCompatActivity {
     private BeginSignInRequest signUpRequest;
     private static final int REQ_ONE_TAP = 1;  // Can be any integer unique to the Activity.
     private boolean showOneTapUI = true;
+    int googleUserId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +53,9 @@ public class SignUpActivity extends AppCompatActivity {
         btSignUp = findViewById(R.id.btSignUp);
         rgToggle = findViewById(R.id.rgToggle);
 
+//        googleUserId = getIntent().getIntExtra();
+
         ParseUser user = new ParseUser();
-
-        oneTapClient = Identity.getSignInClient(this);
-        signUpRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.parse_client_key))
-                        // Show all accounts on the device.
-                        .setFilterByAuthorizedAccounts(false)
-                        .build())
-                .build();
-
 
         btSignUp.setOnClickListener( new View.OnClickListener(){
             @Override

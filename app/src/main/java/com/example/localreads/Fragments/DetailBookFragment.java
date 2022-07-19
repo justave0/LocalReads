@@ -9,11 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.localreads.GoogleBooksAdapter;
+import com.example.localreads.MainActivity;
 import com.example.localreads.Models.Author;
+import com.example.localreads.Models.GoogleBook;
 import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
 import com.example.localreads.StartSnapHelper;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -25,22 +31,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.localreads.Models.Book;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import okhttp3.Headers;
 
 public class DetailBookFragment extends Fragment {
-    MoreBooksAdapter adapter;
+    MoreBooksAdapter moreBooksAdapter;
+    GoogleBooksAdapter googleBooksAdapter;
     Context context;
     FragmentActivity listener;
     private Book mBook;
@@ -55,7 +63,10 @@ public class DetailBookFragment extends Fragment {
     private String TAG = "DetailBookFragment";
     Author mAuthor;
     public ArrayList<Book> authorBooks = new ArrayList<>();
+    public ArrayList<GoogleBook> googleBooks = new ArrayList<>();
     Boolean check;
+    RecyclerView rvDetailGoogleBooks;
+    CollapsingToolbarLayout ctlMain;
 
 
     // This event fires 1st, before creation of fragment or any views
@@ -79,8 +90,12 @@ public class DetailBookFragment extends Fragment {
         mBook = Parcels.unwrap(getArguments().getParcelable("book"));
         ablTopMenu = getActivity().findViewById(R.id.ablMain);
         ablTopMenu.setExpanded(false);
+        ablTopMenu.setEnabled(false);
+        ctlMain = getActivity().findViewById(R.id.ctlMain);
+        ctlMain.setTitleEnabled(false);
         ArrayList<Book> authorBooks = new ArrayList<Book>();
-        adapter = new MoreBooksAdapter(authorBooks, getActivity());
+        moreBooksAdapter = new MoreBooksAdapter(authorBooks, getActivity());
+        googleBooksAdapter = new GoogleBooksAdapter(googleBooks, getActivity());
         setExitTransition(new MaterialFadeThrough());
         setReenterTransition(new MaterialFadeThrough());
         setEnterTransition(new MaterialFadeThrough());
@@ -108,15 +123,21 @@ public class DetailBookFragment extends Fragment {
         btReadBook = activity.findViewById(R.id.btReadBook);
         tvDetailReads = activity.findViewById(R.id.tvDetailReads);
         authorBooks.clear();
-        rvDetailMoreBooks = activity.findViewById(R.id.rvDetailMoreBooks);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
-        rvDetailMoreBooks.setLayoutManager(linearLayoutManager);
-        rvDetailMoreBooks.setAdapter(adapter);
+        LinearLayoutManager horizontalLinearLayoutManager1 = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
+        rvDetailMoreBooks = activity.findViewById(R.id.rvDetailMoreBooks);
+        rvDetailMoreBooks.setLayoutManager(horizontalLinearLayoutManager1);
+        rvDetailMoreBooks.setAdapter(moreBooksAdapter);
         rvDetailMoreBooks.setOnFlingListener(null);
-//        SnapHelper snapHelper = new PagerSnapHelper();
-//        snapHelper.attachToRecyclerView(rvDetailMoreBooks);
         new StartSnapHelper().attachToRecyclerView(rvDetailMoreBooks);
+
+        LinearLayoutManager horizontalLinearLayoutManager2 = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
+        rvDetailGoogleBooks = activity.findViewById(R.id.rvDetailGoogleBooks);
+        rvDetailGoogleBooks.setLayoutManager(horizontalLinearLayoutManager2);
+        rvDetailGoogleBooks.setAdapter(googleBooksAdapter);
+        rvDetailGoogleBooks.setOnFlingListener(null);
+        new StartSnapHelper().attachToRecyclerView(rvDetailGoogleBooks);
+
 
         tvDetailBookAuthor.setText(mBook.getUser().getUsername());
         tvDetailBookLocation.setText(mBook.getLocationString());
@@ -125,6 +146,7 @@ public class DetailBookFragment extends Fragment {
         tvDetailReads.setText(String.valueOf(mBook.getReads()));
         checkReadPost();
         queryMoreBooks();
+        queryGoogleBooks();
 
 
         btReadBook.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +167,89 @@ public class DetailBookFragment extends Fragment {
                 tvDetailReads.setText(String.valueOf(mBook.getReads()));
             }
         });
+    }
+
+    private void queryGoogleBooks() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        // create string for book genres
+        String genres = "+subject:";
+        for (int i = 0; i< mBook.getGenres().size(); i++){
+            genres += mBook.getGenres().get(i) + "|";
+        }
+        genres = genres.substring(0, genres.length()-1);
+        genres = genres.replaceAll("\\s+","+");
+        // book name
+        String title = mBook.getName();
+
+        String bookQueryUrl = "https://www.googleapis.com/books/v1/volumes?q="+title+
+                genres+"&key="+ getString(R.string.google_maps_api_key);
+        client.get(bookQueryUrl, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, String.valueOf(statusCode));
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    if (jsonObject.getInt("totalItems") == 0 ){
+                        widenGoogleBooksQuery();
+                    }
+                    else {
+                        populateGoogleBooksRecycler(jsonObject);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, String.valueOf(statusCode));
+            }
+        });
+    }
 
 
+
+    // removes the title in the recommended google book search
+    private void widenGoogleBooksQuery() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        // create string for book genres
+        String genres = "+subject:";
+        for (int i = 0; i< mBook.getGenres().size(); i++){
+            genres += mBook.getGenres().get(i) + "|";
+        }
+        genres = genres.substring(0, genres.length()-1);
+        genres = genres.replaceAll("\\s+","+");
+        // book name
+        String bookQueryUrl = "https://www.googleapis.com/books/v1/volumes?q="+
+                genres+"&key="+ getString(R.string.google_maps_api_key);
+        client.get(bookQueryUrl, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, String.valueOf(statusCode));
+                JSONObject jsonObject = json.jsonObject;
+                try{
+                    if (jsonObject.getInt("totalItems") == 0 ){
+                        Log.i(TAG, "ran out of google books");
+                    }
+                    else{
+                        populateGoogleBooksRecycler(jsonObject);
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, String.valueOf(statusCode));
+            }
+        });
+    }
+
+    private void populateGoogleBooksRecycler(JSONObject jsonObject) throws JSONException {
+        // make new books from json
+        JSONArray items = jsonObject.getJSONArray("items");
+        googleBooks.addAll(GoogleBook.fromJsonArray(items));
+        googleBooksAdapter.updateAdapter(googleBooks);
     }
 
     private void queryMoreBooks() {
@@ -169,7 +272,7 @@ public class DetailBookFragment extends Fragment {
                             if(e == null){
                                 authorBooks.addAll(objects);
                                 authorBooks.removeIf(n -> (n.getObjectId().equals(mBook.getObjectId())));
-                                adapter.updateAdapter(authorBooks);
+                                moreBooksAdapter.updateAdapter(authorBooks);
                                 Log.i(TAG, authorBooks.toString());
                             }
                             else{

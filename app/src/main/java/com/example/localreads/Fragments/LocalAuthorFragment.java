@@ -23,6 +23,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -94,6 +95,9 @@ public class LocalAuthorFragment extends Fragment {
     public void queryAuthors() {
         ArrayList<Author> authors = new ArrayList<>();
         ParseQuery<Author> authorQuery = ParseQuery.getQuery(Author.class);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseGeoPoint geoPoint = ParseUser.getCurrentUser().getParseGeoPoint("location");
         authorQuery.whereWithinMiles("inputLocation", ParseUser.getCurrentUser().getParseGeoPoint("location"), searchRadius);
         authorQuery.setLimit(20);
         authorQuery.include(Author.KEY_USER);
