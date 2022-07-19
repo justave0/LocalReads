@@ -19,12 +19,25 @@ public class GoogleBook {
 
     public GoogleBook(){}
 
-    public GoogleBook(JSONObject jsonObject)throws JSONException {
-        title = jsonObject.getJSONObject("volumeInfo").getString("title");
-        imageLink = jsonObject.getJSONObject("volumeInfo").getJSONObject("imageLinks").getString("thumbnail");
+    public GoogleBook(JSONObject jsonObject) {
+        try {
+            title = jsonObject.getJSONObject("volumeInfo").getString("title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            imageLink = jsonObject.getJSONObject("volumeInfo").getJSONObject("imageLinks").getString("thumbnail");
+        } catch (JSONException e) {
+            imageLink = "http://books.google.com/books/content?id=6P_jN6zUuMcC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
+        }
         imageLink = imageLink.substring(0,4) + "s" + imageLink.substring(4);
-        description = jsonObject.getJSONObject("volumeInfo").getString("description");
+        try {
+            description = jsonObject.getJSONObject("volumeInfo").getString("description");
+        } catch (JSONException e) {
+            description = "No description given";
+        }
         populateLists(jsonObject);
+
     }
 
     public static ArrayList<GoogleBook> fromJsonArray(JSONArray bookJsonArray) throws JSONException {
@@ -35,15 +48,34 @@ public class GoogleBook {
         return books;
     }
 
-    private void populateLists(JSONObject jsonObject) throws JSONException {
-        JSONArray authorsList = jsonObject.getJSONObject("volumeInfo").getJSONArray("authors");
+    private void populateLists(JSONObject jsonObject)  {
+        JSONArray authorsList = null;
+        try {
+            authorsList = jsonObject.getJSONObject("volumeInfo").getJSONArray("authors");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         for (int i = 0; i < authorsList.length(); i++){
-            authors.add(authorsList.getString(i));
+            try {
+                authors.add(authorsList.getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        JSONArray genresList = jsonObject.getJSONObject("volumeInfo").getJSONArray("categories");
-        for (int j = 0; j < genresList.length(); j++){
-            genres.add(genresList.getString(j));
+        JSONArray genresList = null;
+        try {
+            genresList = jsonObject.getJSONObject("volumeInfo").getJSONArray("categories");
+            for (int j = 0; j < genresList.length(); j++){
+                try {
+                    genres.add(genresList.getString(j));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (JSONException e) {
+            genres.add("No genres given");
         }
+
     }
 
     public String getTitle() {

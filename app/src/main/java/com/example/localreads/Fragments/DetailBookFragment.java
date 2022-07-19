@@ -20,6 +20,7 @@ import com.example.localreads.R;
 import com.example.localreads.StartSnapHelper;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -67,6 +68,7 @@ public class DetailBookFragment extends Fragment {
     Boolean check;
     RecyclerView rvDetailGoogleBooks;
     CollapsingToolbarLayout ctlMain;
+    BottomNavigationView bottom_navigation;
 
 
     // This event fires 1st, before creation of fragment or any views
@@ -89,10 +91,15 @@ public class DetailBookFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBook = Parcels.unwrap(getArguments().getParcelable("book"));
         ablTopMenu = getActivity().findViewById(R.id.ablMain);
-        ablTopMenu.setExpanded(false);
+//        ablTopMenu.setExpanded(false);
         ablTopMenu.setEnabled(false);
         ctlMain = getActivity().findViewById(R.id.ctlMain);
-        ctlMain.setTitleEnabled(false);
+//        ctlMain.setTitleEnabled(false);
+        ctlMain.setVisibility(View.GONE);
+
+        bottom_navigation = getActivity().findViewById(R.id.bottom_navigation);
+        bottom_navigation.setVisibility(View.GONE);
+
         ArrayList<Book> authorBooks = new ArrayList<Book>();
         moreBooksAdapter = new MoreBooksAdapter(authorBooks, getActivity());
         googleBooksAdapter = new GoogleBooksAdapter(googleBooks, getActivity());
