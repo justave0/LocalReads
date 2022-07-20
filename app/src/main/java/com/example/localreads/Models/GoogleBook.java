@@ -16,6 +16,9 @@ public class GoogleBook {
     String imageLink;
     ArrayList<String> authors = new ArrayList<>();
     String description;
+    String bookId;
+    Boolean embeddable;
+
 
     public GoogleBook(){}
 
@@ -35,6 +38,16 @@ public class GoogleBook {
             description = jsonObject.getJSONObject("volumeInfo").getString("description");
         } catch (JSONException e) {
             description = "No description given";
+        }
+        try {
+            bookId = jsonObject.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            embeddable = jsonObject.getJSONObject("accessInfo").getBoolean("embeddable");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         populateLists(jsonObject);
 
@@ -96,5 +109,13 @@ public class GoogleBook {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public Boolean getEmbeddable() {
+        return embeddable;
     }
 }

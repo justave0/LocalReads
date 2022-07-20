@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clDetailBookItem"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="4dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvCondensedMessage"
@@ -14,7 +15,7 @@
         android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="3dp"
-        android:padding="5dp"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,7 +28,7 @@
 
             <ImageView
                 android:id="@+id/ivCondensedBookImage"
-                android:layout_width="180dp"
+                android:layout_width="167dp"
                 android:layout_height="356dp"
                 android:layout_gravity="center"
                 android:maxHeight="200dp"
@@ -42,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:maxWidth="180dp"
+                android:maxWidth="167dp"
+                android:singleLine="true"
                 android:text="Title"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 app:layout_constraintBottom_toBottomOf="@+id/ivCondensedBookImage"
@@ -55,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:maxWidth="180dp"
+                android:maxWidth="167dp"
                 android:singleLine="true"
                 android:text="Genres"
                 android:textAppearance="?attr/textAppearanceBodyMedium"

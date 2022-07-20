@@ -101,7 +101,7 @@ public class DetailBookFragment extends Fragment {
         bottom_navigation = getActivity().findViewById(R.id.bottom_navigation);
         bottom_navigation.setVisibility(View.INVISIBLE);
 
-        flTemp = getActivity().findViewById(R.id.flTemp);
+          flTemp = getActivity().findViewById(R.id.flTemp);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
         params.setBehavior(null);
 

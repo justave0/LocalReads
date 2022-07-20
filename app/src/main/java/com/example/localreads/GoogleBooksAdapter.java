@@ -1,6 +1,7 @@
 package com.example.localreads;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -102,6 +104,20 @@ public class GoogleBooksAdapter extends RecyclerView.Adapter<GoogleBooksAdapter.
             Glide.with(context).load(book.getImageLink())
                     .error(R.drawable.green_check)
                     .into(ivCondensedBookImage);
+
+            clDetailBookItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (book.getEmbeddable()) {
+                        Intent intent = new Intent(context, GoogleBookReaderActivity.class);
+                        intent.putExtra("bookId", book.getBookId());
+                        context.startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(context, "Book cannot be accessed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
         }
     }
