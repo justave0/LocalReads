@@ -18,6 +18,7 @@ public class GoogleBook {
     String description;
     String bookId;
     Boolean embeddable;
+    int averageRating;
 
 
     public GoogleBook(){}
@@ -26,7 +27,7 @@ public class GoogleBook {
         try {
             title = jsonObject.getJSONObject("volumeInfo").getString("title");
         } catch (JSONException e) {
-            e.printStackTrace();
+            title = "No Title Given";
         }
         try {
             imageLink = jsonObject.getJSONObject("volumeInfo").getJSONObject("imageLinks").getString("thumbnail");
@@ -49,6 +50,11 @@ public class GoogleBook {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try{
+            averageRating = jsonObject.getJSONObject("volumeInfo").getInt("averageRating");
+        } catch (JSONException jsonException) {
+            averageRating = 0;
+        }
         populateLists(jsonObject);
 
     }
@@ -65,16 +71,17 @@ public class GoogleBook {
         JSONArray authorsList = null;
         try {
             authorsList = jsonObject.getJSONObject("volumeInfo").getJSONArray("authors");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < authorsList.length(); i++){
-            try {
-                authors.add(authorsList.getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            for (int i = 0; i < authorsList.length(); i++) {
+                try {
+                    authors.add(authorsList.getString(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (JSONException e) {
+            authors.add("No authors given");
         }
+
         JSONArray genresList = null;
         try {
             genresList = jsonObject.getJSONObject("volumeInfo").getJSONArray("categories");
@@ -117,5 +124,9 @@ public class GoogleBook {
 
     public Boolean getEmbeddable() {
         return embeddable;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
     }
 }

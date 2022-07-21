@@ -12,6 +12,7 @@ import com.example.localreads.Models.Reader;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
+import com.parse.livequery.ParseLiveQueryClient;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -44,5 +45,7 @@ public class LocalReadsApplication extends Application {
                 .applicationId(getString(R.string.parse_application_id)) // should correspond to Application Id env variable
                 .clientKey(getString(R.string.parse_client_key))  // should correspond to Client key env variable
                 .server("https://parseapi.back4app.com").build());
+
+
     }
 }

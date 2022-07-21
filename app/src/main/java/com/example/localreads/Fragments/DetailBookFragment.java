@@ -351,8 +351,6 @@ public class DetailBookFragment extends Fragment {
 
     private void checkReadPost() {
         ParseQuery newQuery = mBook.getRelation("readBy").getQuery();
-
-
         newQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List <ParseUser> users, ParseException e) {

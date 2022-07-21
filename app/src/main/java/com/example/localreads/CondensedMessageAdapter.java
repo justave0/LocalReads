@@ -132,6 +132,33 @@ public class CondensedMessageAdapter extends RecyclerView.Adapter<CondensedMessa
         context.startActivity(intent);
     }
 
+    public void addItem(MessageGroup t) {
+        this.mMessageGroups.add(t);
+        notifyItemInserted(mMessageGroups.size() - 1);
+    }
+
+    public void removeItem(MessageGroup messageGroup) {
+        for (int i = 0; i < mMessageGroups.size(); i++) {
+            if (mMessageGroups.get(i).getObjectId().equals(messageGroup.getObjectId())){
+                mMessageGroups.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i, mMessageGroups.size());
+                return;
+            }
+        }
+    }
+    public void updateItem(MessageGroup messageGroup) {
+        for (int i = 0; i < mMessageGroups.size(); i++) {
+            if (mMessageGroups.get(i).getObjectId().equals(messageGroup.getObjectId())){
+                mMessageGroups.set(i,messageGroup);
+                notifyDataSetChanged();
+                return;
+            }
+        }
+    }
+
+
+
     //Helper function for timestamp
     public static String calculateTimeAgo(Date createdAt) {
 

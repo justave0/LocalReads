@@ -4,41 +4,40 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
-import com.example.localreads.Models.Message;
 import com.example.localreads.Models.MessageGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
-
-import org.parceler.Parcels;
+import com.parse.livequery.ParseLiveQueryClient;
 
 import java.util.ArrayList;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MessageFeedActivity extends AppCompatActivity {
 
-    public static String [] userList = new String[]{};
+    public static String [] authorList = new String[]{};
     AutoCompleteTextView autotextView;
-    ArrayAdapter<String> arrayAdapter;
     TextView tvMessageUsername;
     CondensedMessageAdapter messageAdapter;
     ArrayList<MessageGroup> messages;
     String TAG = "MessageFeedActivity";
     HashSet<ArrayList<String>> userIds = new HashSet<>();
     RecyclerView rvCondensedMessageFeed;
+    private ParseLiveQueryClient parseLiveQueryClient;
+    public ArrayAdapter<String> authorAdapter;
+
+
 
 
     @Override
@@ -46,11 +45,17 @@ public class MessageFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_feed);
 
+
         // autocomplete search users
-//        adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_dropdown_item_1line, userList);
+        authorAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, authorList);
         autotextView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteUserSearch);
+        autotextView.setThreshold(3);
+        autotextView.setAdapter(authorAdapter);
+
+
+
         tvMessageUsername = findViewById(R.id.tvMessageUsername);
         tvMessageUsername.setText(ParseUser.getCurrentUser().getUsername());
 
@@ -62,6 +67,8 @@ public class MessageFeedActivity extends AppCompatActivity {
         rvCondensedMessageFeed = findViewById(R.id.rvCondensedMessageFeed);
         rvCondensedMessageFeed.setLayoutManager(linearLayoutManager);
         rvCondensedMessageFeed.setAdapter(messageAdapter);
+
+
 
 
         queryMessages();
@@ -89,6 +96,9 @@ public class MessageFeedActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void searchUsers(CharSequence s) {
     }
 
 }

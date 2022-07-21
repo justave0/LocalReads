@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.localreads.Fragments.DetailBookFragment;
+import com.example.localreads.Fragments.GoogleBookDetailFragment;
 import com.example.localreads.Models.Book;
 import com.example.localreads.Models.GoogleBook;
 
@@ -109,9 +111,27 @@ public class GoogleBooksAdapter extends RecyclerView.Adapter<GoogleBooksAdapter.
                 @Override
                 public void onClick(View v) {
                     if (book.getEmbeddable()) {
-                        Intent intent = new Intent(context, GoogleBookReaderActivity.class);
-                        intent.putExtra("bookId", book.getBookId());
-                        context.startActivity(intent);
+                        AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+//                        Intent intent = new Intent(context, GoogleBookReaderActivity.class);
+//                        intent.putExtra("bookId", book.getBookId());
+//                        context.startActivity(intent);
+
+                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                        //Create a new fragment
+                        GoogleBookDetailFragment fragment_google_book_detail = new GoogleBookDetailFragment();
+                        //Create a new bundle
+                        Bundle args = new Bundle();
+                        //Put arguments in the bundle
+                        args.putParcelable("googleBook", Parcels.wrap(book));
+                        //send bundle to the fragment
+                        fragment_google_book_detail.setArguments(args);
+//                        ft.setReorderingAllowed(true);
+                        //replace the fragment
+                        ft.replace(R.id.flTemp, fragment_google_book_detail, DetailBookFragment.class.getSimpleName());
+                        //add to backstack
+                        ft.addToBackStack(DetailBookFragment.class.getSimpleName());
+                        //Commit!
+                        ft.commit();
                     }
                     else {
                         Toast.makeText(context, "Book cannot be accessed", Toast.LENGTH_SHORT).show();
