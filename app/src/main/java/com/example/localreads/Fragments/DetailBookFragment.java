@@ -98,8 +98,7 @@ public class DetailBookFragment extends Fragment {
         (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
     params.setBehavior(null);
 
-    ArrayList<Book> authorBooks = new ArrayList<>();
-    moreBooksAdapter = new MoreBooksAdapter(authorBooks, getActivity());
+    moreBooksAdapter = new MoreBooksAdapter(getActivity());
     googleBooksAdapter = new GoogleBooksAdapter(getActivity());
     setExitTransition(new MaterialFadeThrough());
     setReenterTransition(new MaterialFadeThrough());

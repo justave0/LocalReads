@@ -29,8 +29,7 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
   private final Context context;
   private final DetailBookFragment fragment_detail_book;
 
-  public MoreBooksAdapter(List<Book> books, Context context) {
-    // mBooks.addAll(books);
+  public MoreBooksAdapter(Context context) {
     this.context = context;
     AppCompatActivity ap = (AppCompatActivity) context;
     fragment_detail_book =
@@ -44,13 +43,8 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
   public MoreBooksAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     Context context = parent.getContext();
     LayoutInflater inflater = LayoutInflater.from(context);
-
-    // Inflate the custom layout
     View bookView = inflater.inflate(R.layout.item_condensed_book, parent, false);
-
-    // Return a new holder instance
-    MoreBooksAdapter.ViewHolder viewHolder = new MoreBooksAdapter.ViewHolder(bookView);
-    return viewHolder;
+    return new MoreBooksAdapter.ViewHolder(bookView);
   }
 
   @Override
@@ -92,37 +86,22 @@ public class MoreBooksAdapter extends RecyclerView.Adapter<MoreBooksAdapter.View
       Glide.with(context).load(book.getImage().getUrl()).into(ivCondensedBookImage);
       DetailBookFragment detailFragment = new DetailBookFragment();
       clDetailBookItem.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
-              if (fragment_detail_book != null) {
+          v -> {
+            AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+            if (fragment_detail_book != null) {
 
-                FragmentTransaction fts = activity.getSupportFragmentManager().beginTransaction();
-                fts.detach(fragment_detail_book);
-                fts.commit();
-              }
-              // Activity for adapter
-
-              // Fragment Transaction (idk)
-              FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-              // Create a new fragment
-
-              // Create a new bundle
-              Bundle args = new Bundle();
-              // Put arguments in the bundle
-              args.putParcelable("book", Parcels.wrap(book));
-              // send bundle to the fragment
-              detailFragment.setArguments(args);
-              ft.setReorderingAllowed(true);
-              // replace the fragment
-              ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
-              // ft.replace(R.id.flTemp, detailFragment, LocalFeedFragment.class.getSimpleName());
-              // add to backstack
-              ft.addToBackStack(DetailBookFragment.class.getSimpleName());
-              // Commit!
-              ft.commit();
+              FragmentTransaction fts = activity.getSupportFragmentManager().beginTransaction();
+              fts.detach(fragment_detail_book);
+              fts.commit();
             }
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            Bundle args = new Bundle();
+            args.putParcelable("book", Parcels.wrap(book));
+            detailFragment.setArguments(args);
+            ft.setReorderingAllowed(true);
+            ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
+            ft.addToBackStack(DetailBookFragment.class.getSimpleName());
+            ft.commit();
           });
     }
   }

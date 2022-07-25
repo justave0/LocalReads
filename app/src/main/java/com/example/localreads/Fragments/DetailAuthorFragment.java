@@ -68,9 +68,8 @@ public class DetailAuthorFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ArrayList<Book> mMoreBooks = new ArrayList<>();
     mAuthor = Parcels.unwrap(getArguments().getParcelable("Author"));
-    adapter = new MoreBooksAdapter(mMoreBooks, getActivity());
+    adapter = new MoreBooksAdapter(getActivity());
     ablMain = getActivity().findViewById(R.id.ablMain);
     setExitTransition(new MaterialFadeThrough());
     setReenterTransition(new MaterialFadeThrough());
