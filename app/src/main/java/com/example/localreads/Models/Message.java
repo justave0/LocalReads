@@ -5,23 +5,28 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-//@Parcel
+// @Parcel
 @ParseClassName("Message")
 public class Message extends ParseObject {
 
-    public static final String KEY_TEXT = "Text";
-    public static final String KEY_SENDER = "sender";
+  public static final String KEY_TEXT = "Text";
+  public static final String KEY_SENDER = "sender";
 
-    public Message (){}
+  public Message() {}
 
-    public void setText(String text){
-        put(KEY_TEXT, text);
-    }
-    public String getText(){
-        return getString(KEY_TEXT);
-    }
+  public void setText(String text) {
+    put(KEY_TEXT, text);
+  }
 
-    public void setSender(ParseUser user){ put(KEY_SENDER, user);}
-    public ParseUser getSender(){return getParseUser(KEY_SENDER);}
+  public String getText() {
+    return getString(KEY_TEXT);
+  }
 
+  public void setSender(ParseUser user) {
+    put(KEY_SENDER, user);
+  }
+
+  public ParseUser getSender() {
+    return getParseUser(KEY_SENDER);
+  }
 }

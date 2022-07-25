@@ -79,7 +79,7 @@ public class MessageFeedActivity extends AppCompatActivity {
         messageQuery.setLimit(100);
         messageQuery.whereEqualTo(MessageGroup.KEY_USERS, ParseUser.getCurrentUser());
         messageQuery.include(MessageGroup.KEY_MESSAGES);
-        messageQuery.include("messages.sender");
+    messageQuery.include("messages.sender");
         messageQuery.addDescendingOrder("createdAt");
         messageQuery.findInBackground(new FindCallback<MessageGroup>(){
             @Override
