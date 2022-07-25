@@ -41,14 +41,8 @@ public class CondensedMessageAdapter
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     Context context = parent.getContext();
     LayoutInflater inflater = LayoutInflater.from(context);
-
-    // Inflate the custom layout
     View condensedMessage = inflater.inflate(R.layout.item_condensed_message, parent, false);
-
-    // Return a new holder instance
-    CondensedMessageAdapter.ViewHolder viewHolder =
-        new CondensedMessageAdapter.ViewHolder(condensedMessage);
-    return viewHolder;
+    return new CondensedMessageAdapter.ViewHolder(condensedMessage);
   }
 
   @Override
@@ -62,11 +56,6 @@ public class CondensedMessageAdapter
     notifyDataSetChanged();
   }
 
-  public void notifyAdapter(ArrayList<MessageGroup> messageGroups) {
-    mMessageGroups.addAll(messageGroups);
-    this.notifyDataSetChanged();
-  }
-
   @Override
   public int getItemCount() {
     return mMessageGroups.size();
@@ -78,7 +67,6 @@ public class CondensedMessageAdapter
     TextView tvCondensedMessageSnippet;
     TextView tvCondensedMessageTime;
     MaterialCardView cvCondensedMessage;
-    ArrayList<ParseUser> parseUsers = new ArrayList<>();
 
     public ViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -94,16 +82,16 @@ public class CondensedMessageAdapter
       try {
         List<ParseObject> users =
             messageGroup.getRelation(MessageGroup.KEY_USERS).getQuery().find();
-        String usernames = "";
+        StringBuilder usernames = new StringBuilder();
         for (int i = 0; i < users.size(); i++) {
           if (!((ParseUser) users.get(i))
               .getObjectId()
               .equals(ParseUser.getCurrentUser().getObjectId())) {
-            usernames += ((ParseUser) users.get(i)).getUsername() + ", ";
+            usernames.append(((ParseUser) users.get(i)).getUsername()).append(", ");
           }
         }
-        usernames = usernames.replaceAll(", $", "");
-        tvCondensedMessageUsernames.setText(usernames);
+        usernames = new StringBuilder(usernames.toString().replaceAll(", $", ""));
+        tvCondensedMessageUsernames.setText(usernames.toString());
       } catch (ParseException e) {
         e.printStackTrace();
       }
@@ -113,13 +101,7 @@ public class CondensedMessageAdapter
           .load(recentUser.getParseFile("profilePic").getUrl())
           .circleCrop()
           .into(ivCondensedMessagePFP);
-      cvCondensedMessage.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              goDetailedMessage(messageGroup);
-            }
-          });
+      cvCondensedMessage.setOnClickListener(v -> goDetailedMessage(messageGroup));
     }
 
     private ParseUser queryRecentUser(MessageGroup messageGroup) {
@@ -139,32 +121,6 @@ public class CondensedMessageAdapter
     Intent intent = new Intent(context, DetailedMessageActivity.class);
     intent.putExtra("messageGroup", Parcels.wrap(messageGroup));
     context.startActivity(intent);
-  }
-
-  public void addItem(MessageGroup t) {
-    this.mMessageGroups.add(t);
-    notifyItemInserted(mMessageGroups.size() - 1);
-  }
-
-  public void removeItem(MessageGroup messageGroup) {
-    for (int i = 0; i < mMessageGroups.size(); i++) {
-      if (mMessageGroups.get(i).getObjectId().equals(messageGroup.getObjectId())) {
-        mMessageGroups.remove(i);
-        notifyItemRemoved(i);
-        notifyItemRangeChanged(i, mMessageGroups.size());
-        return;
-      }
-    }
-  }
-
-  public void updateItem(MessageGroup messageGroup) {
-    for (int i = 0; i < mMessageGroups.size(); i++) {
-      if (mMessageGroups.get(i).getObjectId().equals(messageGroup.getObjectId())) {
-        mMessageGroups.set(i, messageGroup);
-        notifyDataSetChanged();
-        return;
-      }
-    }
   }
 
   // Helper function for timestamp

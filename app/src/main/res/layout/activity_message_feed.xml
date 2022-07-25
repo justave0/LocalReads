@@ -22,12 +22,12 @@
 
             <TextView
                 android:id="@+id/tvMessageUsername"
+                style="@style/Widget.MaterialComponents.TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="TextView"
-                style="@style/Widget.MaterialComponents.TextView"/>
+                android:text="TextView" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_holiday_destination"

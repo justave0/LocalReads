@@ -2,8 +2,6 @@ package com.example.localreads;
 
 import android.app.Application;
 
-import androidx.annotation.RequiresPermission;
-
 import com.example.localreads.Models.Author;
 import com.example.localreads.Models.Book;
 import com.example.localreads.Models.Message;
@@ -11,8 +9,6 @@ import com.example.localreads.Models.MessageGroup;
 import com.example.localreads.Models.Reader;
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
-import com.parse.livequery.ParseLiveQueryClient;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

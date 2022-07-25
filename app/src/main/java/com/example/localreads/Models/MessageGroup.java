@@ -3,7 +3,6 @@ package com.example.localreads.Models;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 import java.util.Date;
 import java.util.List;

@@ -2,7 +2,6 @@ package com.example.localreads;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -12,6 +11,7 @@ public class GoogleBookReaderActivity extends AppCompatActivity {
 
   WebView googleBooksWebView;
   String bookId;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:bottom="-2dp" android:left="0dp" android:right="0dp">
+    <item
+        android:bottom="-2dp"
+        android:left="0dp"
+        android:right="0dp">
         <shape android:shape="line">
-            <stroke android:width="2dp" android:color="@color/md_theme_light_onPrimaryContainer" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/md_theme_light_onPrimaryContainer" />
             <solid android:color="#00000000" />
         </shape>
     </item>

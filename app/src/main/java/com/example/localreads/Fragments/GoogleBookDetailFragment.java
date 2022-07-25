@@ -41,27 +41,19 @@ public class GoogleBookDetailFragment extends Fragment {
     }
   }
 
-  // This event fires 2nd, before views are created for the fragment
-  // The onCreate method is called when the Fragment instance is being created, or re-created.
-  // Use onCreate for any standard setup that does not require the activity to be fully created
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mBook = Parcels.unwrap(getArguments().getParcelable("googleBook"));
   }
 
-  // The onCreateView method is called when Fragment should create its View object hierarchy,
-  // either dynamically or via XML layout inflation.
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_google_book_detail, parent, false);
   }
 
-  // This event is triggered soon after onCreateView().
-  // onViewCreated() is only called if the view returned from onCreateView() is non-null.
-  // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
   @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
+  public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     tvGoogleBookDetailAuthor = getActivity().findViewById(R.id.tvGoogleBookDetailAuthor);
@@ -80,13 +72,7 @@ public class GoogleBookDetailFragment extends Fragment {
         .error(R.drawable.green_check)
         .into(ivGoogleBookDetailImage);
 
-    btGoogleBookDetailReadBook.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            goToBookReader();
-          }
-        });
+    btGoogleBookDetailReadBook.setOnClickListener(v -> goToBookReader());
   }
 
   private void goToBookReader() {
@@ -95,8 +81,6 @@ public class GoogleBookDetailFragment extends Fragment {
     getActivity().startActivity(intent);
   }
 
-  // This method is called when the fragment is no longer connected to the Activity
-  // Any references saved in onAttach should be nulled out here to prevent memory leaks.
   @Override
   public void onDetach() {
     super.onDetach();

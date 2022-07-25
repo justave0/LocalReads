@@ -31,10 +31,7 @@ import java.util.List;
 
 public class DetailedMessageActivity extends AppCompatActivity {
 
-  public boolean isKeyboardShowing = false;
-  CoordinatorLayout clDetailedMessage;
   public static final String TAG = "DetailedMessageActivity";
-  //    private static int KEYBOARD_HEIGHT;
   private MessageGroup mMessageGroup;
   RecyclerView rvDetailedMessageFeed;
   private ArrayList<ParseUser> mUsers;
@@ -65,17 +62,8 @@ public class DetailedMessageActivity extends AppCompatActivity {
 
     loadMessages();
 
-    tlSendMessage.setEndIconOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            // saveToMessageGroup();
-            sendMessage();
-          }
-        });
+    tlSendMessage.setEndIconOnClickListener(v -> sendMessage());
   }
-
-  private void saveToMessageGroup() {}
 
   private void sendMessage() {
     if (etSendMessage.getText().toString().length() <= 0) {
@@ -92,16 +80,13 @@ public class DetailedMessageActivity extends AppCompatActivity {
       updateMessageGroup(text, message);
     }
     message.saveInBackground(
-        new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-            if (e == null) {
-              updateSentMessage(message);
-            } else {
-              Toast.makeText(
-                      DetailedMessageActivity.this, "Error Sending Message", Toast.LENGTH_SHORT)
-                  .show();
-            }
+        e -> {
+          if (e == null) {
+            updateSentMessage(message);
+          } else {
+            Toast.makeText(
+                    DetailedMessageActivity.this, "Error Sending Message", Toast.LENGTH_SHORT)
+                .show();
           }
         });
   }
@@ -126,11 +111,6 @@ public class DetailedMessageActivity extends AppCompatActivity {
     for (int i = 0; i < mUsers.size(); i++) {
       relation.add(mUsers.get(i));
     }
-    //        ParseRelation relation = mMessageGroup.getUsers();
-    //        for (int i = 0; i < mUsers.size(); i++){
-    //            relation.add(mUsers.get(i));
-    //        }
-    //        mMessageGroup.setUsers(relation);
     mMessageGroup.setRecentText(text);
     mMessageGroup.saveInBackground();
   }

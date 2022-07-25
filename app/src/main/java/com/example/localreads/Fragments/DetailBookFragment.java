@@ -100,7 +100,7 @@ public class DetailBookFragment extends Fragment {
 
     ArrayList<Book> authorBooks = new ArrayList<>();
     moreBooksAdapter = new MoreBooksAdapter(authorBooks, getActivity());
-    googleBooksAdapter = new GoogleBooksAdapter(googleBooks, getActivity());
+    googleBooksAdapter = new GoogleBooksAdapter(getActivity());
     setExitTransition(new MaterialFadeThrough());
     setReenterTransition(new MaterialFadeThrough());
     setEnterTransition(new MaterialFadeThrough());

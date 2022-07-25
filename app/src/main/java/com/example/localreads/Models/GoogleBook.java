@@ -1,13 +1,11 @@
 package com.example.localreads.Models;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Parcel
 public class GoogleBook {
@@ -68,7 +66,7 @@ public class GoogleBook {
   }
 
   private void populateLists(JSONObject jsonObject) {
-    JSONArray authorsList = null;
+    JSONArray authorsList;
     try {
       authorsList = jsonObject.getJSONObject("volumeInfo").getJSONArray("authors");
       for (int i = 0; i < authorsList.length(); i++) {
@@ -82,7 +80,7 @@ public class GoogleBook {
       authors.add("No authors given");
     }
 
-    JSONArray genresList = null;
+    JSONArray genresList;
     try {
       genresList = jsonObject.getJSONObject("volumeInfo").getJSONArray("categories");
       for (int j = 0; j < genresList.length(); j++) {

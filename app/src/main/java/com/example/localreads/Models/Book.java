@@ -93,8 +93,7 @@ public class Book extends ParseObject {
   }
 
   public ParseRelation getReadBy() {
-    ParseRelation readBy = getRelation("readBy");
-    return readBy;
+    return getRelation("readBy");
   }
 
   public void addRead() {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -25,14 +26,11 @@ import com.example.localreads.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialFadeThrough;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReaderProfileFragment extends Fragment {
   private static final int WRAP_CONTENT = -2;
@@ -48,14 +46,11 @@ public class ReaderProfileFragment extends Fragment {
   TextView tvProfileReaderName;
   Button btReaderUserSettings;
   String TAG = "DetailAuthorFragment";
-  private final ArrayList mMoreBooks = new ArrayList();
+  private final ArrayList<Book> mMoreBooks = new ArrayList<>();
   Button btChatWithAuthor;
 
-  // This event fires 1st, before creation of fragment or any views
-  // The onAttach method is called when the Fragment instance is associated with an Activity.
-  // This does not mean the Activity is fully initialized.
   @Override
-  public void onAttach(Context context) {
+  public void onAttach(@NonNull Context context) {
     super.onAttach(context);
     if (context instanceof Activity) {
       this.listener = (FragmentActivity) context;
@@ -63,13 +58,10 @@ public class ReaderProfileFragment extends Fragment {
     }
   }
 
-  // This event fires 2nd, before views are created for the fragment
-  // The onCreate method is called when the Fragment instance is being created, or re-created.
-  // Use onCreate for any standard setup that does not require the activity to be fully created
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ArrayList<Book> mMoreBooks = new ArrayList<Book>();
+    ArrayList<Book> mMoreBooks = new ArrayList<>();
     mReader = ParseUser.getCurrentUser();
     adapter = new MoreBooksAdapter(mMoreBooks, getActivity());
     ablMain = getActivity().findViewById(R.id.ablMain);
@@ -79,21 +71,15 @@ public class ReaderProfileFragment extends Fragment {
     setExitTransition(new MaterialFadeThrough());
   }
 
-  // The onCreateView method is called when Fragment should create its View object hierarchy,
-  // either dynamically or via XML layout inflation.
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_detail_author, parent, false);
   }
 
-  // This event is triggered soon after onCreateView().
-  // onViewCreated() is only called if the view returned from onCreateView() is non-null.
-  // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
   @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
+  public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     Activity activity = getActivity();
-
     tvProfileReaderName = activity.findViewById(R.id.tvProfileReaderName);
     tvProfileReaderReads = activity.findViewById(R.id.tvProfileReaderReads);
     tvProfileReaderLocation = activity.findViewById(R.id.tvProfileReaderLocation);
@@ -129,39 +115,27 @@ public class ReaderProfileFragment extends Fragment {
     queryBook.whereEqualTo("readBy", ParseUser.getCurrentUser());
     queryBook.include(Book.KEY_USER);
     queryBook.findInBackground(
-        new FindCallback<Book>() {
-          @Override
-          public void done(List<Book> objects, ParseException e) {
-            if (e == null) {
-              MainActivity activity = (MainActivity) getActivity();
-              if (getActivity() != null) {
-                activity.spinner.setVisibility(View.GONE);
-              }
-              tvProfileReaderReads.setText(objects.size() + " Books Read");
-              mMoreBooks.addAll(objects);
-              adapter.updateAdapter(mMoreBooks);
-
-            } else {
-              Log.e(TAG, e.toString());
+        (objects, e) -> {
+          if (e == null) {
+            MainActivity activity = (MainActivity) getActivity();
+            if (getActivity() != null) {
+              activity.spinner.setVisibility(View.GONE);
             }
+            tvProfileReaderReads.setText(objects.size() + " Books Read");
+            mMoreBooks.addAll(objects);
+            adapter.updateAdapter(mMoreBooks);
+
+          } else {
+            Log.e(TAG, e.toString());
           }
         });
   }
-  // This method is called when the fragment is no longer connected to the Activity
-  // Any references saved in onAttach should be nulled out here to prevent memory leaks.
+
   @Override
   public void onDetach() {
     super.onDetach();
     this.listener = null;
     ablMain.setVisibility(View.VISIBLE);
-  }
-
-  // This method is called after the parent Activity's onCreate() method has completed.
-  // Accessing the view hierarchy of the parent activity must be done in the onActivityCreated.
-  // At this point, it is safe to search for activity View objects by their ID, for example.
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
   }
 
   @Override

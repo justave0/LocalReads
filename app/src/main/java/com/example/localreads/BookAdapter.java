@@ -30,8 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.localreads.Models.Book;
 import com.google.android.material.transition.MaterialSharedAxis;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import org.parceler.Parcels;
@@ -54,13 +52,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     Context context = parent.getContext();
     LayoutInflater inflater = LayoutInflater.from(context);
-
-    // Inflate the custom layout
     View bookView = inflater.inflate(R.layout.item_book, parent, false);
-
-    // Return a new holder instance
-    ViewHolder viewHolder = new ViewHolder(bookView);
-    return viewHolder;
+    return new ViewHolder(bookView);
   }
 
   @Override
@@ -113,70 +106,45 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
       tvBookGenre.setText(book.getGenres().toString());
       Glide.with(context).load(book.getImage().getUrl()).into(ivBookImage);
       btBookDropdown.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              // If the CardView is already expanded, set its visibility
-              //  to gone and change the expand less icon to expand more.
-              if (hiddenViewLayout.getVisibility() == View.VISIBLE) {
-                MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
-                sharedAxis.excludeTarget(R.id.cvBookImage, true);
-                sharedAxis.excludeTarget(R.id.clBookName, true);
-                // The transition of the hiddenView is carried out
-                //  by the TransitionManager class.
-                // Here we use an object of the AutoTransition
-                // Class to create a default transition.
-                TransitionManager.beginDelayedTransition(cvBook, sharedAxis);
-                hiddenViewLayout.setVisibility(View.GONE);
-                btBookDropdown.setIcon(
-                    AppCompatResources.getDrawable(context, R.drawable.ic_chevron_up));
-              }
+          v -> {
+            // If the CardView is already expanded, set its visibility
+            //  to gone and change the expand less icon to expand more.
+            if (hiddenViewLayout.getVisibility() == View.VISIBLE) {
+              MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
+              sharedAxis.excludeTarget(R.id.cvBookImage, true);
+              sharedAxis.excludeTarget(R.id.clBookName, true);
+              TransitionManager.beginDelayedTransition(cvBook, sharedAxis);
+              hiddenViewLayout.setVisibility(View.GONE);
+              btBookDropdown.setIcon(
+                  AppCompatResources.getDrawable(context, R.drawable.ic_chevron_up));
+            }
 
-              // If the CardView is not expanded, set its visibility
-              // to visible and change the expand more icon to expand less.
-              else {
-                MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, false);
-                sharedAxis.excludeTarget(R.id.cvBookImage, true);
-                sharedAxis.excludeTarget(R.id.clBookName, true);
-                TransitionManager.beginDelayedTransition(cvBook, sharedAxis);
-                hiddenViewLayout.setVisibility(View.VISIBLE);
-                btBookDropdown.setIcon(
-                    AppCompatResources.getDrawable(context, R.drawable.ic_chevron_down));
-              }
+            // If the CardView is not expanded, set its visibility
+            // to visible and change the expand more icon to expand less.
+            else {
+              MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, false);
+              sharedAxis.excludeTarget(R.id.cvBookImage, true);
+              sharedAxis.excludeTarget(R.id.clBookName, true);
+              TransitionManager.beginDelayedTransition(cvBook, sharedAxis);
+              hiddenViewLayout.setVisibility(View.VISIBLE);
+              btBookDropdown.setIcon(
+                  AppCompatResources.getDrawable(context, R.drawable.ic_chevron_down));
             }
           });
       btBookSeeMore.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              // Activity for adapter
-              AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
-              // Fragment Transaction (idk)
-              FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-              // Create a new fragment
-              DetailBookFragment detailFragment = new DetailBookFragment();
-              // Create a new bundle
-              Bundle args = new Bundle();
-              // Put arguments in the bundle
-              args.putParcelable("book", Parcels.wrap(book));
-              // send bundle to the fragment
-              detailFragment.setArguments(args);
-              // replace the fragment
-              ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
-              // add to backstack
-              ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
-              // Commit!
-              ft.commit();
-            }
+          v -> {
+            AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            DetailBookFragment detailFragment = new DetailBookFragment();
+            Bundle args = new Bundle();
+            args.putParcelable("book", Parcels.wrap(book));
+            detailFragment.setArguments(args);
+            ft.replace(R.id.flTemp, detailFragment, DetailBookFragment.class.getSimpleName());
+            ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
+            ft.commit();
           });
 
-      tvBookAuthor.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              onAuthorClick(book);
-            }
-          });
+      tvBookAuthor.setOnClickListener(v -> onAuthorClick(book));
     }
   }
 
@@ -186,26 +154,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     authorQuery.include(Author.KEY_USER);
     authorQuery.whereEqualTo("books", book.getObjectId());
     authorQuery.findInBackground(
-        new FindCallback<Author>() {
-          @Override
-          public void done(List<Author> objects, ParseException e) {
-            if (e == null) {
-              //                    MaterialFadeThrough fadeThrough = new MaterialFadeThrough();
-              //                    fadeThrough.excludeTarget(R.id.bottom_navigation, true);
-
-              // fragment transaction
-              AppCompatActivity activity = (AppCompatActivity) context;
-              FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-              DetailAuthorFragment detailFragment = new DetailAuthorFragment();
-              Bundle args = new Bundle();
-              args.putParcelable("Author", Parcels.wrap(objects.get(0)));
-              detailFragment.setArguments(args);
-              ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
-              ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
-              ft.commit();
-            } else {
-              Log.e("author query failed - ", "Error: " + e.getMessage());
-            }
+        (objects, e) -> {
+          if (e == null) {
+            AppCompatActivity activity = (AppCompatActivity) context;
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            DetailAuthorFragment detailFragment = new DetailAuthorFragment();
+            Bundle args = new Bundle();
+            args.putParcelable("Author", Parcels.wrap(objects.get(0)));
+            detailFragment.setArguments(args);
+            ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
+            ft.addToBackStack(LocalFeedFragment.class.getSimpleName());
+            ft.commit();
+          } else {
+            Log.e("author query failed - ", "Error: " + e.getMessage());
           }
         });
   }

@@ -39,13 +39,8 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
   public AuthorAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     Context context = parent.getContext();
     LayoutInflater inflater = LayoutInflater.from(context);
-
-    // Inflate the custom layout
     View bookView = inflater.inflate(R.layout.item_author, parent, false);
-
-    // Return a new holder instance
-    AuthorAdapter.ViewHolder viewHolder = new AuthorAdapter.ViewHolder(bookView);
-    return viewHolder;
+    return new AuthorAdapter.ViewHolder(bookView);
   }
 
   @Override
@@ -60,7 +55,6 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
   }
 
   public void updateAdapter(ArrayList<Author> authors) {
-    // mBooks.clear();
     mAuthors.addAll(authors);
     notifyDataSetChanged();
   }
@@ -96,28 +90,16 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
           .circleCrop()
           .into(ivAuthorPFP);
       clAuthorItem.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              // Activity for adapter
-              AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
-              // Fragment Transaction (idk)
-              FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-              // Create a new fragment
-              DetailAuthorFragment detailFragment = new DetailAuthorFragment();
-              // Create a new bundle
-              Bundle args = new Bundle();
-              // Put arguments in the bundle
-              args.putParcelable("Author", Parcels.wrap(author));
-              // send bundle to the fragment
-              detailFragment.setArguments(args);
-              // replace the fragment
-              ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
-              // add to backstack
-              ft.addToBackStack(LocalAuthorFragment.class.getSimpleName());
-              // Commit!
-              ft.commit();
-            }
+          v -> {
+            AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            DetailAuthorFragment detailFragment = new DetailAuthorFragment();
+            Bundle args = new Bundle();
+            args.putParcelable("Author", Parcels.wrap(author));
+            detailFragment.setArguments(args);
+            ft.replace(R.id.flTemp, detailFragment, DetailAuthorFragment.class.getSimpleName());
+            ft.addToBackStack(LocalAuthorFragment.class.getSimpleName());
+            ft.commit();
           });
     }
   }

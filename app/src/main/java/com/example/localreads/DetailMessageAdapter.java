@@ -73,7 +73,7 @@ public class DetailMessageAdapter
         && message.getSender().getObjectId().equals(mCurrUserId);
   }
 
-  public abstract class DetailMessageViewHolder extends RecyclerView.ViewHolder {
+  public abstract static class DetailMessageViewHolder extends RecyclerView.ViewHolder {
 
     public DetailMessageViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -98,7 +98,7 @@ public class DetailMessageAdapter
     public void bindMessage(Message message) {
       Glide.with(mContext)
           .load(message.getSender().getParseFile("profilePic").getUrl())
-          .circleCrop() // create an effect of a round profile picture
+          .circleCrop()
           .into(ivIncomingMessagePFP);
       tvIncomingMessageBody.setText(message.getText());
       tvIncomingMessageUsername.setText(message.getSender().getUsername());
@@ -119,7 +119,7 @@ public class DetailMessageAdapter
     public void bindMessage(Message message) {
       Glide.with(mContext)
           .load(ParseUser.getCurrentUser().getParseFile("profilePic").getUrl())
-          .circleCrop() // create an effect of a round profile picture
+          .circleCrop()
           .into(ivOutgoingMessagePFP);
       tvOutgoingMessageBody.setText(message.getText());
     }
