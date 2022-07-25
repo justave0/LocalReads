@@ -2,6 +2,8 @@ package com.example.localreads.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +27,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.motion.widget.Animatable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.example.localreads.Models.Book;
 import com.google.android.material.transition.MaterialFadeThrough;
@@ -74,6 +78,7 @@ public class DetailBookFragment extends Fragment {
     FrameLayout flTemp;
 
 
+
     // This event fires 1st, before creation of fragment or any views
     // The onAttach method is called when the Fragment instance is associated with an Activity.
     // This does not mean the Activity is fully initialized.
@@ -101,7 +106,7 @@ public class DetailBookFragment extends Fragment {
         bottom_navigation = getActivity().findViewById(R.id.bottom_navigation);
         bottom_navigation.setVisibility(View.INVISIBLE);
 
-          flTemp = getActivity().findViewById(R.id.flTemp);
+        flTemp = getActivity().findViewById(R.id.flTemp);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
         params.setBehavior(null);
 
@@ -167,13 +172,18 @@ public class DetailBookFragment extends Fragment {
                 if (check){
                     //remove like
                     removeRead();
-                    btReadBook.setIcon(AppCompatResources.getDrawable(getContext(), R.drawable.ic_bookmark_outline));
+                    AnimatedVectorDrawableCompat unreadPostAnimation = AnimatedVectorDrawableCompat.create(context, R.drawable.unread_post_animation);
+                    btReadBook.setIcon(unreadPostAnimation);
+                    unreadPostAnimation.start();
                     check = false;
                 }
                 else{
                     //add like
                     addRead();
-                    btReadBook.setIcon(AppCompatResources.getDrawable(getContext(),R.drawable.ic_bookmark));
+//                    btReadBook.setIcon(AppCompatResources.getDrawable(getContext(),R.drawable.ic_bookmark));
+                    AnimatedVectorDrawableCompat addReadPostAnimation = AnimatedVectorDrawableCompat.create(context, R.drawable.read_post_animation);
+                    btReadBook.setIcon(addReadPostAnimation);
+                    addReadPostAnimation.start();
                     check = true;
                 }
                 tvDetailReads.setText(String.valueOf(mBook.getReads()));
@@ -211,7 +221,6 @@ public class DetailBookFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, String.valueOf(statusCode));
@@ -379,6 +388,15 @@ public class DetailBookFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         this.listener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ctlMain.setVisibility(View.GONE);
+        bottom_navigation.setVisibility(View.INVISIBLE);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) flTemp.getLayoutParams();
+        params.setBehavior(null);
     }
 
     @Override

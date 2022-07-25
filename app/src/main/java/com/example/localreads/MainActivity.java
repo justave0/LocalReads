@@ -448,32 +448,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
-
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-//        // Retrieve the object by id
-//        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), (object, e) -> {
-//            if (e == null) {
-//                //Object was successfully retrieved
-//                // Update the fields we want to
-//                if(mCurrentLocation != null) {
-//                    object.put(KEY_LOCATION, new ParseGeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-//                }
-//                //All other fields will remain the same
-//                try {
-//                    object.save();
-//                } catch (ParseException ex) {
-//                    ex.printStackTrace();
-//                }
-//                if (mCurrentLocation != null) {
-//                    getReverseGeocode(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-//                }
-//            } else {
-//                // something went wrong
-//                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);

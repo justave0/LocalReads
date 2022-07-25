@@ -93,6 +93,7 @@
                             android:layout_marginEnd="10dp"
 
                             app:icon="@drawable/ic_bookmark_outline"
+                            app:iconGravity="top"
                             app:iconSize="48dp"
                             app:layout_constraintBottom_toTopOf="@+id/tvDetailReads"
                             app:layout_constraintEnd_toEndOf="parent"
