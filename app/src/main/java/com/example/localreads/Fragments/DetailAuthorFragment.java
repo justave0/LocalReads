@@ -29,6 +29,7 @@ import com.example.localreads.MoreBooksAdapter;
 import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -71,10 +72,10 @@ public class DetailAuthorFragment extends Fragment {
     mAuthor = Parcels.unwrap(getArguments().getParcelable("Author"));
     adapter = new MoreBooksAdapter(getActivity());
     ablMain = getActivity().findViewById(R.id.ablMain);
-    setExitTransition(new MaterialFadeThrough());
-    setReenterTransition(new MaterialFadeThrough());
-    setEnterTransition(new MaterialFadeThrough());
-    setExitTransition(new MaterialFadeThrough());
+    setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
   }
 
   @Override

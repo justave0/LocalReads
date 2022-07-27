@@ -103,7 +103,7 @@ public class DetailBookFragment extends Fragment {
     setExitTransition(new MaterialFadeThrough());
     setReenterTransition(new MaterialFadeThrough());
     setEnterTransition(new MaterialFadeThrough());
-    setExitTransition(new MaterialFadeThrough());
+    setReturnTransition(new MaterialFadeThrough());
   }
 
   @Override

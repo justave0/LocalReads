@@ -26,6 +26,7 @@ import com.example.localreads.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -64,10 +65,10 @@ public class ReaderProfileFragment extends Fragment {
     mReader = ParseUser.getCurrentUser();
     adapter = new MoreBooksAdapter(getActivity());
     ablMain = getActivity().findViewById(R.id.ablMain);
-    setExitTransition(new MaterialFadeThrough());
-    setReenterTransition(new MaterialFadeThrough());
-    setEnterTransition(new MaterialFadeThrough());
-    setExitTransition(new MaterialFadeThrough());
+    setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
   }
 
   @Override

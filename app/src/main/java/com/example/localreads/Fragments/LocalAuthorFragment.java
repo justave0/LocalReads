@@ -22,6 +22,7 @@ import com.example.localreads.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -58,10 +59,10 @@ public class LocalAuthorFragment extends Fragment {
     tvTitleText = getActivity().findViewById(R.id.tvTitleText);
     tvTitleText.setText("Showing Popular Authors Near: " + ((MainActivity) getActivity()).address);
 
-    setExitTransition(new MaterialFadeThrough());
-    setReenterTransition(new MaterialFadeThrough());
-    setEnterTransition(new MaterialFadeThrough());
-    setExitTransition(new MaterialFadeThrough());
+    setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+    setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
   }
 
   @Override

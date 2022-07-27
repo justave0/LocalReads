@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.localreads.GoogleBookReaderActivity;
 import com.example.localreads.Models.GoogleBook;
 import com.example.localreads.R;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import org.parceler.Parcels;
 
@@ -45,6 +46,11 @@ public class GoogleBookDetailFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mBook = Parcels.unwrap(getArguments().getParcelable("googleBook"));
+
+    setExitTransition(new MaterialFadeThrough());
+    setReenterTransition(new MaterialFadeThrough());
+    setEnterTransition(new MaterialFadeThrough());
+    setReturnTransition(new MaterialFadeThrough());
   }
 
   @Override
