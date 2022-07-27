@@ -1,6 +1,7 @@
 package com.example.localreads;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,13 @@ public class GoogleBooksAdapter extends RecyclerView.Adapter<GoogleBooksAdapter.
               Toast.makeText(context, "Book cannot be accessed", Toast.LENGTH_SHORT).show();
             }
           });
+
+      clDetailBookItem.setOnLongClickListener(v -> {
+        Intent intent = new Intent(context, GoogleBookReaderActivity.class);
+        intent.putExtra("bookId", book.getBookId());
+        context.startActivity(intent);
+        return true;
+      });
     }
   }
 
