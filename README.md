@@ -6,9 +6,9 @@
 1. [Wireframes](#Wireframes)
 2. [Schema](#Schema)
 
-<img src="LocalReadsGif1.jpeg" width=600>
-<img src="LocalReadsGif2.jpeg" width=600>
-<img src="LocalReadsGif3.jpeg" width=600>
+<img src="LocalReadsGif1.gif" width=600>
+<img src="LocalReadsGif2.gif" width=600>
+<img src="LocalReadsGif3.gif" width=600>
 
 ## Overview
 ### Description
