@@ -312,7 +312,7 @@ public class LoginActivity extends AppCompatActivity {
     ParseQuery userQuery = new ParseQuery("_User");
     userQuery.whereEqualTo("email", jsonData.get("email"));
 
-    ParseUser user = (ParseUser) userQuery.getFirst();
+//    ParseUser user = (ParseUser) userQuery.getFirst();
     if (userQuery.count() == 0) {
       userData = jsonData;
       showGoogleSignUpDialog(jsonData);
@@ -347,7 +347,8 @@ public class LoginActivity extends AppCompatActivity {
     user.setPassword(generatedString);
     user.setEmail(userData.get("email"));
     user.put("location", new ParseGeoPoint(0, 0));
-    user.put("profilePic", userData.get("picture"));
+
+//    user.put("profilePic", userData.get("picture"));
 
     if (tag.equals("Reader")) {
       user.put("tag", "reader");
