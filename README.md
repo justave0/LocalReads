@@ -6,6 +6,10 @@
 1. [Wireframes](#Wireframes)
 2. [Schema](#Schema)
 
+<img src="LocalReadsGif1.jpeg" width=600>
+<img src="LocalReadsGif2.jpeg" width=600>
+<img src="LocalReadsGif3.jpeg" width=600>
+
 ## Overview
 ### Description
 LocalReads is the app for book lovers to find local authors and storytellers. LocalReads allows local authors to share their recent books to people in their area and create coffee chats/book circles. The app also allows book lovers to directly contact local authors to answer their questions.
